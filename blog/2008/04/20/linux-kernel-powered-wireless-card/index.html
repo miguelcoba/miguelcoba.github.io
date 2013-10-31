@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux kernel powered wireless card. - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="A bit of background first. Last year I got a new laptop (HP dv6420la). All worked fine, except for the wireless card. It is a BCM4312 rev 02. It only &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/04/20/linux-kernel-powered-wireless-card">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Linux Kernel Powered Wireless Card.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-20T00:00:00-05:00" pubdate data-updated="true">Apr 20<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">A bit of background first. Last year I got a new laptop (HP <a title="HP dv6420la" href="http://miguel.leugim.com.mx/index.php/2007/08/06/laptop/">dv6420la</a>). All worked fine, except for the wireless card. It is a BCM4312 rev 02. It only worked using <a title="Installing debian on HP dv6420la" href="http://miguel.leugim.com.mx/index.php/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la/">ndiswrapper.</a> This was acceptable, because in the end the important thing was that the tool (the laptop) worked. But I always had the feeling that it was not perfect. Besides, half the time it didn&#8217;t booted correctly because the wireless card didn&#8217;t initialized ok. This hanged the machine and the only solution was to cold reboot the laptop. Not very good for my files but that was the price to pay in order to have a working wireless card. All the time I follow the news on <a title="Linux Wireless" href="http://linuxwireless.org">linuxwireless.org</a> waiting for the time when native kernel support for my wireless card were incorporated to the mainline kernel. From time to time I installed new versions of the kernel and tested the card without success, but the progress was evident. My hopes were bigger and bigger as the months passed. Finally (thanks Larry Finger, the author of the <a title="Larry Finger BCM4311 rev 02 patch" href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/197959/comments/30">patch</a>, and the linux wireless team) mainstream kernel included the code necessary to drive the BCM4312 rev 02 card.
+
+It was included in kernel 2.6.25 and this kernel was stamped stable just two days ago. So, one more time (hoping it were the last) I put to test a new kernel in my laptop.
+
+I downloaded the full sources from kernel.org (because it isn&#8217;t yet in debian repositories). As root:
+<pre><code>
+laptop:~# cd /usr/src
+laptop:~# wget http://kernel.org/pub/linux/kernel/v2.6/linux-2.6.25.tar.bz2
+</code></pre>
+Then I installed the required dependencies needed to custom compile/install a kernel (instructions <a title="Debian kernel handbook" href="http://kernel-handbook.alioth.debian.org/ch-common-tasks.html">here</a>):
+<pre><code>
+laptop:~# apt-get install build-essential fakeroot
+</code></pre>
+I unpacked the sources:
+<pre><code>
+laptop:~# tar jxf linux-2.6.25.tar.bz2
+laptop:~# cd linux-2.6.25
+</code></pre>
+I copied the config file from my current kernel:
+<pre><code>
+laptop:~# cp /boot/config-2.6.24-1-amd64 .config
+</code></pre>
+and made the kernel package:
+<pre><code>
+laptop:~# fakeroot make-kpkg --initrd --revision=miguel.1.0 kernel_image
+</code></pre>
+This compiled the kernel and built the deb package leaving it in /usr/src/linux-image-2.6.25_miguel.1.0_amd64.deb. I chose the default answers in the config phase. Finally I installed it with:
+<pre><code>
+laptop:~# dpkg -i /usr/src/linux-image-2.6.25_miguel.1.0_amd64.deb
+</code></pre>
+As I was using ndiswrapper (as told <a href="http://miguel.leugim.com.mx/index.php/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la/">here</a>), I had to undo the changes made for ndiswrapper to work:
+<pre><code>
+laptop:~# /etc/init.d/networking stop
+laptop:~# rmmod ndiswrapper
+laptop:~# ndiswrapper -r bcmwl5
+laptop:~# m-a purge ndiswrapper --force
+laptop:~# dpkg -l |grep ndiswrapper # to check ndiswrapper packages
+# update the following accordingly
+laptop:~# aptitude purge ndiswrapper-common ndiswrapper-source ndiswrapper-modules-2.6.22-2-amd64 ndiswrapper-utils-1.9
+</code></pre>
+Also, I removed bcm43xx from /etc/modprobe.d/blacklist, and finally left just the following lines in /etc/network/interfaces:
+<pre><code>
+auto lo
+iface lo inet loopback
+</code></pre>
+in order to let NetworkManager to manage the network interfaces (wired and wireless).
+
+The time to test this setup came, so I rebooted the laptop and watched the boot messages. No errors. Finally the led turned blue and when I logged in with my user the NetworkManager showed a list with all the wireless networks available. I chose mine and I was showed a windows asking for my password. I entered it and the connection was made.
+So here I am, writing this from my recently and brand new kernel powered BCM4312 rev 02 wireless card.
+
+So, thanks to the ndiswrapper team, but I have to say goodbye. I invite you to update to kernel 2.6.25 and to left behind ndiswrapper.
+
+Thanks to the Linux Wireless team, and in general to the FOSS community for the work made. Thank you all.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-20T00:00:00-05:00" pubdate data-updated="true">Apr 20<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/04/20/linux-kernel-powered-wireless-card/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/04/20/linux-kernel-powered-wireless-card/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/04/13/goodbye-apache-welcome-lighttpd/" title="Previous Post: Goodbye Apache, welcome lighttpd">&laquo; Goodbye Apache, welcome lighttpd</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/04/24/incredible/" title="Next Post: Incredible">Incredible &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

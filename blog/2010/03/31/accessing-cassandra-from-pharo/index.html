@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Accessing Cassandra from Pharo - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="NoSQL databases are the topic of the day anywhere in the web. So this is good time to put a tutorial for accessing a Cassandra database from a Pharo &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2010/03/31/accessing-cassandra-from-pharo">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Accessing Cassandra From Pharo</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-31T00:00:00-06:00" pubdate data-updated="true">Mar 31<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><a href="http://nosql.mypopescu.com/">NoSQL</a> databases are the topic of the day anywhere in the web.
+
+So this is good time to put a tutorial for accessing a Cassandra database from a Pharo Smalltalk image using the Thrift interface (there isn&#8217;t a high-level client for accessing Cassandra from Pharo yet). Following instructions were tested on a Debian GNU/Linux Squeeze (testing) amd64 laptop.
+
+<strong>Install the required dependencies
+</strong>
+
+As root:
+
+<code>aptitude install libboost-dev automake libtool flex bison pkg-config g++ build-essential ruby-dev python-dev</code>
+
+<strong>Create a working directory</strong>
+
+As normal user create a working directory (I use my home directory)
+<code>
+mkdir /home/miguel/cassandra
+cd /home/miguel/cassandra</code>
+
+<strong>Get the thrift svn trunk source code</strong>.
+
+<span style="text-decoration: line-through;">The current tar.gz package on the download page of <a href="http://incubator.apache.org/thrift/">Thift</a> doesn&#8217;t include the necessary fixes.</span>
+
+<span style="text-decoration: line-through;"><code>svn co http://svn.apache.org/repos/asf/incubator/thrift/trunk thrift</code></span>
+
+Update: When this post was originally written, the patch I did for generating correct code for smalltalk wasn&#8217;t part of a released version of thrift, that is the reason you had to get it from subversion trunk. But now is integrated and proper releases are out so there is no need to get thrift from svn, you can just get the tar.gz package from the thift download page (currently version 0.4.0):
+
+<code>http://incubator.apache.org/thrift/download/</code>
+
+uncompress the tar.gz and you&#8217;ll get a folder named (in my case):
+
+<code>thrift-0.4.0/</code>
+
+<strong>Get the cassandra code</strong>
+
+Go to http://cassandra.apache.org and download 0.5.1 version of <a href="http://cassandra.apache.org/">Cassandra</a> (here is the mirror I got, yours will likely be different):
+
+<code>wget http://www.devlib.org/apache/cassandra/0.5.1/apache-cassandra-0.5.1-bin.tar.gz
+tar zxf apache-cassandra-0.5.1-bin.tar.gz</code>
+
+<strong>Get a Pharo image</strong>
+
+Go to http://www.pharo-project.org/pharo-download/ and download a Pharo dev or a PharoCore image. I use a PharoCore RC3 image:
+
+<code>wget https://gforge.inria.fr/frs/download.php/26668/PharoCore-1.0-10515rc3.zip
+unzip PharoCore-1.0-10515rc3.zip</code>
+
+You now have Thrift, Cassandra and Pharo ready to use.
+
+<strong>Compile the Thrift source code</strong>
+
+<code><span style="text-decoration: line-through;">cd thrift/</span></code>
+
+<code>
+cd thrift-0.4.0/
+./bootstrap.sh
+./configure
+make</code>
+
+<strong>Generate the Smalltalk Thrift code for accessing Cassandra</strong>
+
+<code>cd ..
+<span style="text-decoration: line-through;">./thrift/compiler/cpp/thrift --gen st apache-cassandra-0.5.1/interface/cassandra.thrift</span>
+./thrift-0.4.0/compiler/cpp/thrift --gen st apache-cassandra-0.5.1/interface/cassandra.thrift
+</code>
+
+This will generate the file:
+
+<code>gen-st/cassandra.st</code>
+
+in the /home/miguel/cassandra directory (your working directory).
+
+You now have two Smalltalk files:
+
+<code>thrift/lib/st/thrift.st
+gen-st/cassandra.st</code>
+
+<strong>Load the Smalltalk Thrift code in the Pharo image</strong>
+
+Open the Pharo image and file-in the two previous files in that order (first thrift.st and then cassandra.st)
+
+<strong>Start and test the Cassandra server</strong>
+
+If you have already a Cassandra node, skip this step. If you are testing, stay with me.
+
+<code>cd apache-cassandra-0.5.1/</code>
+
+Edit conf/log4.properties, change the line:
+
+<code>log4j.appender.R.File=/var/log/cassandra/system.log</code>
+
+to:
+
+<code>log4j.appender.R.File=/home/miguel/cassandra/var/log/cassandra/system.log</code>
+
+Edit conf/storage-conf.xml, change the lines:
+
+<code>&lt;CommitLogDirectory&gt;/var/lib/cassandra/commitlog&lt;/CommitLogDirectory&gt;
+&lt;DataFileDirectories&gt;
+&lt;DataFileDirectory&gt;/var/lib/cassandra/data&lt;/DataFileDirectory&gt;
+&lt;/DataFileDirectories&gt;
+&lt;CalloutLocation&gt;/var/lib/cassandra/callouts&lt;/CalloutLocation&gt;
+&lt;StagingFileDirectory&gt;/var/lib/cassandra/staging&lt;/StagingFileDirectory&gt;</code>
+
+to:
+
+<code>&lt;CommitLogDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/commitlog&lt;/CommitLogDirectory&gt;
+&lt;DataFileDirectories&gt;
+&lt;DataFileDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/data&lt;/DataFileDirectory&gt;
+&lt;/DataFileDirectories&gt;
+&lt;CalloutLocation&gt;/home/miguel/cassandra/var/lib/cassandra/callouts&lt;/CalloutLocation&gt;
+&lt;StagingFileDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/staging&lt;/StagingFileDirectory&gt;</code>
+
+Then start the Cassandra server:
+
+<code>./bin/cassandra -f</code>
+
+Connect with the Cassandra provided client (Cassandra started on port 9160):
+
+<code>./bin/cassandra-cli --host localhost --port 9160</code>
+
+Insert a value:
+
+<code>set Keyspace1.Standard1['jsmith']['first'] = 'John'</code>
+
+Read back the value:
+
+<code>get Keyspace1.Standard1['jsmith']</code>
+
+<strong>Connect from Pharo to the Cassandra server</strong>
+
+Open a workspace and try inserting 10000 values in the Cassandra server:
+
+<code>
+"Insert 10000 values"
+[| cp result client |
+client := CassandraClient binaryOnHost: 'localhost' port: 9160.
+cp := ColumnPath new
+columnFamily: 'Standard1';
+column: 'col1'.
+1 to: 10000 do: [ :i |
+result := client insertKeyspace: 'Keyspace1'
+key: 'row', i asString
+columnPath: cp
+value: 'v', i asString
+timestamp: 1
+consistencyLevel: ((Cassandra enums at: 'ConsistencyLevel') at: 'QUORUM').]] timeToRun</code>
+
+Select the code and &#8220;print it&#8221;. It took 7326 milliseconds in my laptop.
+
+Now read the values from the Cassandra server:
+
+<code>
+"Read 10000 values"
+[| cp result client |
+client := CassandraClient binaryOnHost: 'localhost' port: 9160.
+cp := ColumnPath new
+columnFamily: 'Standard1';
+column: 'col1'.</code>
+
+1 to: 10000 do: [ :i |
+result := client getKeyspace: &#8216;Keyspace1&#8217;
+key: &#8216;row&#8217;, i asString
+columnPath: cp
+consistencyLevel: ((Cassandra enums at: &#8216;ConsistencyLevel&#8217;) at: &#8216;QUORUM&#8217;).]] timeToRun
+
+Select it and &#8220;print it&#8221;. It took 7977 milliseconds to read back the 10000 values.
+
+Read a value from the cassandra-cli interface:
+
+<code>get Keyspace1.Standard1['row999']</code>
+
+you should get:
+<code>
+cassandra&gt; get Keyspace1.Standard1['row999']
+=&gt; (column=col1, value=v999, timestamp=1)
+Returned 1 results.
+</code>
+
+That is it. Adapt the code to your needs.
+
+Cheers
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-03-31T00:00:00-06:00" pubdate data-updated="true">Mar 31<span>st</span>, 2010</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2010/03/31/accessing-cassandra-from-pharo/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2010/03/31/accessing-cassandra-from-pharo/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/03/24/bastian/" title="Previous Post: Bastián">&laquo; Bastián</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/06/08/%25c2%25bfque-quieres-cenar/" title="Next Post: ¿Qué quieres cenar?">¿Qué quieres cenar? &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

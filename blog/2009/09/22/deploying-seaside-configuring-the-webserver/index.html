@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Deploying Seaside: Configuring the webserver - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="We have already populated the $DEPLOY directory with the images and scripts that will go to the production server, but before, we need to configure &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-configuring-the-webserver">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Deploying Seaside: Configuring the Webserver</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">We have already populated the $DEPLOY directory with the images and scripts that will go to the production server, but before, we need to configure the webserver.
+
+<strong>Copy deploy directory to final location</strong>
+
+As root, copy the $DEPLOY directory to the /srv directory. From there it will be served to the world. Note that the $DEPLOY environment variable was defined for your normal user, not for root so you must use the full path to the $DEPLOY directory (/home/miguel/example/ in this example):
+
+mv /home/miguel/example /srv/
+
+Now, configure the start script:
+
+vi /srv/example/script/start_app.sh
+
+Now the explanation of this script. The script defines some variables. The important ones are:
+
+HOME=&#8221;/srv/example&#8221;
+
+Defines the &#8220;final&#8221; location of the $DEPLOY directory (/srv/example in this example).
+
+VM=&#8221;/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null&#8221;
+
+Defines the VM location and the options passed to the virtual machine. If you read the text on the squeak vm help you&#8217;ll know that this options limits the memory that an image can use (if not specified, will grow without limits and in a production server with several images running it is better to limit them). The vm-sound-null and vm-display-null will start the images headless. In a server you don&#8217;t need the graphics or the sound. Also, we have the VNC server to connect to the Magma server on demand.
+
+START_PORT=9001
+END_PORT=9004
+
+This variables defines how many Seaside images will be launched. Only one magma image will be launched. The webserver configuration depends on the values you set here. Also, you can launch as many Seaside images as you want as long as you don&#8217;t use ALL the RAM of the production server. Otherwise it will begin swapping and the performance will drop. The number of images that you can launch depends on RAM and on the value of mmap you use on the VM variable.
+
+For example if you are deploying to a dedicated server with 4 GB of RAM and you don&#8217;t plan to have other services you can safely reserve 500MB to OS processes and use 3500 MB of RAM for your images. If you choose a mmap of 200MB you can put 15 Seaside images + 1 Magma image, 16 images * 200 MB/image = 3400 MB and use almost all the RAM. If you use mmap=100M then you can put 30 Seaside images and 1 Magma image for a total of 3100MB that is more reasonable.
+
+Anyway, you must adapt it to your server and *do* load testing while monitoring not only request/second but also OS performance, RAM usage, disk usage and a lot of things. That&#8217;s your homework.
+
+Remember the value of mmap limits how much the image can grow and in consequence, the number of Seaside sessions you can create in a single Seaside image. Same goes for the magma image. If the image needs to grow for some operation, the mmap will limit it. Again, test your setup and adapt it as needed.
+
+Well enough advise.
+
+Each image launched will write its output to a file that is stored on the logs/ directory. Also the processes are launched by means of nohup so that they remain running even in when you disconnect from the production server.
+
+So we are now ready to launch the images.
+
+<strong>Start the images</strong>
+
+As your normal user execute:
+
+sh /srv/example/scripts/start_app.sh
+
+This will start on the ports you especified in the start_app.sh script. If you try to point your web browser to one of the port you may or may not get a fully functional application. This depends on the way you emit URLs in your app. When we reach to the SeasideProxyTester explanation I will detail the settings that you need to configure in your app in order to prepare it for a proxy setup. More on this later.
+
+So before you can test the images, lets configure the webserver.
+
+<strong><em>lighttpd.conf:</em></strong>
+
+##
+# Core
+##
+server.pid-file = &#8220;/var/run/lighttpd.pid&#8221;
+server.errorlog = &#8220;/var/log/lighttpd/error.log&#8221;
+server.username = &#8220;www-data&#8221;
+server.groupname = &#8220;www-data&#8221;
+server.document-root = &#8220;/var/www/&#8221;
+server.dir-listing = &#8220;disable&#8221;
+index-file.names = ( &#8220;index.html&#8221;, &#8220;index.php&#8221; )
+static-file.exclude-extensions = ( &#8220;.fcgi&#8221;, &#8220;.php&#8221;, &#8220;.rb&#8221;, &#8220;~&#8221;, &#8220;.inc&#8221; )
+server.modules = ( &#8220;mod_access&#8221;, &#8220;mod_accesslog&#8221;, &#8220;mod_compress&#8221;, &#8220;mod_redirect&#8221;, &#8220;mod_proxy&#8221;, &#8220;mod_rewrite&#8221;, &#8220;mod_alias&#8221; )
+
+##
+# debug options
+##
+#debug.log-request-header = &#8220;enable&#8221;
+#debug.log-request-handling = &#8220;enable&#8221;
+proxy.debug = 1
+
+##
+# dirlisting module (loaded by default)
+##
+dir-listing.encoding = &#8220;utf-8&#8221;
+
+##
+# access module
+##
+url.access-deny = ( &#8220;~&#8221;, &#8220;.inc&#8221; )
+
+$HTTP[&#8220;url&#8221;] =~ &#8220;/.svn/&#8221; {
+url.access-deny = (&#8220;&#8221;)
+}
+
+##
+# accesslog module
+##
+accesslog.filename = &#8220;/var/log/lighttpd/access.log&#8221;
+
+##
+# compress module
+##
+compress.cache-dir = &#8220;/var/cache/lighttpd/compress/&#8221;
+compress.filetype = ( &#8220;text/plain&#8221;, &#8220;text/html&#8221;, &#8220;application/x-javascript&#8221;, &#8220;text/css&#8221; )
+
+##
+# Global settings
+##
+$HTTP[&#8220;host&#8221;] =~ &#8220;^www&#46;(.*)&#8221; {
+# no www for domains
+url.redirect = ( &#8220;^/(.*)&#8221; =&gt; &#8220;http://%1/$1&#8221; )
+}
+
+##
+# othersite.com
+##
+$HTTP[&#8220;host&#8221;] == &#8220;othersite.com&#8221; {
+server.document-root = &#8220;/srv/www/othersite.com/&#8221;
+}
+
+$HTTP[&#8220;host&#8221;] == &#8220;seaside.example.com&#8221; {
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+# We&#8217;ll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+&#8221;^/resources/(.*)&#8221; =&gt; &#8220;$0&#8221;,             # Unaltered
+&#8221;^/(.*)&#8221; =&gt; &#8220;/seaside/seasideProxyTester$1&#8221;   # Rewritten
+)
+
+# Anything with seaside/seasideProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP[&#8220;cookie&#8221;] !~ &#8220;server=app&#8221; {
+proxy.balance = &#8220;round-robin&#8221;
+proxy.server = (
+&#8220;/seaside/seasideProxyTester&#8221; =&gt; (
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)
+)
+)
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9001&#8221; { # Has a cookie, proxy to the corresponding port
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9002&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9003&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9004&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)))
+}
+}
+
+$HTTP[&#8220;host&#8221;] == &#8220;magma.example.com&#8221; {
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+# We&#8217;ll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+&#8221;^/resources/(.*)&#8221; =&gt; &#8220;$0&#8221;,             # Unaltered
+&#8221;^/(.*)&#8221; =&gt; &#8220;/seaside/magmaProxyTester$1&#8221;   # Rewritten
+)
+
+# Anything with seaside/magmaProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP[&#8220;cookie&#8221;] !~ &#8220;server=app&#8221; {
+proxy.balance = &#8220;round-robin&#8221;
+proxy.server = (
+&#8220;/seaside/magmaProxyTester&#8221; =&gt; (
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)
+)
+)
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9001&#8221; { # Has a cookie, proxy to the corresponding port
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9002&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9003&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9004&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)))
+}
+}
+
+#### external configuration files
+## mimetype mapping
+include_shell &#8220;/usr/share/lighttpd/create-mime.assign.pl&#8221;
+
+## load enabled configuration files,
+## read /etc/lighttpd/conf-available/README first
+include_shell &#8220;/usr/share/lighttpd/include-conf-enabled.pl&#8221;
+
+Some things must be explained though. First, it declares a section for a host named othersite.com with its document root in /srv/www/othersite.com. This permits you serve other sites from the same webserver. Then declares two sections for the example.com subdomains. They are identical in its structure. The differences are in the entry points proxied to by lighttpd. In the case of seaside.example.com it proxies to a Seaside image using the entry point seasideProxyTester, conserving all the parameters (_s and _k). In the case of magma.example.com it rewrites the request and proxies to the magmaProxyTester. Additionally it verifies for paths beginning with &#8216;/resources&#8217;. Those requests are left unchanged. The rewrite rules trigger before the lighttpd engine processes the url so is after the rewrite that the cookies check is done. lighttpd checks for a cookie named appXXXX where XXXX is some of the ports we are using for the Seaside images. If it founds one, proxy to the corresponding Seaside image listening on that port. If it hasn&#8217;t a cookie like this, it uses a round-robin algorithm to choose a Seaside image to proxy the request to.
+
+This is how it works. A new user beginning the session in your app will not have the cookie as part of the request. So lighttpd will proxy the request to a random Seaside image. When the selected Seaside image receive this request will add the cookie (using its own port name as the value) to the response so that the next request will include it. This way the next request will arrive to lighttpd with the cookie established and the webserver will correctly proxy to the same image that received the first request of the session.
+
+The net result is that lighttpd is doing a kind of sticky session (meaning that the request of a session always goes to the same server being proxied) for Seaside.
+
+If none of the rules is triggered, the webserver tries to match the requested path to some file in the document root. This is what happens to the requests having &#8216;/resources&#8217; at the beginning of the path. They don&#8217;t match any rule and are served from the document root.
+
+That is what lighttpd is doing in order to proxy to the Seaside images. The same explanation applies for the two subdomains.
+
+Also note that you can serve several applications from the same Seaside images. You just proxy to a different entry point in order to Seaside correctly route the incoming request to the right application. This could or couldn&#8217;t be wise. The performance will degrade for all the apps if they are intensive. But again, test your setup and make a decision.
+
+So, finally, as root, put the lighttpd.conf file on /etc/lighttpd/ and restart the server
+
+/etc/init.d/lighttpd restart
+
+We&#8217;re almost done. Last thing you must do is to add the example.com domain to your
+
+/etc/hosts
+
+file so that you can test it on localhost. Add a line like the following or edit the existing pointing to localhost (or 127.0.0.1)
+
+127.0.0.1    laptop.localdomain    laptop <strong>seaside.example.com magma.example.com</strong>
+
+the part in bold is what you must add in order to resolve seaside.example.com and magma.example.com to the address 127.0.0.1. As I have lighttpd installed in localhost (my development image) the request will be redirected to it and then will proxy to the Seaside images.
+
+Now finally we can test the setup.
+
+Launch your web browser and write:
+
+http://seaside.example.com
+
+or
+
+http://magma.example.com
+
+The browser should resolve those domains to 127.0.0.1 and you should be greeted with the initial page of the SeasideProxyTester. Each reload of the page will increment the counters and you should see what Seaside image is serving your session requests.
+
+Try to delete your cookies and try again. You should see that a different Seaside server is serving your requests.
+
+So, you have a Seaside application running in a group of images, being proxied and load balanced by a webserver in sticky session way. Cool, isn&#8217;t?
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-configuring-the-webserver/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-configuring-the-webserver/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/09/18/deploying-seaside-applications/" title="Previous Post: Deploying Seaside applications">&laquo; Deploying Seaside applications</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/09/22/deploying-seaside-install-the-squeak-vm/" title="Next Post: Deploying Seaside: Install the Squeak VM">Deploying Seaside: Install the Squeak VM &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Goodbye VirtualBox, welcome KVM/virt-manager - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="In fact I don&#8217;t have anything against VirtualBox, either the full version or the OSE version. What is more, it is a wonderful piece of software &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Goodbye VirtualBox, Welcome KVM/virt-manager</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T00:00:00-06:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">In fact I don&#8217;t have anything against VirtualBox, either the full version or the OSE version. What is more, it is a wonderful piece of software and it never gave me any serious problem. The interface it is one of the most friendly and easy to use that I have found.<br />In spite of that, I felt that VirtualBox was more focused to the user having a couple of virtual machines running for short periods of time (note: It never had a problem when I let it run several days continuously) than aimed to the datacenter where there are dozens of vms running uninterrupted.<br />On the other side, when I wanted to have a 64bit guest (in times of VirtualBox 1.5, version 2 supports 64 bit guests and hardware virtualization without problem) it didn&#8217;t have support for it. So, searching I found KVM and, in principle at least, it had the same functionality than VirtualBox. But it had some additional very interesting. For example, the ability to migrate the vm (while running) from one host to another. Or at least so they said. The problem. It didn&#8217;t have a decent GUI. All controlled by the command line. Of course I don&#8217;t have any problem with that, as my blog title very clearly states. But for some simple activities, the number of parameters to write was very overwhelming and, accustomed to VirtualBox simplicity, it was too much typing.<br />Well, this guys at Red Hat have created virt-manager. And it really aimed high in order to easy the management of vms. I am glad that they are succeeding in their goal, because virt-manager it is ready to take the datacenters by storm. In fact, Ubuntu 8.10 it is fully committed to the virtualization trend and virt-manager it is the tool they chose.<br />Well, enough words, I want to say to the VirtualBox team, thank you very much, your software it is marvelous and have showed what it is possible. At the same time I say welcome to KVM/virt-manager that, by the way, it is completely integrated to the Linux kernel and in the long term this will result in a very strong contender in the virtualization arena.<br /><br />So, I followed the instructions from the debian <a href="http://wiki.debian.org/KVM">wiki</a>:<br /><br /># aptitude install kvm virt-manager<br /><br />Added myself to the libvirt group:<br /><br /># adduser miguel libvirt<br /><br />According to the instructions you must now log out and log in in order to use virt-manager and start creating vms for the dozen. But no, there is something you must do before. You must fix the network for virt-manager. Keep reading.<br /><br />First stop dnsmasq:<br /><br /># /etc/init.d/dnsmasq stop<br /><br />Disable autostart for it editing /etc/default/dnsmasq and changing:<br /><br />ENABLED=1<br /><br />to<br /><br />ENABLED=0<br /><br />This is because virt-manager and libvirtd will start the dnsmasq with the appropriate configuration and the default config for dnsmasq conflicts with it and prevents the &#8220;default&#8221; network from virt-manager to start.<br /><br />Now, log out, log in again, restart the libvirtd (or restart the machine) in order to the changes to take effect.<br /><br />If everything works ok, you should see something like this in your processlist:<br /><br />$ ps ax|grep dnsmasq<br />14482 ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0:00 dnsmasq &#8211;keep-in-foreground &#8211;strict-order &#8211;bind-interfaces &#8211;pid-file&nbsp; &#8211;conf-file&nbsp; &#8211;listen-address 192.168.122.1 &#8211;except-interface lo &#8211;dhcp-leasefile=/var/lib/libvirt/dhcp-default.leases &#8211;dhcp-range 192.168.122.2,192.168.122.254<br /><br />If you see a dnsmasq process with status Z (zombie), then review your configuration and the instructions.<br /><br />Ok, with dnsmasq working correctly, start virt-manager as your user and try to connect to the localhost machine you&#8217;ll see in the virt-manager window. Before creating the first virtual machine, we must start the network. Click the &#8220;Details&#8221; button, after selecting localhost and you&#8217;ll see the &#8220;Host Details&#8221; dialog box. Select the &#8220;Virtual Network&#8221; tab. There you&#8217;ll see the &#8220;default&#8221; network in an inactive status (it only appears if you are connected to the machine). Start it. Now you can create your virtual machines without problems.<br /><br />As you can see, the &#8220;default&#8221; network isn&#8217;t configured to autostart itself. And after a while, you get tired of starting it before running or creating a vm. To enable autostart, run the following in the command line (because I didn&#8217;t find a way to do it with the GUI):<br /><br />$ virsh net-autostart default<br /><br />From now on, the network will always start with the libvirtd. <br /><br />Now, grab your prefered OS instalation CDs and proceed to create all the virtual machines you want.<br /><br />Right now we have only used the functionality to create virtual machines in a analogous way to VirtualBox, but if you check the documentation for KVM and virt-manager, you&#8217;ll see that you can have a lot of host machines, remotely managed, where you can create virtual machines on demand. Also, you can monitor the resources consumed; start and stop the machines and to configure some kind of network storage for your virtual machines to use. Very enterprisey isn&#8217;t? Check the output of<br /><br />$ virsh help<br /><br />to have an idea that will come.&nbsp; <br /><br /><br />
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T00:00:00-06:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/11/22/goodbye-sun-java5-jdk-welcome-openjdk-6-jdk/" title="Previous Post: Goodbye sun-java5-jdk, welcome openjdk-6-jdk">&laquo; Goodbye sun-java5-jdk, welcome openjdk-6-jdk</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/11/22/laptop-upgraded-to-debian-lenny/" title="Next Post: Laptop upgraded to Debian Lenny">Laptop upgraded to Debian Lenny &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

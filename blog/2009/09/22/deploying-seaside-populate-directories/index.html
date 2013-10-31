@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Deploying Seaside: Populate directories - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Well the images are ready now to populate the directories that will be uploaded to the production server. Populate directories There is a directory &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-populate-directories">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Deploying Seaside: Populate Directories</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Well the images are ready now to populate the directories that will be uploaded to the production server.
+
+<strong>Populate directories</strong>
+
+There is a directory named website inside the $DEPLOY directory. This directory is to be used to host your static content: images, CSS files, javascripts, etc. But as we are going to proxy requeste from the webserver to the Seaside images, there must be a way for the webserver to know what to proxy and what not to. Requests for static content must not be proxied to the Seaside server and the easiest way for the webserver to recognize those requests is by means of the URL path of the request. So we will have a rule in the webserver configuration so that everything that has a path that begins with &#8216;/resources/&#8217; will not be proxied but served directly by the webserver. The Seaside images never get those requests. The only generates the html that asks the webserver for that static content. So if a request arrives to the webserver with the &#8216;/resources/&#8217; path in it, the webserver will try to find it on its document root. As the webserver will have its document root pointing to the website directory, a path of &#8216;/resources/&#8217; will search for a directory resources in the website/ directory. So if a request arrives asking for:
+
+http://seaside.example.com/resources/somefile.jpg
+
+the webserver will try to serve the file located on:
+
+website/resources/somefile.jpg
+
+So create a directory named resources/ on the $DEPLOY/website directory:
+
+mkdir $DEPLOY/website/resources/
+cp website_files/* $DEPLOY/website/
+
+and copy to it the files you want to be served directly by the webserver (website_files/ is the directory that currently has your content).
+
+The SeasideProxyTester doesn&#8217;t have a lot of static content but it will show the Pharo logo, so lets download the Pharo logo from:
+
+<a title="Pharo logo" href="http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg">http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg</a>
+
+and save it to $DEPLOY/website/resources/ as pharocard.jpg. This will be the static content for the SeasideProxyTester.
+
+Now copy the scripts and images from the $WORK directory to the correct location on $DEPLOY:
+
+cp $WORK/magma-run.st $DEPLOY/scripts
+cp $WORK/seaside-run.st $DEPLOY/scripts
+cp $WORK/start_app.sh $DEPLOY/scripts
+cp $WORK/SqueakV39.sources $DEPLOY/pharo
+cp $WORK/magma.image $DEPLOY/pharo
+cp $WORK/magma.changes $DEPLOY/pharo
+cp $WORK/seaside.image $DEPLOY/pharo
+cp $WORK/seaside.changes $DEPLOY/pharo
+
+<strong>Create the magma repository</strong>
+
+Next step, create the magma repository. First load the magma image:
+
+cd $DEPLOY/pharo
+/opt/pharo/squeak magma.image
+
+open a workspace and &#8220;DoIt&#8221; the following Smalltalk code:
+
+&#8220;Create the repository&#8221;
+MagmaRepositoryController
+create: &#8216;../magma/&#8217;
+root: Dictionary new.
+
+&#8220;Start the server&#8221;
+MagmaServerConsole new
+open: &#8216;../magma/&#8217;;
+processOn: 51969;
+inspect.
+
+&#8220;Save and quit the image&#8221;
+SmalltalkImage current snapshot: true andQuit: true.
+
+This do several things. First it creates the magma database in the $DEPLOY/magma directory, by using relative paths. It uses a Dictionary as the root of the repository. Inside this root we will put our application root object (our domain root). Next, it starts the server console listening on the port 51969 for incoming connections. This port will be used by the Magma seasideHelper code to connect the Seaside application to the Magma server. Finally it saves the image and quits. Next time that you start this image, the Magma server will automatically start and bound to the port, ready to accept connections. If you open the image, quit WITHOUT saving.
+
+We are almost ready to test the application. We have already finished the directory setup. This $DEPLOY directory can be uploaded to the production server but before that we must configure the webserver to do load balancing and proxy to our Seaside images.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-populate-directories/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-populate-directories/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/09/22/deploying-seaside-install-the-squeak-vm/" title="Previous Post: Deploying Seaside: Install the Squeak VM">&laquo; Deploying Seaside: Install the Squeak VM</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/09/22/deploying-seaside-prepare-the-images/" title="Next Post: Deploying Seaside: Prepare the images">Deploying Seaside: Prepare the images &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

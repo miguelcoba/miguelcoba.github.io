@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Via James Robertson y The Weekly Squeak, una tutoría sobre Seaside anunciada por Michael Perscheid en la lista de correo de Seaside. Lo mejor de todo &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/page/12">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/19/tutoria-de-seaside-28/">Tutoría De Seaside 2.8</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-19T00:00:00-05:00" pubdate data-updated="true">Oct 19<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Via <a href="http://www.cincomsmalltalk.com/blog/blogView" title="Blog de James Robertson">James Robertson</a> y <a href="http://news.squeak.org/" title="The Weekly Squeak">The Weekly Squeak</a>, una <a href="http://www.swa.hpi.uni-potsdam.de/seaside/tutorial" title="Tutoría de Seaside">tutoría</a> sobre Seaside anunciada por <a href="http://www.swa.hpi.uni-potsdam.de/projects/tnt/index.html" title="http://www.swa.hpi.uni-potsdam.de/projects/tnt/index.html" target="_blank">Michael Perscheid</a> en la lista de correo de Seaside.
+
+Lo mejor de todo es que la tutoría misma está hecha en Seaside, revisen las URLs.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/19/reuniones/">Reuniones</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-19T00:00:00-05:00" pubdate data-updated="true">Oct 19<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Hacía tiempo que no veía a <a href="http://lowgman.blogspot.com/" title="LowGmaN">LowGmaN.</a>
+
+Ayer nos fuimos a tomar un café y a platicar un par de horas. Después de transmitirnos los chismes de rigor y las actualizaciones de información familiar y laboral, llegamos a la parte que más disfruto de conversar con él. Es el único, además de Aline, con el que puedo explayarme y hablar libremente sobre mis proyectos con Linux, Software Libre y las tecnologías en las que ando inmerso.
+
+Es absolutamente motivador contarle lo que he aprendido y sobre todo ver la manera en que se entusiasma conmigo. Siempre terminamos planeando como vamos a llevar a cabo los planes, él la parte comercial y del negocio y yo la parte técnica. A veces pienso que lo aburro con tanta cháchara pero nunca se queja. Es más, hasta se emociona (o eso creo yo :D).
+
+El caso es que ayer estuvimos platicando de Smalltalk, Seaside, bases de datos orientadas a objetos, test driven development, Ruby on Rails y las (cada vez más evidentes) carencias de los frameworks en Java.
+
+Es el único que ha aceptado el riesgo de usar las nuevas tecnologías que le propongo. Hace más de un año, cuando Ruby on Rails era más desconocido (¿más aún?) que hoy, me dijo, has mi aplicación en lo que quieras, yo confío en ti. Woa, pues le propuse hacerlo en Ruby on Rails y aceptó. Finalmente se puso en producción y todos felices. Fue el primer proyecto grande que hice con RoR. Todo lo demás que había hecho eran proyectos personales de prueba y de aprendizaje.
+
+En fín. Volviendo al punto, siempre es agradable ver que alguien está dispuesto a apostarle a lo nuevo, de ver el potencial de la nueva tecnología y usarla.
+
+Si no fuera por personas como él aún estaríamos usando COBOL para hacer proyectos, aunque en esta época deberíamos decir: aún estaríamos usando Java para hacer proyectos.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/18/reconexion-a-la-matrix/">Reconexión a La Matrix</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-18T00:00:00-05:00" pubdate data-updated="true">Oct 18<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Al fin, después de 2 tortuosas semanas de estar desconectado, nos han instalado el teléfono, la tele por cable y el Internet.
+
+Me sentía como <em>Cypher</em> en The Matrix, cuando negocia con <em>Smith</em> su reconexión a la matrix, a cambio de traicionar a sus amigos (y de paso ser millonario dentro de la matrix y olvidar lo que hizo).
+
+Bueno no tan drástico, pero si, ya estaba considerando darle un incentivo (o para los chescos o una mordida, como le quieran llamar) a alguno de los que andan en los carritos de T*lmex o de C*blevisión para que me instalaran todo con mayor rapidez.  Afortunadamente no hubo necesidad.
+
+Ahora si, otra vez, al mundo digital.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/16/amazon-ec2/">Amazon EC2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-16T00:00:00-05:00" pubdate data-updated="true">Oct 16<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">La tecnología <a href="http://developer.amazonwebservices.com/connect/ann.jspa?annID=241" title="Amazon EC2">EC2</a> (Elastic Compute Cloud) está disponible para todos finalmente.
+
+Es una oferta fantástica para las aplicaciones web que no siempre necesitan la misma capacidad de cómputo. En lugar de rentar un hosting por un precio fijo mensual solamente pagas por lo que realmente se utiliza de capacidad de cómputo. Es más, te permite ahorrar dinero ya que no tienes que rentar más equipo en el supuesto de tener capacidad disponible en caso de que se necesite. Si nunca se utiliza esa capacidad de cómputo, estarías pagando por ella en vano.
+
+Con EC2,  por el contrario, si en algún momento tus requerimientos aumentan (por ejemplo te vuelves famoso o apareces en <a href="http://slashdot.org" title="Slashdot.org">slashdot</a>), puedes aumentar la capacidad de tu sitio simplemente comisionando más poder de cómputo de EC2 en cuestión de minutos.
+
+Todo esto se hace a través de Web Services que te permiten controlar el número de instancias en ejecución en tu nube. Pero eso no es lo mejor, al ser todo controlado a través de Web Services, tu misma aplicación puede solicitar el aumento de la capacidad al detectar un aumento en el uso de la misma y, una vez que pasada la tormenta, requerir que disminuya la capacidad del EC2. Completamente automático.
+
+Desde el punto de vista financiero es mucho más granular y se paga solamente por lo que se usa.
+
+Desde el punto de vista de sistemas, se tiene acceso completo a las instancias, de manera que se simula una computadora con acceso completo de root. O sea, control total de la &#8220;máquina&#8221;.
+
+Con los web services se puede controlar el número de instancias, reiniciarlas remotamente, configurar firewalls, entre otras cosas.
+
+Este servicio viene a complementar el <a href="http://www.amazon.com/S3-AWS-home-page-Money/b/ref=sc_fe_l_2/104-7337402-7090358?ie=UTF8&amp;node=16427261&amp;no=342430011&amp;me=A36L942TSJ2AJA" title="Amazon S3">S3</a> (Simple Storage Service) al cual ya le había echado el ojo desde hace tiempo.  El S3 te permite tener espacio de almacenamiento disponible en línea, con la misma idea: que pueda crecer y disminuir de acuerdo a las necesidades reales. Al igual que con el EC2, solamente pagan por lo que utilizan.
+
+Estas son las tecnologías en las que estará hosteada mi aplicación (si algún día logro juntar el tiempo para terminarla :D ). Ahora tengo una razón más para apurarme a terminarla
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/09/mudanza/">Mudanza</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-09T00:00:00-05:00" pubdate data-updated="true">Oct 9<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Han sido ya varios días desde el último post. Razón: mudanza.
+
+¡Aline, Tristán y yo estrenamos nuevo hogar!
+
+Un sentimiento mezclado de cansancio, flojera y alegría. Alegría por iniciar una nueva etapa en un nuevo lugar, con nueva decoración y colores. Tirar cosas viejas (nunca hubiera creído cuántas cosas se acumulan en un año), rememorar cosas, lugares, momentos. Cansancio al pensar en el trabajo de mover cosas, cargar cajas, barrer pisos,  limpiar ventanas, baños, paredes. Flojera en volver a acomodar los libros (:D que con una amplia sonrisa puedo decir que llenamos una pared completa entre Aline y yo, y eso que voy a vender muchos de mis libros de computación). De acomodar las cajas para dejar paso a las recamaras, a la cocina, al baño! Ja. Sin la ayuda de la familia no lo hubiéramos logrado. ¡Gracias!
+
+En fin, estamos como al 90%, las recamaras están terminadas, la de Tristán está pintada de azul y con todos sus juguetes acomodados y su cuna en el centro. La cocina y el comedor (mini comedor :D) están completos y acomodados. Los libros están terminados :D. La sala está acomodada pero con cosas todavía encima. Las plantas en su lugar y nuevamente recibiendo luz solar. Sólo falta sacar las cajas vacías y los papeles que no sabemos donde meter.
+
+Resultado, espaldas lastimadas, cansancio extremo y una departamento que cada día se pone más bonito que donde vivíamos anteriormente.
+
+Lo malo es que ni siquiera he podido realizar el cambio de domicilio del teléfono y la televisión por cable, así que no tengo ni televisión ni teléfono ni internet!
+
+Un día de estos que esté bien descansado.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/09/aniversario/">Aniversario</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-09T00:00:00-05:00" pubdate data-updated="true">Oct 9<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">El 4 de octubre Aline y yo cumplimos un año de casados por lo civil.
+
+¡ Felicidades a nosotros!
+
+:D
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/27/tutoria-de-seaside/">Tutoría De Seaside</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-27T00:00:00-05:00" pubdate data-updated="true">Sep 27<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Ramon Leon escribió un post detallando la construcción de un <a href="http://onsmalltalk.com/programming/smalltalk/a-simple-file-based-wiki-in-seaside/">Wiki</a> básico usando Seaside. Pruébenlo.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/25/ich-bin-28-jahre-alt/">Ich Bin 28 Jahre Alt</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-25T00:00:00-05:00" pubdate data-updated="true">Sep 25<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Ja, das ist richtig. Acht und zwanzig Jahre alt.
+
+Hoy cumplo 28 años. Muchos o pocos ya no sé. El caso es que hay una velita más en el pastel. Pero fue un buen año.
+
+Hace un año estaba soltero, sin hijo, sin trabajo fijo, vivía con mi mamá y mi primo y endeudado a más no poder. Ahora estoy casado con una mujer maravillosa, tengo un hijo hermoso, vivo en un depa, tengo trabajo fijo (aunque a veces aburrido) y sigo endeudado. Además me corté el cabello completamente y estoy pelón.
+
+En resumen puedo decir que fue uno de los mejores años de mi (corta o larga) vida. Y eso sí hay que celebrarlo.
+
+En un rato más Aline y Tristán vienen por mi y nos vamos a comer una rica pasta  y un buen vino.
+
+Así que:
+
+&#8220;Feliz cumpleaños a mi&#8221;
+
+:D
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/24/el-blog-de-la-flaquita/">El Blog De La Flaquita</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-24T00:00:00-05:00" pubdate data-updated="true">Sep 24<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Al fin he logrado convencer a Aline de dejarse atrapar por el lado oscuro (o sea la tecnología :)) de la fuerza. Está estrenando blog en <a href="http://aline.leugim.com.mx" title="blog de la flaquita">http://aline.leugim.com.mx</a> y está muy interesante. Temas: filosofía, arte, libros, cine, erotismo (de Eros, no de porno) entre otras cosas. No dejen de visitarlo.
+
+¡Lo más sorprendente de este cambio es que hace unos días hasta dijo que quería un iPhone! Ja. Ni siquiera yo había pensado en tener uno. Las sorpresas que se lleva uno. :D
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/20/seaside-on-ieee-software-magazine/">Seaside on IEEE Software Magazine</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-20T00:00:00-05:00" pubdate data-updated="true">Sep 20<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Les paso un link, vía <a href="http://www.lukas-renggli.ch/" title="Página de Lukas Renggli">Lukas Renggli</a>, a un artículo sobre Seaside que salió publicado en la revista IEEE Software:
+
+<a href="http://www.computer.org/portal/cms_docs_software/software/homepage/2007/S507/s5056.pdf" title="Seaside on IEEE Magazine">Seaside: A Flexible Environment for Building Dynamic Web Application.</a>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/13/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/11/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

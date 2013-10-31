@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Smalltalk/Squeak - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="El 14 de septiembre se publicó el libro Squeak by Example. Hoy lo terminé. Es fantástico. El lenguaje es impresionante. El modelo teórico en el que &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/09/18/smalltalksqueak">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Smalltalk/Squeak</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-18T00:00:00-05:00" pubdate data-updated="true">Sep 18<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">El 14 de septiembre se publicó el libro <a href="http://www.squeakbyexample.org/" title="Squeak by example">Squeak by Example</a>. Hoy lo terminé. Es fantástico. El lenguaje es impresionante. El modelo teórico en el que está basado es absolutamente asombroso Todo es un objeto. ¡Todo! Y si creías que sabías programación orientada a objetos porque programabas en Java, C++ o C#, déjame romper tu burbuja. No es así. Lo digo por experiencia propia. Me he dado cuenta de que he vivido engañado.
+
+
+
+<!--more-->
+
+
+Hace un par de años, cuando aprendí Ruby, entendí lo que era un lenguaje donde todos los elementos eran objetos. No había palabras reservadas para true o false o para nil. No, eran objetos hechos y derechos. El objeto True, el objeto False, el objeto Nil, cada uno de los cuales tenía cierta funcionalidad (comportamiento) asociado. En ese entonces fue una revelación  el saber que era posible tener un lenguaje donde no había una división entre un tipo primitivo int y un objeto de la clase Integer (como en Java). No, ahí manejabas objetos de tipo Integer y nada más. Objetos reales, con identidad, estado y comportamiento. Nada que ver con Java y su modelo de objetos.
+
+Ahora me doy cuenta de que solamente era una preparación para Smalltalk. Smalltalk es el rey, el amo, el punto de referencia con el cual deben medirse todos los lenguajes orientados a objetos.
+
+Squeak es una implementación de Smalltalk. Y Squeak by Example es una excelente introducción tanto al lenguaje como al ambiente de desarrollo pero sobre todo a la ideología detrás de Smalltalk.
+
+Algunas de las cosas que me dejaron sin palabras:
+<ol>
+<li> Todo es un objeto. Aun las clases son objetos. ¿Qué?. Es correcto. Las clases no son solamente planos arquitectónicos de cómo crear objetos. Son objetos a los que puede enviarse mensajes para solicitar alguna acción. Lo que es más, las clases son instancias de su propia clase, o mejor dicho, su metaclase. Puedes manipularlas, modificarlas, navegarlas, en fin, hacer con ellas lo mismo que puedes hacer con los objetos, como por ejemplo, hacer un Array de clases o un método que te regrese una clase.</li>
+<li>Todo el sistema esta programado en Smalltalk. A diferencia de Ruby o Python donde el lenguaje esta programado en C, en Smalltalk todo está hecho en Smalltalk. Si quieres hacer una extensión al lenguaje, la programas en Smalltalk y listo.</li>
+<li>El sistema esta &#8220;vivo&#8221;. Todos los objetos están vivos. Si modificas un objeto los cambios se aplican de inmediato, sin necesidad de compilar y recargar el objeto. Esto tiene un potencial enorme. En uno de los ejemplos asigné nil a la variable que hace referencia al objeto Object, que es el padre de todos los demás objetos en la jerarquía de clases de Squeak. ¿Saben que pasó? Mi Squeak murió :D. Poder total, control total, hasta la última tuerca. Por supuesto, al igual que ser root en Unix, con el poder viene la responsabilidad.</li>
+<li>La jerarquía de clases es absolutamente impresionante. Todos los objetos, incluyendo las clases, las metaclases, aun la metaclase de Object, heredan de la clase Object. Woa! No hay más que ver la figura 12.10 del libro. Es como una obra de arte abstracta que al mirarla te hace sentir tu propia mortalidad, jaja. Al lado de los que idearon esa jerarquía de clases todos somos simples mortales.</li>
+</ol>
+Bueno, no más rollo. Les recomiendo absolutamente este libro si desean aprender Smalltalk, descárguenlo, léanlo, distribúyanlo. Es claro, te lleva de la mano en el aprendizaje del ambiente de desarrollo, muestra como usar SUnit para crear pruebas unitarias, como depurar tus programas y hasta a usar las clases adecuadas para crear aplicaciones gráficas.
+
+Siguiente parada, Seaside.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-18T00:00:00-05:00" pubdate data-updated="true">Sep 18<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/09/18/smalltalksqueak/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/09/18/smalltalksqueak/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/" title="Previous Post: Beyond Java (and Java Frameworks). Part 3">&laquo; Beyond Java (and Java Frameworks). Part 3</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/09/20/documentacion-sobre-seaside/" title="Next Post: Documentación sobre Seaside">Documentación sobre Seaside &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Create a Virtual Machine with Debian Etch amd64 on KVM with virt-manager - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="This is the way I create virtual machines using KVM and virt-manager on my Debian Lenny 64 bit laptop: I will create a 64 bit virtual machine I will &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Create a Virtual Machine With Debian Etch Amd64 on KVM With Virt-manager</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T00:00:00-06:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">This is the way I create virtual machines using KVM and virt-manager on my Debian Lenny 64 bit laptop:
+<ul>
+	<li>I will create a 64 bit virtual machine</li>
+	<li>I will install Debian Etch 64 bit</li>
+	<li>I will install a Standard system. After installation I will install the required software as needed.</li>
+	<li>The machine will have a dynamic growing image file.</li>
+	<li>I will use the default network provided by virt-manager (see this). This means that:
+<ul>
+	<li>the laptop (the host machine) will get a second IP address (192.168.122.1) that will be the default router for the virtual machines</li>
+	<li>the virtual machines will get addresses in the range 192.168.122.2 - 192.168.122.254</li>
+</ul>
+</li>
+	<li>I will create a pair of ssh keys to log in to the machine without password</li>
+</ul>
+Here we go:
+
+<strong>1. Make sure you have hardware virtualization enabled on your BIOS.</strong>
+Search google for the instructions
+
+<strong>2. Install KVM and virt-manager</strong>
+Follow <a href="http://miguel.leugim.com.mx/index.php/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager/" target="_self">this</a> instructions
+
+<strong>3. Open virt-manager and connect to <em>localhost</em></strong>
+
+<strong>4. Start the network if you don&#8217;t have it configured for autostart</strong>
+On the <em>localhost</em> host machine, select &#8220;Details&#8221; and then the &#8220;Virtual networks&#8221; tab. Select the &#8220;default&#8221; network and press the &#8220;Start&#8221; button.
+
+<strong>5. Create a new virtual machine</strong>
+On the <em>localhost</em> host machine, select &#8220;New&#8221;
+
+<strong>6. &#8220;Naming your virtual system&#8221; window</strong>
+Name your virtual machine, for example kvm
+
+<strong>7. &#8220;Choosing a virtualization method&#8221;</strong>
+I don&#8217;t have Xen, so the &#8220;Paravirtualized&#8221; options is disabled.
+With &#8220;Fully virtualized&#8221; you can emulate a wider range of CPU architectures. In this time we are only interested in the x86_64 architecture. So we choose CPU Architecture: x86_64 and Hypervisor: kvm.
+
+<strong>8. &#8220;Choosing installation method&#8221;</strong>
+Here we choose the source installation media. I have an ISO image file from Debian Etch amd64, but you can also use networks install trees over HTTP, FTP or NFS or directly boot with PXE from a network server. When you chose OS Type and OS Variant, virt-manager preselects sensible defaults for the virtual machine, like ACPI support. We choose OS Type: Linux and OS Variant: Debian Etch.
+
+<strong>9. &#8220;Locating installation media&#8221;</strong>
+If you selected local install media in the previous step, you must choose either the ISO image location or the CD-ROM/DVD device where the install media resides. If you chose another option in the previous step, this window will differ. Enter the correct parameters here.
+
+<strong>10. &#8220;Assigning storage space&#8221;</strong>
+We choose &#8220;Simple File&#8221; unless you want to use a spare disk partition for your virtual machine. Select the File Location where you want your virtual machine image to reside and select an appropriate File Size. I left the defaults untouched. Uncheck the option &#8220;Allocate entire virtual disk now?&#8221;. This way the disk will grow as needed, unless you run out of disk space in your host machine.
+
+<strong>11. &#8220;Connect to host network&#8221;</strong>
+Unless you know what you are doing, do like me and choose &#8220;Virtual Network&#8221;. Select the &#8220;default&#8221; network from the list.
+
+<strong>12. &#8220;Allocate memory and CPU&#8221;</strong>
+Select the amount of RAM that you want to assign to the virtual machine. I wrote 256M both for VM Max Memory and VM Startup Memory. For VCPU choose the number of CPUs for the virtual machine. I chose 1 VCPU.
+
+The image will be created and the virtual machine will boot up. By default virt-manager doesn&#8217;t open a VNC connection to the newly created machine. Double click the machine from the list below <em>localhost</em> to open it.
+Follow the installation as always. Create a normal user (I created a user named miguel) and in the window titled &#8220;Software Selection&#8221; select the packages you want to install (I only left &#8220;Standard system&#8221; selected; after install you can install more software with aptitude). When the installation is over, it will reboot and you should log in without problems. As root check the IP assigned by the KVM DHCP. Mine has 192.168.122.137.
+Now, in your host machine, add a new line for the virtual machine to your /etc/hosts. This is mine:
+
+127.0.0.1    localhost
+127.0.1.1    laptop.localdomain    laptop
+192.168.122.137    kvm
+
+Save it and check that you can reach the virtual machine.
+
+# ping kvm
+
+should respond the pings.
+
+Now, as the normal user from the host machine, create a pair of keys. Accept the default path for the keys and leave the passphrase empty.
+
+miguel@laptop:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/miguel/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/miguel/.ssh/id_rsa.
+Your public key has been saved in /home/miguel/.ssh/id_rsa.pub.
+The key fingerprint is:
+70:b5:bf:39:e4:4d:14:1d:ad:c6:f0:1f:c7:8f:26:15 miguel@laptop
+
+This should have created 2 files inside .ssh/ in your home directory: id_rsa and id_rsa.pub
+Now copy your identity to the virtual machine:
+
+miguel@laptop:~$ ssh-copy-id kvm
+miguel@kvm&#8217;s password:
+
+Write your password and the key will be copied to the virtual machine. Test that you can log in without password:
+
+miguel@laptop:~$ ssh kvm
+Linux kvm 2.6.18-6-amd64 #1 SMP Wed Oct 15 10:07:11 UTC 2008 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Nov 25 16:08:19 2008 from laptop
+miguel@kvm:~$
+
+There you have it. A virtual machine running from KVM, with hardware virtualization, a minimal install and that you can log in without password.
+
+You can also create a virtual machine and host a 32 bit OS. Just follow the previous steps but instead of installing from a Debian Etch amd64 ISO image, install from a Debian Etch i386 ISO image. That is, select a 64 bit virtual machine but install a 32 bit OS. This works for any operating system.
+
+Of course you can choose CPU Architecture: i686, but the only hypervisor available will be qemu that will emulate by software (instead of doing hardware virtualization) the i386 (or sparc or ppc) architecture. This can be potentially slower than hardware virtualization.
+
+Enjoy!
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-25T00:00:00-06:00" pubdate data-updated="true">Nov 25<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/11/22/laptop-upgraded-to-debian-lenny/" title="Previous Post: Laptop upgraded to Debian Lenny">&laquo; Laptop upgraded to Debian Lenny</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/11/25/segundo-aniversario/" title="Next Post: Segundo aniversario">Segundo aniversario &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

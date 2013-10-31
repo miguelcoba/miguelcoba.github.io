@@ -1,16 +1,1633 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[The command line]]></title>
   <link href="http://miguelcoba.github.io/atom.xml" rel="self"/>
   <link href="http://miguelcoba.github.io/"/>
-  <updated>2013-10-31T16:12:28-06:00</updated>
+  <updated>2013-10-31T16:57:17-06:00</updated>
   <id>http://miguelcoba.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Miguel Cobá]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Time]]></title>
+    <link href="http://miguelcoba.github.io/blog/2013/02/20/time/"/>
+    <updated>2013-02-20T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2013/02/20/time</id>
+    <content type="html"><![CDATA[<blockquote>And then the one day you find
+Ten years have got behind you
+No one told you when to run
+You missed the starting gun
+
+Time by Pink Floyd</blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SICP]]></title>
+    <link href="http://miguelcoba.github.io/blog/2012/05/05/sicp/"/>
+    <updated>2012-05-05T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2012/05/05/sicp</id>
+    <content type="html"><![CDATA[I have a new personal project.
+
+To read and comprehend fully the SICP book (<a href="http://mitpress.mit.edu/sicp/">http://mitpress.mit.edu/sicp/</a>).
+
+I found this book several years ago and I bookmarked it but never really went into it. The last time I tried, I started the first chapter and made some exercices before jumping to something  else.
+
+This time is different. I have been reading and doing exercises constantly for the last 3 weeks. Man this book is hard but at the same time very rewarding. I must say that I am hooked and each day, after work and until late night, I find myself working on exercises. Obviously, next day is hard to wake up but I am happy because since long I haven&#8217;t felt this way about learning something new.
+
+Learning from this book is like being in college again. I feel great because I&#8217;m learning from really bright minds.
+
+Anyway, I have the goal to finish the book and do all the exercises. To keep track of this I have created a project on github where I will publish the progress made. The project, if you&#8217;re interested is <a title="SICP github project" href="https://github.com/miguelcoba/SICP" target="_self">here</a>. I have finished the first chapter (46 exercises) and I am currently doing the second chapter exercises. Even with only having read the first chapter, I must say, that this book is in its own league and I wish I had started this task before!
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stop the radiation misinformation]]></title>
+    <link href="http://miguelcoba.github.io/blog/2011/03/20/stop-the-radiation-misinformation/"/>
+    <updated>2011-03-20T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2011/03/20/stop-the-radiation-misinformation</id>
+    <content type="html"><![CDATA[I&#8217;m really tired of hearing people saying that the wolrd is comming to an end because of the Japanese leakage of radiation after the explotions in the nuclear plant of Fukushima, Japon. So I get this on the twitter stream and I republish it here also.
+
+http://xkcd.com/radiation/
+
+Read and analyse.
+
+Is an issue, but not a world catastrophe!
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ilustradores para el ejemplar #1 de Revista Orsai]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/"/>
+    <updated>2010-11-19T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai</id>
+    <content type="html"><![CDATA[Ayer <a href="http://orsai.bitacoras.com/2010/11/la-envidia-del-dibujo.php">anunció</a> Hernán los nombres de los ilustradores que aparecerán el el primer número de la Revista Orsai:
+<ul>
+	<li><a title="Alberto Montt" href="http://www.dosisdiarias.com/">Alberto Montt</a></li>
+	<li><a href="http://es.wikipedia.org/wiki/Ar%C3%ADstides_Esteban_Hern%C3%A1ndez_Guerrero" target="_blank">Arístides Esteban Hernández Guerrero</a></li>
+	<li><a href="http://turcioscurriculum.blogspot.com/" target="_blank">Omar Turcios</a></li>
+	<li><a href="http://alfonsolopez.cat/www.alfonsolopez.cat_es/Home.html" target="_blank">Alfons López</a></li>
+	<li><a href="http://es.wikipedia.org/wiki/Horacio_Altuna" target="_blank">Horacio Altuna</a></li>
+</ul>
+Esto se pone cada día mejor. El 13 de diciembre entra a la imprenta el primer ejemplar de la revista y la tendremos en México a inicios de enero de 2011.
+
+Más de 200 páginas de pura calidad. Nos quedan 4 ejemplares. Vamos a tener que pedir otro pack más. Aparta el tuyo a orsai@dedalo.mx.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Groovy & Grails tutorials]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/13/groovy-grails-tutorials/"/>
+    <updated>2010-11-13T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/13/groovy-grails-tutorials</id>
+    <content type="html"><![CDATA[A few weeks ago I gave a 3 day intro course on Groovy and Grails. I had little time to prepare but in the end all went ok and the participants were very surprised of the dynamic nature of the Groovy language and of the easy of development that Grails brings to the Java world.
+
+In the middle of the course preparation I ended searching for a way to store the data of the presentation in a non-binary way, that is, in a textual format, so that I could version it and diff it correctly. I found <a title="Scott Chacon" href="http://scottchacon.com/">schacon</a>&#8217;s <a title="ShowOff Presentation Software" href="http://github.com/schacon/showoff">ShowOff</a> and tried it. I liked it a lot so I use it for my presentation. This is how you install showoff in Debian Squeeze:
+
+Install rubygems:
+
+<code>aptitude install ruby ruby-dev rubygems</code>
+
+Update rubygems:
+
+<code>gem update</code>
+
+Install ShowOff
+
+<code>gem install showoff</code>
+
+Then I moved to the ShowOff&#8217;s directory for my presentation and ran:
+
+<code>showoff serve</code>
+
+This make my presentation show up in port 9090 of my local machine. So I browsed to http://localhost:9090 and there it was.
+
+Of course ShowOff isn&#8217;t MS PowerPoint, and doesn&#8217;t try to be either. Instead, it offers a few basic styles, transitions and font styles and sizes. Nothing else. And this is what puts ShowOff apart of any presentation software. It is so easy to setup and have a web-enabled presentation in minutes.
+
+One thing that is missing and it is needed a lot is a way to convert the presentation to PDF format, so it is easy to share to other people or to upload to sites like slideshare. Other than that, I didn&#8217;t need some particular feature of PowerPoint. Less is more sometimes.
+
+Anyway I am releasing the Groovy &amp; Grails presentation as a Creative Commons Attribution-NonCommercial-ShareAlike license so, feel free to use it and improve it.
+
+They are hosted on GitHub:
+
+<a title="Groovy Tutorial" href="https://github.com/miguelcoba/groovy-tutorial">Groovy Tutorial</a>
+
+<a title="Grails Tutorial" href="https://github.com/miguelcoba/grails-tutorial">Grails Tutorial</a>
+
+So fork them and use them.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/13/git/"/>
+    <updated>2010-11-13T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/13/git</id>
+    <content type="html"><![CDATA[In the middle of the Grails project I am working right now, I decided to try <a title="Git SCM" href="http://git-scm.com/">Git</a>. Well, I decided to try also Emacs, after more than 10 years of using Vi. Man, that is like trying to rewire your brain. Amazing how the Vi commands are hardwired to my fingers muscles. In the end I succeded, although it will be a long time before I settle for one of them. Right now I am using Emacs for development and Vi for Linux administration.
+
+But I digress, this post is about Git.
+
+In short, Git rocks! Or more precisely distributed version control systems rocks. I haven&#8217;t used bazaar, nor mercurial or any other <a title="DVCS" href="http://en.wikipedia.org/wiki/Distributed_revision_control">DVCS</a> but the same applies to them I suppose. I will talk about Git.
+
+Again, Git rocks, it is a different way of working in everyday&#8217;s chores as a programmer. And the blessing of local commits already made me forget Subversion. But more than that, the concept of cheap and fast branching it is so amazing that you will measure every other SCM branch capabilities using Git as reference.
+
+The internet is full of tutorials about Git, but what I think that is the best explained intro (and advanced too) guide to git was the <a title="Pro Git book" href="http://progit.org">Pro Git</a> book. So if you&#8217;re considering to try Git, start right  there as this book will make you a Git user in a couple hours.
+
+I use to have all my repositories (23 right at the time) in Subversion. I migrated them all in a day to Git and I am more than happy with this change. In the project I am right now there is no possibility to switch to Git so I have to use git-svn to connect to Subversion and keep using Git on my machine. But even so, it gives you a real sense of security to commit always locally and then, when everything is tested, push to the central server.
+
+So, try Git, and use the Pro Git book to learn it the right way.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Revista Orsai]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/11/revista-orsai/"/>
+    <updated>2010-11-11T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/11/revista-orsai</id>
+    <content type="html"><![CDATA[<img style="vertical-align: baseline;" src="http://comenclick.com/orsai/blog/wp-content/uploads/2010/11/5159386297_f5f843d3ca.jpg" alt="Revista Orsai" width="333" height="500" />
+
+Uno de los proyectos inicié es convertirme en distribuidor de la <a title="Revista Orsai" href="http://orsai.es/blog/">Revista Orsai</a>.
+
+Desde hace ya varios años soy seguidor del <a title="Blog Orsai" href="http://orsai.bitacoras.com/">blog</a> de Orsai y cada vez que leo sus posts termino siempre con una sonrisa en el rostro por el resto del día.
+
+Hernán tiene un estilo ameno, divertido, inteligente y sobre todo sin tapujos de contar historias. Historias que llevan implícito una sabiduría cotidiana, que te hace descubrir en forma escrita cosas que inconscientemente sabías. No hace falta más que leer un par de sus posts para volverse fan.
+
+Pero la razón por la que ahora escribo es, como decía al principio, debido al nuevo proyecto que Hernán y su cuasi-hermano y compañero de pachangas, dramas, historias y negocios, <a title="Chiri Basilis" href="http://twitter.com/Chiri_Basilis">Chiri Basilis</a>, han decidido, en una noche de alterada lucidez, llevar a cabo. Hacer una revista que no tenga segundas intenciones. La única intención de la Revista Orsai es ser una revista donde puedan escribir lo que a ellos se les ocurra. Es un blog hecho papel, encuadernado y distribuido por medios tradicionales. Y en el mismo sentido en que un blog no le rinde cuentas a nadie más que a los autores que en él escriben, la revista Orsai tampoco tiene nadíe que le indique qué y qué no escribir. Es una revista que no tendrá anunciantes, que tendrá los mejores escritores, los temas más diversos y la más absoluta honestidad impresa en cada una de sus más de 200 hojas de arbol muerto (aunque también habrá versiones en bits eléctricos y magnéticos, justo como nuestro siglo XXI require y exige, versiones para iPad, Kindle y por supuesto PDF).
+
+Pero lo verdaderamente loco del proyecto, y la razón por la que miles más como yo estamos apostando por el completo exito de este proyecto es que no tendrá <a href="http://orsai.bitacoras.com/2010/10/la-piramide-invertida.php">intermediarios</a>. Es decir, es una revista real, de papel y tinta, con olor, sabor, textura y peso pero no tendrá manos intermedias aumentando el precio por transportarla del autor a los lectores. Además no se venderá como si fuera la revista de chismes, en la fila del cajero del supermercado ni en restaurantes de cadena, junto a libros de autoestima y el Quién se ha llevado mi queso. No, esta será una revista seria, en el sentido de que se hace con absoluta creencia en que el contenido de la revista es todo y lo único que importa: los autores y los ilustradores. No los anunciantes que financian la revista.
+
+Esta revista la escriben, editan y distribuyen Hernán, el Chiri, un grupo de colaboradores de la nueva Editorial Orsai y un grupo selecto de escritores e ilustradores de primer nivel los cuales tienen libertad absoluta para escribir sobre el tema que quieran, siempre y cuando sea con calidad. Es más, uno mismo puede enviar su escrito y tener la posibilidad de salir ahí. Pero la distribución también es responsabilidad de ellos. Y la harán llegar directamente a los que hayan pedido su paquete de 10 revistas en los primeros días de enero de 2011.
+
+A los distribuidores, como yo, que ya pedimos nuestro pack de revistas, además, nos honrarán con aparecer en la segunda y penúltima hojas de la revista, listando nuestros nombres a manera de agradecimiento por haber confiado en el proyecto. Esto se agradece por supuesto y hará que el ejemplar #1 sea más valioso para muchísimos lectores, pero no es la razón por la que creemos en el proyecto. La razón por la que creemos es por los ideales, por la locura del mismo, por lo increiblemente simple de la idea que hace muchas editoriales tradicionales rian y miren con desdén este proyecto.
+
+Pero la revista Orsai está demostrando que al menos hay <a href="http://orsai.es/blog/2010/11/boton-de-muestra/">4100 lectores</a> (al momento de escribir) que creen en este proyecto y con solo 11 días de iniciado la preventa.
+
+Yo creo en él, y además estoy seguro que será un rotundo éxito. Como hasta ahora lo viene siendo, y eso que hasta el día de ayer no se sabía absolutamente nada de quién iba a escribir, qué temas iban a ser parte de la revista, nada. Solamente se sabía la manera de operar de este nuevo esquema de edición de revistas.
+
+Hoy ya comenzó Hernán a soltar muestras de lo que contendrá la revista y no hace sino hacer más ansiosa la espera a que llegue la revista a principios de enero de 2011.
+
+En fin, yo, junto con Colectivo Dédalo, somos distribuidores de la revista. Si quieres tener tu ejemplar #1, aparta la tuya en orsai@dedalo.mx.
+
+Y ahora, a esperar.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Twitter]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/08/twitter/"/>
+    <updated>2010-11-08T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/08/twitter</id>
+    <content type="html"><![CDATA[That is right, as you can see in the sidebar, I have already an account on Twitter. I will  use it to promote some of the other projects that I am working on. So if you already have twitter or want to follow me, look for:
+
+<a title="My twitter account" href="http://twitter.com/MiguelCobaMtz" target="_blank">http://twitter.com/MiguelCobaMtz</a>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blogging again]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/11/07/blogging-again/"/>
+    <updated>2010-11-07T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/11/07/blogging-again</id>
+    <content type="html"><![CDATA[A lot of time since the last post.
+
+Well, I was very busy. A lot of work, a lot of projects. A lot of new things to learn. Sometimes I felt like my head was going to explode. A bit overloaded like Neo&#8217;s Kung-Fu imprinting. But in a non sci-fi way, that is, reading a lot, experiementing a lot, trying not to fall asleep at nights, trying not to fall asleep in work. This week I will be releasing other project to production and after a couple o weeks I will be very busy processing all the information collected by it. And in december I will start one another new project. So, a lot of work, but I am happy, because the first half of the year was a hard one for us. Now the things are a little better.
+
+Between the things I learned/used this year are:
+<ul>
+	<li><a title="Groovy Language" href="http://groovy.codehaus.org/" target="_blank">Groovy</a></li>
+	<li><a title="Grails framework" href="http://grails.org/" target="_blank">Grails</a></li>
+	<li>Ruby&#8217;s <a title="ShowOff web presentation software" href="https://github.com/schacon/showoff" target="_blank">ShowOff</a></li>
+	<li><a title="Git SCM" href="http://git-scm.com/" target="_blank">Git</a></li>
+	<li><a title="Redmine project management web application" href="http://www.redmine.org/" target="_blank">Redmine</a></li>
+	<li><a title="Hudson  Extensible continuous integration server " href="http://hudson-ci.org/" target="_blank">Hudson</a></li>
+	<li><a title="The pomodoro technique" href="http://www.pomodorotechnique.com/">The Pomodoro Technique</a></li>
+	<li><a title="Phusion Passenger" href="http://www.modrails.com/">Phusion Passenger</a></li>
+</ul>
+In subsequent posts I will write about the issues I had installing and using each of those technologies.
+
+I&#8217;m back and have a lot to share.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[¿Qué quieres cenar?]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/06/08/%25c2%25bfque-quieres-cenar/"/>
+    <updated>2010-06-08T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/06/08/%c2%bfque-quieres-cenar</id>
+    <content type="html"><![CDATA[Aline: ¿Tristán, qué quieres cenar?
+
+Tristán: ¡Un huevito blanco que no es amarillo, que no esté caliente, que tenga sal, que tenga salchicha y que tenga queso!
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Accessing Cassandra from Pharo]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/03/31/accessing-cassandra-from-pharo/"/>
+    <updated>2010-03-31T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/03/31/accessing-cassandra-from-pharo</id>
+    <content type="html"><![CDATA[<a href="http://nosql.mypopescu.com/">NoSQL</a> databases are the topic of the day anywhere in the web.
+
+So this is good time to put a tutorial for accessing a Cassandra database from a Pharo Smalltalk image using the Thrift interface (there isn&#8217;t a high-level client for accessing Cassandra from Pharo yet). Following instructions were tested on a Debian GNU/Linux Squeeze (testing) amd64 laptop.
+
+<strong>Install the required dependencies
+</strong>
+
+As root:
+
+<code>aptitude install libboost-dev automake libtool flex bison pkg-config g++ build-essential ruby-dev python-dev</code>
+
+<strong>Create a working directory</strong>
+
+As normal user create a working directory (I use my home directory)
+<code>
+mkdir /home/miguel/cassandra
+cd /home/miguel/cassandra</code>
+
+<strong>Get the thrift svn trunk source code</strong>.
+
+<span style="text-decoration: line-through;">The current tar.gz package on the download page of <a href="http://incubator.apache.org/thrift/">Thift</a> doesn&#8217;t include the necessary fixes.</span>
+
+<span style="text-decoration: line-through;"><code>svn co http://svn.apache.org/repos/asf/incubator/thrift/trunk thrift</code></span>
+
+Update: When this post was originally written, the patch I did for generating correct code for smalltalk wasn&#8217;t part of a released version of thrift, that is the reason you had to get it from subversion trunk. But now is integrated and proper releases are out so there is no need to get thrift from svn, you can just get the tar.gz package from the thift download page (currently version 0.4.0):
+
+<code>http://incubator.apache.org/thrift/download/</code>
+
+uncompress the tar.gz and you&#8217;ll get a folder named (in my case):
+
+<code>thrift-0.4.0/</code>
+
+<strong>Get the cassandra code</strong>
+
+Go to http://cassandra.apache.org and download 0.5.1 version of <a href="http://cassandra.apache.org/">Cassandra</a> (here is the mirror I got, yours will likely be different):
+
+<code>wget http://www.devlib.org/apache/cassandra/0.5.1/apache-cassandra-0.5.1-bin.tar.gz
+tar zxf apache-cassandra-0.5.1-bin.tar.gz</code>
+
+<strong>Get a Pharo image</strong>
+
+Go to http://www.pharo-project.org/pharo-download/ and download a Pharo dev or a PharoCore image. I use a PharoCore RC3 image:
+
+<code>wget https://gforge.inria.fr/frs/download.php/26668/PharoCore-1.0-10515rc3.zip
+unzip PharoCore-1.0-10515rc3.zip</code>
+
+You now have Thrift, Cassandra and Pharo ready to use.
+
+<strong>Compile the Thrift source code</strong>
+
+<code><span style="text-decoration: line-through;">cd thrift/</span></code>
+
+<code>
+cd thrift-0.4.0/
+./bootstrap.sh
+./configure
+make</code>
+
+<strong>Generate the Smalltalk Thrift code for accessing Cassandra</strong>
+
+<code>cd ..
+<span style="text-decoration: line-through;">./thrift/compiler/cpp/thrift --gen st apache-cassandra-0.5.1/interface/cassandra.thrift</span>
+./thrift-0.4.0/compiler/cpp/thrift --gen st apache-cassandra-0.5.1/interface/cassandra.thrift
+</code>
+
+This will generate the file:
+
+<code>gen-st/cassandra.st</code>
+
+in the /home/miguel/cassandra directory (your working directory).
+
+You now have two Smalltalk files:
+
+<code>thrift/lib/st/thrift.st
+gen-st/cassandra.st</code>
+
+<strong>Load the Smalltalk Thrift code in the Pharo image</strong>
+
+Open the Pharo image and file-in the two previous files in that order (first thrift.st and then cassandra.st)
+
+<strong>Start and test the Cassandra server</strong>
+
+If you have already a Cassandra node, skip this step. If you are testing, stay with me.
+
+<code>cd apache-cassandra-0.5.1/</code>
+
+Edit conf/log4.properties, change the line:
+
+<code>log4j.appender.R.File=/var/log/cassandra/system.log</code>
+
+to:
+
+<code>log4j.appender.R.File=/home/miguel/cassandra/var/log/cassandra/system.log</code>
+
+Edit conf/storage-conf.xml, change the lines:
+
+<code>&lt;CommitLogDirectory&gt;/var/lib/cassandra/commitlog&lt;/CommitLogDirectory&gt;
+&lt;DataFileDirectories&gt;
+&lt;DataFileDirectory&gt;/var/lib/cassandra/data&lt;/DataFileDirectory&gt;
+&lt;/DataFileDirectories&gt;
+&lt;CalloutLocation&gt;/var/lib/cassandra/callouts&lt;/CalloutLocation&gt;
+&lt;StagingFileDirectory&gt;/var/lib/cassandra/staging&lt;/StagingFileDirectory&gt;</code>
+
+to:
+
+<code>&lt;CommitLogDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/commitlog&lt;/CommitLogDirectory&gt;
+&lt;DataFileDirectories&gt;
+&lt;DataFileDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/data&lt;/DataFileDirectory&gt;
+&lt;/DataFileDirectories&gt;
+&lt;CalloutLocation&gt;/home/miguel/cassandra/var/lib/cassandra/callouts&lt;/CalloutLocation&gt;
+&lt;StagingFileDirectory&gt;/home/miguel/cassandra/var/lib/cassandra/staging&lt;/StagingFileDirectory&gt;</code>
+
+Then start the Cassandra server:
+
+<code>./bin/cassandra -f</code>
+
+Connect with the Cassandra provided client (Cassandra started on port 9160):
+
+<code>./bin/cassandra-cli --host localhost --port 9160</code>
+
+Insert a value:
+
+<code>set Keyspace1.Standard1['jsmith']['first'] = 'John'</code>
+
+Read back the value:
+
+<code>get Keyspace1.Standard1['jsmith']</code>
+
+<strong>Connect from Pharo to the Cassandra server</strong>
+
+Open a workspace and try inserting 10000 values in the Cassandra server:
+
+<code>
+"Insert 10000 values"
+[| cp result client |
+client := CassandraClient binaryOnHost: 'localhost' port: 9160.
+cp := ColumnPath new
+columnFamily: 'Standard1';
+column: 'col1'.
+1 to: 10000 do: [ :i |
+result := client insertKeyspace: 'Keyspace1'
+key: 'row', i asString
+columnPath: cp
+value: 'v', i asString
+timestamp: 1
+consistencyLevel: ((Cassandra enums at: 'ConsistencyLevel') at: 'QUORUM').]] timeToRun</code>
+
+Select the code and &#8220;print it&#8221;. It took 7326 milliseconds in my laptop.
+
+Now read the values from the Cassandra server:
+
+<code>
+"Read 10000 values"
+[| cp result client |
+client := CassandraClient binaryOnHost: 'localhost' port: 9160.
+cp := ColumnPath new
+columnFamily: 'Standard1';
+column: 'col1'.</code>
+
+1 to: 10000 do: [ :i |
+result := client getKeyspace: &#8216;Keyspace1&#8217;
+key: &#8216;row&#8217;, i asString
+columnPath: cp
+consistencyLevel: ((Cassandra enums at: &#8216;ConsistencyLevel&#8217;) at: &#8216;QUORUM&#8217;).]] timeToRun
+
+Select it and &#8220;print it&#8221;. It took 7977 milliseconds to read back the 10000 values.
+
+Read a value from the cassandra-cli interface:
+
+<code>get Keyspace1.Standard1['row999']</code>
+
+you should get:
+<code>
+cassandra&gt; get Keyspace1.Standard1['row999']
+=&gt; (column=col1, value=v999, timestamp=1)
+Returned 1 results.
+</code>
+
+That is it. Adapt the code to your needs.
+
+Cheers
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bastián]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/03/24/bastian/"/>
+    <updated>2010-03-24T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/03/24/bastian</id>
+    <content type="html"><![CDATA[Llegó el día, ya nació Bastián.
+
+Ahora estoy en la habitación esperando a que traigan a Aline de la sala de recuperación. Todo salió bien, tanto para ella como para el bebé. No hace falta decir que estamos más que felices por esto. Hay una sensación inexplicable e irrepetible que te llena el cuerpo y el alma la primera vez que ves a tu hijo. Sucedió con Tristán, pero no me había dado cuenta hasta ahora que veo a Bastián. Es ese momento único en que se hace realidad algo que hasta entonces, aunque con mucho afecto y amor, no dejaba de ser (al menos para mi que soy hombre y no llevé a mis hijos dentro de mi 9 meses) un amor ciego a algo que no era &#8220;real&#8221;. Es decir, no era alguien que hubiera tocado antes, o cargado o mirado siquiera. Pero al verlo afuera de Aline, llorando a todo pulmon, indefenso, pequeño, se hizo concreta la personita objeto de mi afecto. Y solamente sucede durante un instante, mientras lo ves&#8230; un momento de felicidad absoluta!
+
+Bueno, lo que quiero decir es que estamos sumamente felices. Bastián, bienvenido a casa.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Seaside book - PDF version]]></title>
+    <link href="http://miguelcoba.github.io/blog/2010/02/01/seaside-book-pdf-version/"/>
+    <updated>2010-02-01T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2010/02/01/seaside-book-pdf-version</id>
+    <content type="html"><![CDATA[Just announced on the Lukas Renggli&#8217;s blog:
+
+The PDF version of the book <a class="external" title="http://book.seaside.st/book" href="http://book.seaside.st/book">Dynamic Web Development with Seaside</a> is available to download now:
+
+<dl> <dd> <a class="external" title="http://book.seaside.st/book/introduction/pdf-book" href="http://book.seaside.st/book/introduction/pdf-book">http://book.seaside.st/book/introduction/pdf-book</a></dd> </dl>At the end of the payment process (PayPal) you will be redirected to the download area where you are able to get the latest builds of the PDF version of the book. If you bookmark the page you will be able to download fixes and extra chapters as we integrate them into the online version. By buying the PDF version you support our hard work on the book.
+
+We wish to thank the <a class="external" title="http://www.esug.org" href="http://www.esug.org/">European Smalltalk User Group</a>, <a class="external" title="http://www.inceptive.be" href="http://www.inceptive.be/">inceptive.be</a>, <a class="external" title="http://www.cincomsmalltalk.com" href="http://www.cincomsmalltalk.com/">Cincom Smalltalk</a> and <a class="external" title="http://seaside.gemstone.com/" href="http://seaside.gemstone.com/">GemStone Smalltalk</a> for generously sponsoring this book. We are looking for additional sponsors. If you are interested, please contact us. If you are a publisher and interested in publishing this material, please let us know.
+
+So if you&#8217;re looking for a updated reference to Seaside, this is the book to have. Support the effort by purchasing a copy in PDF version. Also, soon they will have this version available in <a title="lulu" href="http://lulu.com" target="_blank">lulu</a> so that if you prefere the dead-tree version, you&#8217;ll also soon have access to it.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[tercer aniversario, niño en camino y más noticias]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/12/05/tercer-aniversario-nino-en-camino-y-mas-noticias/"/>
+    <updated>2009-12-05T00:00:00-06:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/12/05/tercer-aniversario-nino-en-camino-y-mas-noticias</id>
+    <content type="html"><![CDATA[Bueno, mucho tiempo sin noticias, pero la verdad he andado hasta el cuello de trabajo y compromisos.
+
+Muchas noticias que reportar y varios eventos memorables que publicar.
+
+Primero, Aline y yo cumplimos tres años de casados. A veces parece tanto tiempo y otras parece que se pasó volando. No tuvimos tiempo de festejar apropiadamente y ni siquiera de ir a cenar, pero esta semana que viene al fin festejaremos nuestro aniversario.
+
+Segundo, ya nos dijeron el sexo del nuevo bebé. Es un niño! Un hermanito para Tristán. Estamos muy felices y hasta Tristán ya comienza a darse cuenta de que su hermanito es más que una palabra. A veces hasta habla con él y le presta sus juguetes o le comparte de lo que está comiendo.
+
+Estuvimos haciendo una lista de nombres para el bebé pero aún no nos decidimos. Difícil decisión. En fin, aún hay tiempo (y miren que con Tristán nos decidimos de último momento, mientras viajabamos al registro civil :)).
+
+También, andamos buscando nuevo departamento, porque ya cuando el bebé llegue no cabremos aquí. Si encontramos uno, estaremos festejando año nuevo en nueva casa.
+
+Los proyectos que traiamos siguen andando. Aline esta completamente metida en la creación de su Asociación Civil y ya soy parte de eso, por lo que también le estoy dedicando parte del tiempo a colaborar ahí. Más noticias después.
+
+Mis proyectos estan, como siempre, detenidos y postergados para darle prioridad a los proyectos que nos traen la comida a la mesa y pagan la renta. Me siento un poco dividido por esto. Por una parte el ser independiente (tiene varios meses que trabajo de manera independiente :)) es muy liberador. Tengo tiempo de estar más con Aline, Tristán y el nuevo bebé. De poder levantarme tarde, dormirme tarde, tomar una cerveza mientras leo Slashdot o los blogs que sigo en el Google Reader. Además en cualquier momento podemos salir a tomar café o hacer cosas que traemos pendientes. Y además, no tengo que usar traje y corbata todos los días :).
+
+Por el otro lado, a veces es muy difícil tener que trabajar aquí y tener que ponerle a Tristán una pelicula para que se entretenga mientras termino. De alguna manera el trabajar en casa implica tener disponibilidad completa para ellos en cualquier momento. Y eso no me desagrada en lo absoluto. Me gusta abrazarlos y cuidarlos. Solo que a veces, justo cuando ya logré concentrarme en el trabajo, me distraigo y me es difícil volver a enfocarme.
+
+En fin, al final del día es muy agradable esta manera de trabajar. Tan libre de juntas, horas fijas, horas de comida, etc.
+
+Pero bueno, en resumen, estos últimos meses han sido muy distintos de los anteriores y debo decir que estoy muy contento de como están pasando las cosas.
+
+Ahora que ya terminé mis proyectos pagados, voy a dedicarme a mi ya muy atrasado proyecto personal.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying Seaside: load testing results]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-load-testing-results/"/>
+    <updated>2009-10-02T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-load-testing-results</id>
+    <content type="html"><![CDATA[I made a series of test with different values of the parameters. All of them are for reference purpose only. As with any benchmark, a lot of factors affect the results. The advice is, try to isolate your environment so that the results are meaningful
+
+My machine is
+<ul>
+	<li>Intel(R) Core(TM)2 Duo CPU     T6400  @ 2.00GHz</li>
+	<li>Cache: 2048 KB</li>
+	<li>RAM: 4GB</li>
+</ul>
+with a lot of processes running and the same machine hosting lighttpd, JMeter and the images.
+
+There are two series of tests. The first one test the seaside.example.com. That is the application that stores everything on memory in each image. So this will be very fast.
+The second one test the magma.example.com. So each request is accessing the Magma database. As we increase the number of images, the database will be the bottleneck. Keep that in mind when comparing results. Also, don&#8217;t bash Magma as magma is very fast. It is just that the SeasideMagmaTester isn&#8217;t optimized yet. It is just a simple application for measuring a *simple* Magma-Seaside integration. In a real production environment you&#8217;ll put the database in the most powerful server (at least for writing performance), and for read performance, you can add several servers to the magma <a title="Magma High-Availability" href="http://wiki.squeak.org/squeak/6101">node</a> and get a lot of reads/sec. But that is another problem. We just want to test the SeasideProxyTester as is. Optimize your application as you see fit.
+
+First the seaside.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>113</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>49971</th>
+<th>114</th>
+<th>1.85</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>117</th>
+<th>60.03</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>140</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>137</th>
+<th>0.97</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>158</th>
+<th>39.56</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>170</th>
+<th>0.43</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>129</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>4000</th>
+<th>100</th>
+<th>100</th>
+<th>600600</th>
+<th>187</th>
+<th>47.49</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>600</th>
+<th>30</th>
+<th>1000</th>
+<th>600600</th>
+<th>205</th>
+<th>76.12</th>
+</tr>
+</tbody></table>
+Now the magma.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>50</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>75</th>
+<th>1.11</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>102.9</th>
+<th>78.32</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>57</th>
+<th>50</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>120</th>
+<th>73.21</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>197935</th>
+<th>160</th>
+<th>91.64</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>44</th>
+<th>89.28</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>167</th>
+<th>97.24</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>206</th>
+<th>95.59</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>45</th>
+<th>89.38</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>150</th>
+<th>98.72</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>179686</th>
+<th>255</th>
+<th>99.99</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>2</th>
+<th>300</th>
+<th>3</th>
+<th>0</th>
+</tr>
+</tbody></table>
+Those results as I said, are just a reference. YMMV.
+
+<strong>Comments:</strong>
+
+The seaside.example.com results are very varying. With one seaside image, you get 113 requests/second. Thats a lot of requests. Really. I hope someday I have a site that receive that number of requests. But have in mind that the seaside.example.com application it is just storing the counters in memory. Also, the server (that is, my laptop) is just handling 1 process for the magma image (not used), 1 process for the seaside image (heavily used), 1 process for the lighttpd server (heavily used) and 1 process for JMeter. Not a lot of work for the cpu and the Linux process scheduler.
+But if you see the results for 2 seaside images, the best you get is 140 requests/second without getting errors. That is unexpected, because if 1 image can handle 113, 2 images should handle at least 200 request. That is even more notorious when you use 10 or 30 Seaside images. The best you get is 154 requests/second. As I said before a lot of things affect this results. First my CPU isn&#8217;t as powerful as the ones from real servers. My laptop is doing a lot of other processes (webbrowser, gaim, JMeter on GUI mode, the GNOME desktop, the wireless, the music). In a dedicated server more resources are reserved for the Seaside images. In the worst case, with 30 Seaside images (each of them doing a lot of work by itself) the laptop CPU is doing a lot of process context switching giving each image a slice of processor time. Each image, in turn, is doing its own process scheduling between Komanche, Seaside and the others processes that run in a Pharo image. If you consider this you can explain why there isn&#8217;t a linear scaling in the requests/second as you increment the number of images. The best, appears to be, is to use different servers for the webserver and for the images. Also, distributing the images on two or more small servers (as my laptop is), can get the best of the images and from the balancer.
+
+Now for the Magma results. They are ugly and disappointing. But, remember, isn&#8217;t optimized yet. It is just the simplest way of getting Magma and Seaside working. For example, if your app reads a lot more than writes to the database (as most application are, unless you are storing the results of subatomic collisions ;)) you can add more read only server to a magma node to improve the read performance. Besides, you can use different read strategies and use Magma Collections to store your data. The PROBLEM WITH THIS PARTICULAR APPLICATION is that all the images are trying to write to the same slots on the dictionary that holds the counters. This, when you have a lot of processes trying to write, necessarily results in a lot of commit errors. Suppose session 1 reads the current counter value in order to increase it. Before it can commit the new value (current value + 1) the Pharo scheduler switches to other session on the same image or the OS scheduler switches to other Pharo image. The new scheduled session  (session 2) reads the current value (not yet updated by the first session) and if not uncheduled like the session 1, successfully commits the new value. Some time later the session 1 get scheduled again and tries to resume from the exact same place where it left. So update the value and send the commit to magma. Magma notes that the value has changed since it was read and marks a dirty object (that is, the client must do an abort to get the new value) and a magma conmit conflict. The error is arrives to the final user and is counted by JMeter as an error because of the status 503 from the headers.
+In a real application, the common scenario is that each user writes to its own section of the database or to different parts of a common collection, this is handled very well by Magma, even better if you use Magma Collections. So in a more realistic scenario, you won&#8217;t have that many commit conflicts, if any. But that is Magma optimization and you know better than anybody your own application. Maybe Chris Muller (Magma creator) or Keith Hodges (Magma seasideHelper creator) can replicate this results and suggest better ways to test Magma and use Magma seasideHelper. I repeat: the apparent errors are a consequence of the application tested and not from Magma. How do you know? Because in every case we get a response from the Magma server, that is, a commit conflict error response. So the server is alive and healthy, responding appropriately every request made by a Seaside image. Keep that in mind before bashing Magma.
+One better way to test this application is to give each session its own counter on the database (as if each user were getting its own private data) and all of those private counters being held on a Magma Collection (that is, a collection of user data). This way each session will update its own data and that by its own nature, won&#8217;t produce commit errors. But that is left as an exercise to the reader.
+
+So, to test your apps.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying Seaside: Adding SSL to your site]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-adding-ssl-to-your-site/"/>
+    <updated>2009-10-02T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-adding-ssl-to-your-site</id>
+    <content type="html"><![CDATA[Well, lets add SSL to your site. This step is tricky as you must have a domain registered to your name and a public IP in order to get a SSL certificate. Here we&#8217;ll generate a self-signed certificate and will configure lighttpd to use it to encrypt all the traffic between the webserver and the web browser clients.
+
+As you will see you don&#8217;t have to configure SSL on the Pharo image. In fact Seaside doesn&#8217;t even know anything about SSL or encryption. It is the webserver the responsible of isolate the Seaside images (that in fact aren&#8217;t even know by the web browser clients, as they only interact with the webserver. This last one is proxying each request to the Seaside images). The only thing that Seaside must do is to guarantee that every link generated specifies the https protocol. But this is only HTML generation. Isn&#8217;t encryption. The encryption is made by the webserver by using of the SSL certificate.
+
+We are going to show the process with the seaside.example.com. The procedure is the same for the magma.example.com but remember, each certificate must use its own IP. So you can&#8217;t test both on 127.0.0.1 for example. In a production site with several hosted sites, each one will have its own public IP.
+
+First the prerequisites. Be sure to have a lighttpd with SSL support. As root execute:
+
+laptop:~# lighttpd -v
+lighttpd/1.4.23 (ssl) - a light and fast webserver
+Build-Date: Aug 17 2009 21:46:24
+
+the (ssl) indicates that lighttpd has ssl support compiled in.
+
+Then install, as root, OpenSSL, if you don&#8217;t already have it:
+
+# aptitude install openssl
+
+Now as root, create and install the self-signed certificate:
+
+# openssl req -new -x509 -keyout /etc/lighttpd/seaside.example.com.pem -out /etc/lighttpd/seaside.example.com.pem -days 365 -node
+
+Answer the questions:
+
+Generating a 1024 bit RSA private key
+&#8230;&#8230;&#8230;&#8230;&#8230;&#8230;&#8230;&#8230;.++++++
+&#8230;&#8230;&#8230;&#8230;&#8230;++++++
+writing new private key to &#8216;/etc/lighttpd/seaside.example.com.pem&#8217;
+&#8212;&#8211;
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &#8216;.&#8217;, the field will be left blank.
+&#8212;&#8211;
+Country Name (2 letter code) [AU]:MX
+State or Province Name (full name) [Some-State]:Mexico City
+Locality Name (eg, city) []:Mexico City
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Corp
+Organizational Unit Name (eg, section) []:TI
+Common Name (eg, YOUR name) []:seaside.example.com
+Email Address []:you@example.com
+
+Change the permissions to something more secure like 440
+
+# chown 440 /etc/lighttpd/seaside.example.com.pem
+
+Now to configure Seaside to emit correct URLs. Be sure that the images are shutdown. Open the seaside image:
+
+/opt/pharo/squeak /srv/example/pharo/seaside.image
+
+Open the initialize method on the class side of SPTApplication and change:
+
+&#8220;Server protocol&#8221;
+application preferenceAt: #serverProtocol put: #http.
+
+to:
+
+&#8220;Server protocol&#8221;
+application preferenceAt: #serverProtocol put: #https.
+
+Change:
+
+&#8220;Server port&#8221;
+application preferenceAt: #serverPort put: 80.
+
+to:
+
+&#8220;Server port&#8221;
+application preferenceAt: #serverPort put: 443.
+
+and change:
+
+&#8220;Base URL for resources: images, styles, etc&#8221;
+application preferenceAt: #resourceBaseUrl put: &#8216;http://seaside.example.com/resources/&#8217;.
+
+to:
+
+&#8220;Base URL for resources: images, styles, etc&#8221;
+application preferenceAt: #resourceBaseUrl put: &#8216;https://seaside.example.com/resources/&#8217;.
+
+Now open a workspace and reinitialize the application by executing:
+
+SPTApplication initialize.
+
+That is all on the Seaside side. Save the image and quit.
+
+Now to configure the webserver. Change the host line for seaside on lighttpd.conf from:
+
+$HTTP[&#8220;host&#8221;] == &#8220;seaside.example.com&#8221; {
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+to:
+
+$HTTP[&#8220;host&#8221;] == &#8220;seaside.example.com&#8221; {
+$HTTP[&#8220;scheme&#8221;] == &#8220;http&#8221; {
+url.redirect = ( &#8220;^/(.*)&#8221; =&gt; &#8220;https://seaside.example.com/$1&#8221; )
+}
+}
+$SERVER[&#8220;socket&#8221;] == &#8220;127.0.1.1:443&#8221; {
+ssl.engine = &#8220;enable&#8221;
+ssl.pemfile = &#8220;/etc/lighttpd/seaside.example.com.pem&#8221;
+
+server.name = &#8220;seaside.example.com&#8221;
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+Be sure to use your own IP (unless you&#8217;re testing on localhost like me) and the correct path to the pem file. Also note that this setup will redirect every request arriving on http to the https port. So ALL the application will be on https. This can be or not what you want. If you only want a part of your site under https, you must configure lighttpd accordingly and make sure that the application emits https URLs only when you need it. That is up to you.
+
+Restart lighttpd:
+
+# /etc/init.d/lighttpd restart
+
+and point your browser to:
+
+http://seaside.example.com
+
+it should redirect to:
+
+https://seaside.example.com
+
+Of course, as you are using a self-signed certificate, the web browser will shout a warning about the certificate verification. Accept it unless you don&#8217;t trust yourself :).
+
+After that you should see the summary page of the seaside.example.com and everything should work as before, just encrypted.
+
+Really easy, don&#8217;t you think.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying Seaside: load testing the setup]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/10/01/deploying-seaside-load-testing-the-setup/"/>
+    <updated>2009-10-01T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/10/01/deploying-seaside-load-testing-the-setup</id>
+    <content type="html"><![CDATA[I have used several tools to load test websites and webapps: ab, siege, httperf. They are very good tools but their are designed to test static URLs like:
+
+http://mysite.com/somepath
+
+http://mysite.com/someotherpath?parameter=value
+
+and not the kind of URLs generated by Seaside.
+
+Some of them can be given a list of URLs and will hammer your server with requests to each of those URLs. Others can also accept and resend cookies with each request. Some have a concept of a session (mostly with a cookie holding the session key value) that can be used to send a series of requests as part of the same session. Few of them can follow a redirect automatically. Well, isn&#8217;t a fault on the tools, but that they are created to test static web pages.
+
+Of course there are commercial tools that (I think) can be scripted to simulate a real session by logging in to the webapp, navigating on it and putting values on forms and fields and running them thousand of times. I have never used them.
+
+Other more recent tool is <a title="Selenium" href="http://seleniumhq.org">Selenium</a>, that build test cases by using a web browser. You start Selenium and it records all the actions you perform on a website/webapp and then can repeat them with just a click. Everything runs on the web browser. Also it is very slow when you want to repeat the test 1000 times. But it is great to test complex scenarios having several link and button clicks and form submissions.
+
+We can use ab or httperf on the SeasideProxyTester applications. This can be useful even if they can&#8217;t navigate the application or &#8220;click&#8221; the links on the application. If you run a command like:
+
+ab -c 10 -n 100 http://seaside.example.com/
+
+it will create 10 concurrent connections, each of them requesting 100 times exactly the same URL. The problem with this kind of request is that you aren&#8217;t testing correctly your application. Here you are testing how many sessions can be created by Seaside under load. Why? As this URL hasn&#8217;t a _s parameter on it (the session key), each time that a request like this arrives to Seaside, a new session will be created for it. And then it is forgotten and never used again.  Also, this command will hit a new Seaside image each time because as isn&#8217;t accepting the cookie, the webserver is doing a round-robin balancing for each request that doesn&#8217;t include the cookie.
+
+With the following httperf command, things are a little better:
+
+httperf &#8211;hog &#8211;session-cookie &#8211;server=seaside.example.com &#8211;wsess=10,100,1 &#8211;rate 2
+
+This creates 10 threads at a rate of 2 per second, each of them will send 100 requests spaced out by 1 second. It also accepts and holds a cookie containing the session key for the session. This command is better in that the requests are more uniformly created over a period of time and not all of them at the start of the command, as the ab command does. The problem is that only can hold one cookie and the SeasideProxyTester is already using a cookie for storing the server that is handling the request. So the httperf command shown isn&#8217;t really sending requests as part of the same Seaside session but it guarantees that the same httperf thread always send its requests to the same Seaside image by sending the cookie value received on the first request. This is, as I said, a little better than ab, but not what we want.
+
+The tool I will be using is <a title="JMeter project" href="http://jakarta.apache.org/jmeter/">JMeter</a> from the Apache Foundation. This tool can be scripted and made to follow links on the application being tested. Also, it can graph the results or save them to a file. It can handle cookies and check for strings on the response for testing purposes. Lets begin testing the SeasideProxyTester apps.
+
+Download JMeter and unzip it. Change to the unzipped directory and run:
+
+miguel@laptop:~$ cd jakarta-jmeter-2.3.4
+miguel@laptop:~/jakarta-jmeter-2.3.4$ ./bin/jmeter
+
+JMeter opens with two panels. To the left the tree of elements that you use to test your site. On the right, the panel where you configure the component selected on the left. Initially you have two components, a Test Plan and a Workbench. We will not use the Workbench.
+
+Select the Test Plan and in the right panel configure:
+
+Name: SeasideProxyTester
+
+In JMeter the changes are saved when you select a different element. So if you select the Workbench, the Test Plan name will change.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-1.jpeg"><img class="alignnone size-medium wp-image-158" title="Test Plan" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-1-300x162.jpg" alt="" width="300" height="162" /></a>
+
+Now, select the SeasideProxyTester test plan and right-click on it to open a pop up menu. Select Add -&gt; Thread Group. Configure the following options:
+
+Name: Users
+
+Number of threads (users): 1
+
+Ramp-Up Period (in seconds): 1
+
+Loop counter: (leave unchecked the Forever checkbox): 1
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-2.jpeg"><img class="alignnone size-medium wp-image-159" title="jmeter-2" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-2-300x162.jpg" alt="" width="300" height="162" /></a>
+
+The Thread Group simulates the users that will use the webapp. This means simulate 1 user that will be created on a timespan of 1 second. That is, after 1 second, you&#8217;ll have 1 user ready to do what the Test Plan specifies. For the moment we&#8217;ll work with one user. Also, the plan will be ran just one time (Loop counter). When the Test Plan is ready we will increment the number of users to load on the application.
+
+Next, select the Users thread group and right-click Add -&gt; Config element -&gt; HTTP Cookie Manager. Nothing to configure for this element.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-3.jpeg"><img class="alignnone size-medium wp-image-160" title="jmeter-3" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-3-300x162.jpg" alt="" width="300" height="162" /></a>
+
+Select the Users thread group and right-click Add -&gt; Config element -&gt; HTTP Request Defaults.  Configure:
+
+Server Name or IP: seaside.example.com
+
+Path: /
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-4.jpeg"><img class="alignnone size-medium wp-image-161" title="jmeter-4" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-4-300x162.jpg" alt="" width="300" height="162" /></a>
+
+This will establish the default parameters for HTTP requests so that you don&#8217;t have to set them everywhere on your Test Plan (useful if you are doing a lot of different HTTP requests).
+
+Again, right-click on the Users thread group and Add -&gt; Listener -&gt; View Results Tree. Nothing to configure.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-5.jpeg"><img class="alignnone size-medium wp-image-162" title="jmeter-5" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-5-300x162.jpg" alt="" width="300" height="162" /></a>
+
+This element will show the individual requests done by JMeter for you to review. DON&#8217;T include this element on test plans that make a lot of requests or your client machine will be using a lot of RAM just to update this element. We&#8217;ll use it only for testing that the plan is correctly configured. When doing the real load testing, we&#8217;ll remove it.
+
+On the Users thread group do Add -&gt; Listener -&gt; Summary Report. Nothing to configure.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-6.jpeg"><img class="alignnone size-medium wp-image-163" title="jmeter-6" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-6-300x162.jpg" alt="" width="300" height="162" /></a>
+
+This element will show the number of requests done, the time to receive responses, errors and other useful data obtained when executing the Test Plan. This is the element that will tell us how many requests our application is capable of process.
+
+Lets add the elements that the Test Plan will execute to test our web application. Select the Users thread group and Add -&gt; Sampler -&gt; HTTP Request. Configure:
+
+Name: Index page
+
+Uncheck: Redirect automatically.
+
+Check: Follow redirects.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-7.jpeg"><img class="alignnone size-medium wp-image-164" title="jmeter-7" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-7-300x162.jpg" alt="" width="300" height="162" /></a>
+
+This establish that the Test Plan must make one request to the &#8220;/&#8221; of the seaside.example.com  server (specified by the HTTP request defaults).
+
+At this step you can already run the Test Plan. Either press Ctrl + R or in the menu Run -&gt; Start. Now select the Result Tree.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-8.jpeg"><img class="alignnone size-medium wp-image-165" title="jmeter-8" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-8-300x162.jpg" alt="" width="300" height="162" /></a>
+
+You&#8217;ll see that JMeter has made two requests although the Test Plan only specifies one request. The first one is to:
+
+GET http://seaside.example.com/
+
+[no cookies]
+
+Request Headers:
+Connection: keep-alive
+
+The full dialog for the first request is:
+
+Thread Name: Users 1-1
+Sample Start: 2009-09-30 11:15:41 CDT
+Load time: 6
+Latency: 6
+Size in bytes: 0
+Sample Count: 1
+Error Count: 0
+Response code: 302
+Response message: Found
+
+Response headers:
+HTTP/1.1 302 Found
+Server: KomHttpServer/7.1.2 (unix)
+Location: http://seaside.example.com/?_s=A1oTuGM8OQmGMbZ5&amp;_k=aI9HNGnu&amp;_c
+Date: Wed, 30 Sep 2009 11:15:41 GMT
+Session: A1oTuGM8OQmGMbZ5
+Set-Cookie: server=app9003; path=/
+Content-type: text/html;charset=utf-8
+Content-length: 0
+HTTPSampleResult fields:
+ContentType: text/html;charset=utf-8
+DataEncoding: utf-8
+
+Here we can see the redirect that the Seaside image that processed the request (at port 9003 as we can see from the Set-Cookie header) is responding. So JMeter does a second request:
+
+GET http://seaside.example.com/?_s=A1oTuGM8OQmGMbZ5&amp;_k=aI9HNGnu&amp;_c
+
+Cookie Data:
+$Version=0; server=app9003; $Path=/
+
+Request Headers:
+Connection: keep-alive
+
+Check that the cookie is being added to all the subsequent requests by JMeter (just as the web browser does). This will result in the request being forwarded to the same image that received the first request.
+
+The full dialog for the second request is:
+
+Thread Name: Users 1-1
+Sample Start: 2009-09-30 11:15:41 CDT
+Load time: 7
+Latency: 7
+Size in bytes: 1516
+Sample Count: 1
+Error Count: 0
+Response code: 200
+Response message: OK
+
+Response headers:
+HTTP/1.1 200 OK
+Expires: Wed, 11 Jun 1980 12:00:00 GMT
+Server: KomHttpServer/7.1.2 (unix)
+Pragma: no-cache
+Date: Wed, 30 Sep 2009 11:15:41 GMT
+Session: A1oTuGM8OQmGMbZ5
+Cache-Control: no-cache, must-revalidate
+Content-type: text/html;charset=utf-8
+Content-length: 1516
+HTTPSampleResult fields:
+ContentType: text/html;charset=utf-8
+DataEncoding: utf-8
+
+Until now everything is ok. Now lets add elements that will follow the links on the SeasideProxyTester summary page.
+
+We have received a page with the HTML of the response. Inside this HTML there is a link that makes a new request in the same Seaside session (it sends the _s and _k parameters on it). We must find this link and make a request for it. After that, Seaside will respond a new HTML page with a new link on it, although with other values for _s and _k. We must again find the link and make a request for it. We must do this every time we need to follow the link. For this to work we need to add a post-processor (an element that triggers after each sampler execution, in this case, our HTTP requests). This post-processor will find the link and will save it to a variable in order to make the next request to the application. Then we will setup a loop controller to make the session counter increase in the SeasideProxyTester.
+
+Select the Users thread Group and  Add -&gt; Post processor -&gt; Regular Expression Extractor. Configure:
+
+Uncheck: Body
+
+Check: Body (unescaped)
+
+Reference Name: newRequestURL
+
+Regular Expression: \?(_s=[^&amp;]+?)&amp;(_k=[^&amp;]+)&amp;2
+
+Template: ?$1$&amp;$2$&amp;2
+
+Match No. (0 for Random): 1
+
+Default Value: REGEX_FAILED
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-9.jpeg"><img class="alignnone size-medium wp-image-166" title="jmeter-9" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-9-300x162.jpg" alt="" width="300" height="162" /></a>
+
+Then add a loop element to queue several requests one after other. Select the Users thread group and Add -&gt; Logic Controller -&gt; Loop Controller. Configure:
+
+Loop count (leave Forever unchecked): 10
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-10.jpeg"><img class="alignnone size-medium wp-image-167" title="jmeter-10" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-10-300x144.jpg" alt="" width="300" height="144" /></a>
+
+Select the Loop Controller and Add -&gt; Sampler -&gt; HTTP Request. Configure:
+
+Name: Follow link
+
+Path: /${newRequestURL}
+
+Uncheck: Redirect automatically
+
+Check: Follow redirects
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-11.jpeg"><img class="alignnone size-medium wp-image-168" title="jmeter-11" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-11-300x162.jpg" alt="" width="300" height="162" /></a>
+
+That is it. Run it again and you&#8217;ll see that now there are eleven requests. One for the Index page, that is responsible of following the redirect and accepting the server cookie and ten for simulating clicking ten times the link &#8220;Make a new request inside this session&#8221;. Review the View Results Tree to see the individual requests.
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-12.jpeg"><img class="alignnone size-medium wp-image-169" title="jmeter-12" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-12-300x144.jpg" alt="" width="300" height="144" /></a>
+
+What have we done. We have simulated a user accessing the seaside.example.com, receiving a redirect and a cookie as response. After following the redirect and using the cookie in any subsecuent request, it follows a link to simulate clicking it ten times. The View Results Tree page shows the responses and that the last HTML has a counter of 11 in the number of requests of the session.
+
+So we are ready for the last step. Load testing the application.
+
+First, remove the View Results Tree. We don&#8217;t want the JMeter client lost time trying to allocate memory just for storing and updating this element. Those CPU cycles and memory should be used to stress the application. Now update the Users thread group:
+
+Number of threads: 100
+
+Ramp-Up Period: 20
+
+And update the Loop Controller:
+
+Loop Count: 500
+
+<a href="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-13.jpeg"><img class="alignnone size-medium wp-image-170" title="jmeter-13" src="http://miguel.leugim.com.mx/wp-uploads/2009/09/jmeter-13-300x162.jpg" alt="" width="300" height="162" /></a>
+
+And run it again. This time, after 20 seconds you&#8217;ll have 100 users (threads) created, each of them running the Test Plan, that is, requesting the Index Page and then following 500 times the link.
+
+This will put a real load on your server by doing 100 * 501 = 50100 requests.
+
+Try changing the parameters involved:
+<ul>
+	<li>Number of images started (scripts/start_app.sh)</li>
+	<li>Number of concurrent users created by JMeter</li>
+	<li>Total time to create the users (so that the load is uniformly distributed over a bigger timespan)</li>
+	<li>Total number of requests made by each user.</li>
+	<li>Changing the number of processes running on the production server.</li>
+	<li>Distributing the images (magma and seaside) on different machines.</li>
+	<li>Putting the webserver on a different machine.</li>
+	<li>Starting several instances of JMeter on several distinct machines.</li>
+</ul>
+Well, you get an idea. Only after varying the environment you&#8217;ll get the correct and optimal setup.
+
+This test can be reproduced by everyone so that you can check your setup and compare it to others.
+Finally read the <a title="Seaside scaling with Gemstone/S 64" href="http://gemstonesoup.wordpress.com/2008/02/10/jcrawler-for-seaside-testing/">posts</a> from Dale Henrichs <a title="Dale Henhichs blog" href="http://gemstonesoup.wordpress.com/">blog</a> about Seaside scaling but using Gemstone/S 64.
+
+The next post I will show the results on my machine both for the magma.example.com and for the seaside.example.com.
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[30]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/09/25/30/"/>
+    <updated>2009-09-25T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/09/25/30</id>
+    <content type="html"><![CDATA[Tengo 30 años.
+
+Ich bin 30 Jahre alt.
+
+J&#8217;ai 30 ans.
+
+I&#8217;m 30 years old
+
+Hoy cumplo 30 años.
+
+No estoy viejo, pero indudablemente ya nadie me llamaría joven.
+
+No tengo la cabeza llena de canas, pero muchas ya se abrieron paso y se notan (aunque no de lejos).
+
+No creo en la tonteria del millón de dólares antes de los 30, pero tampoco los hubiera rechazado.
+
+Tengo una familia adorable. Una esposa guapa, joven, muy inteligente y que me apoya. Un hijo maravilloso, sorprendente, adorable y con demasiada energía. Y además, un bebé de 3 o 4 cm, desconocido, un misterio, del cual solamente hemos visto una foto en el ultrasonido de hace 3 semanas.
+
+La familia es mi mejor regalo, y es una gran felicidad tenerlos a mi lado en este cumpleaños más significativo por el numeral que por las circunstancias ya que para mi (y para eterna molestia de Aline, quien dice que soy un Grinch de todos los festejos) es un día como cualquier otro. Eso si, nublado, como para tomarse un café en la tarde en algún lugar con pasto mientras vemos a Tristán correr y asombrarse del mundo.
+
+Bueno, ya fue un post más largo de lo que planeaba para un día tan &#8220;normal&#8221; :)
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying Seaside: SeasideProxyTester]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-seasideproxytester/"/>
+    <updated>2009-09-22T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-seasideproxytester</id>
+    <content type="html"><![CDATA[We have a working deployment setup. It runs a Magma image and several Seaside images. The Seaside images are all of them running copies of a single Seaside image. This Seaside image has a copy of the application we want to deploy. In this tutorial the application is the SeasideProxyTester from the SeasideExamples of squeaksource.com.
+
+The SeasideProxyTester is very simple because it doesn&#8217;t want to show any particular Seaside feature. It is a tool to test a setup of proxied Seaside images behind a proxy webserver. It consists of three classes:
+<ul>
+	<li>SPTApplication. It is a Seaside application registered as seasideProxyTester.</li>
+	<li>SPTApplicationMagma. It is a Seaside application registered as magmaProxyTester</li>
+	<li>SPTDatabase. It is used as the root of the domain objects in the Magma repository. It is used by SPTApplicationMagma to store the number of requests made to the application</li>
+</ul>
+SPTApplication and SPTApplicationMagma are very simple. When each application is accessed a simple page is rendered, showing the number of requests made so far to the application. The request can be counted in three ways:
+<ol>
+	<li>By Seaside session. Number of requests made as part of the same Seaside session (that is, _s is the same for all of them).</li>
+	<li>By Seaside image. Number of requests made to the same image, no matter if they are from different Seaside sessions (that is, the requests have the same value for the server cookie: app9001, app9002, etc)</li>
+	<li>By application. Number of requests made to the application, no matter if they are from different Seaside sessions or Seaside images (that is is a global counter of the requests made to any of the images in any of the created Seaside sessions).</li>
+</ol>
+The magmaProxyTester works exactly as the previous points explain. The Magma database is used to store the global request number and a request number for each image.
+
+The seasideProxyTester can&#8217;t, by their nature, keep track of the third counter, that is the global request counter or application request counter. This is because each image is an autonomous entity that has no way to communicate between them to share and update the global request counter. So, although each SPTApplication in each image has a class instance variable to track the number of requests, this is scoped to the image and only can track the number of request that reached the image is part of. So each image has it very own global counter that tracks the requests that has processed. If you sum the global counter of each Seaside image for the SPTApplication, you can get the real global request counter for the seasideProxyTester application. In the SPTApplicationMagma app, the magma database is the external (to the image) holder of those counters, and is also responsible of mediating between them when updating the counters.
+
+So with this warning out of the way. What can you get from this SeasideProxyTester. Lets begin with the magma.example.com application. The first time I access it it shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 1</li>
+	<li>serverPort: 9001 requests: 1</li>
+</ul>
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+This shows that the request was served by the first Seaside image listening on port 9001.  This request has been correctly counted. If I reload the page I create a new Seaside session but i remain in the same Server (as my browser has accepted the cookie with value app9001). Now the page shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 2</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 3
+
+Total requests: 2</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+As you can see you are on the same server (the one listening on port 9001) and the global counters have been updated accordingly.
+
+Now, I delete the cookies of my browser so that the next reload it doesn&#8217;t include the server cookie. lighttpd will use round-robin to proxy to the next available server, that is, the one on port 9002. Now I see:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: 9002 requests: 1</li>
+	<li>serverPort: Total requests: 3</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;1">Reset database.</a></td>
+<td>Listening on port: 9002
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9002
+
+Previous request served on port: 9002
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+You are now on a different server, the one listening on port 9002. Well, you get the idea.
+
+Now, there are two links on the page. The first one, &#8220;Reset database&#8221;, as you can guess, will reset the global counters. But, as this is also a request, the counters won&#8217;t be 0 but 1 the next time the page is rendered.
+
+The second one &#8220;Make a new request inside this session&#8221; will make a new request (by means of a Seaside callback) that is part of the same session (same _s parameter). This, as always, changes the global counters, but also increments the session request counter.
+
+So far so good.
+
+The seasideProxyTester works very similar, the only problem, as I have said is that there is no way for all the Seaside images to update a group of shared global counters (this, in the end, will need a external database, the role Magma is playing in the magmaProxyTester), so each image has a class instance variable that tries to keep track of the global counters but this is only valid inside the image scope. Repeat the same requests made with the magma.example.com using the seaside.example.com and you&#8217;ll note that each time you change of Seaside server you get a different global counter. Only if you sum all the global counters you will have the real global request counter.
+
+Now you can put your stress loading tools to work by pointing them to your new setup and measure the results.
+
+Or, wait for the next post and I will show you one way to do load testing on Seaside applications
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploying Seaside: Prepare the images]]></title>
+    <link href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-prepare-the-images/"/>
+    <updated>2009-09-22T00:00:00-05:00</updated>
+    <id>http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-prepare-the-images</id>
+    <content type="html"><![CDATA[You have a working squeak vm install. Now we will create the directories we&#8217;ll use.
+
+<strong>Create directories
+</strong>
+
+export WORK=/home/miguel/work
+mkdir -p $WORK
+
+export DEPLOY=/home/miguel/example
+mkdir -p $DEPLOY/{pharo,magma,backup,logs,scripts,website}
+
+We will use two directories, put them where you want. I chose to put them on my home directory but you can use any other if you wish. The important thing is to have the environment variables correctly assigned. This will ease the following steps.
+
+The work directory is to hold temporary files as we setup the deploy directory. At the end will be discarded.
+
+The deploy directory is what we will populate with the images and other useful scripts to host our Seaside application and data. As you can see has directories for the images (pharo), for the database (magma), for the magma backups (backups), for the logs (currently only has the output of the nohups used to start the images), for the scripts (guess, scripts!) and for the static content of your application, that you wisely have the webserver to serve and not the Seaside server (website). More on this later.
+
+<strong>Download PharoCore</strong>
+
+Now go to the Pharo <a title="Pharo download page" href="http://pharo-project.org/pharo-download">download page</a> look for the section &#8220;Sources files&#8221; and download the Sources zip file. At the moment is:
+
+SqueakV39.sources.zip
+
+Now go to the bottom of the page and follow the link that says &#8220;Pharo-core images and other files&#8221;. Find the most recent PharoCore zip file. Currently is:
+
+PharoCore-1.0-10451-BETA.zip
+
+but any newer will do.
+
+Unzip this two zip files. The PharoCore will create a directory and inside it will be the image and changes files. The Sources zip contains one file. Now, copy this three files to the $WORK directory:
+
+cp PharoCore-1.0-10451-BETA.image $WORK
+cp PharoCore-1.0-10451-BETA.changes $WORK
+cp SqueakV39.sources $WORK
+
+So far so good. You have a PharoCore image with its changes file and a sources file. This, together with the virtual machine gives you a complete Pharo environment to work. You can try it:
+
+cd $WORK
+$VM PharoCore-1.0-10451-BETA.image
+
+You should see the PharoCore image running. Quit the image WITHOUT saving.
+
+<strong>Save scripts</strong>
+
+Save the following scripts to the $WORK directory.
+
+<strong><em>magma-image.st:</em></strong>
+
+&#8220;Install Magma Server on a PharoCore image&#8221;
+
+&#8220;Set some preferences&#8221;
+Preferences enable: #fastDragWindowForMorphic.
+Preferences disable: #windowAnimation.
+Preferences enable: #updateSavesFile.
+Preferences disable: #windowAnimation.
+
+&#8220;Update from pharo update stream (only works/recomended for PharoCore)&#8221;
+Utilities updateFromServer.
+
+&#8220;Your name, like MiguelCoba or VincentVanGogh, dont  use spaces or accents, just ASCII&#8221;
+Author fullName: &#8216;FirstnameLastname&#8217;.
+
+&#8220;Install Installer&#8221;
+ScriptLoader
+loadLatestPackage: &#8216;Installer-Core&#8217; fromSqueaksource: &#8216;Installer&#8217;.
+
+&#8220;RFB&#8221;
+Installer lukas project: &#8216;unsorted&#8217;;
+install: &#8216;RFB&#8217;.
+
+&#8220;Magma server&#8221;
+Installer ss project: &#8216;Magma&#8217;;
+install: &#8216;1.0r42 (server)&#8217;.
+
+&#8220;Configure the packages&#8221;
+RFBServer current
+initializePreferences;
+allowEmptyPasswords: false;
+allowLocalConnections: true;
+allowRemoteConnections: false;
+allowInteractiveConnections: true;
+connectionTypeDisconnect;
+configureForMemoryConservation;
+setFullPassword: &#8216;useyourownpasswordhere&#8217;.
+
+&#8220;Save with a new name&#8221;
+SmalltalkImage current saveAs: &#8216;magma&#8217;.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script when executed on a PharoCore image, will set some preferences, apply updates from the Pharo project if available and then install some packages directly from their repositories. The packages installed are RFBServer (a VNC server for Squeak and Pharo) and the Magma server. Finally it configures the packages and saves the image with a new name: magma. Be sure to change your full name and the RFBServer before saving the file.
+
+<em><strong>magma-run.st:</strong></em>
+
+&#8220;When a file named magma.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving&#8221;
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.shutdown&#8217;)
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ].
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.startvnc&#8217;)
+ifTrue: [ Project uiProcess resume.  RFBServer start:0 ].
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.stopvnc&#8217;)
+ifTrue: [ RFBServer stop. Project uiProcess suspend ].
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+&#8220;To save CPU cycles&#8221;
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<em><strong>seaside-image.st:</strong></em>
+
+&#8220;Install Seaside on a PharoCore image&#8221;
+
+&#8220;Install packages&#8221;
+
+&#8220;Comanche&#8221;
+Installer ss project: &#8216;KomHttpServer&#8217;;
+install: &#8216;DynamicBindings&#8217;;
+install: &#8216;KomServices&#8217;;
+install: &#8216;KomHttpServer&#8217;.
+
+&#8220;Seaside&#8221;
+Installer ss project: &#8216;Seaside&#8217;;
+answer: &#8216;.*username.*&#8217; with: &#8216;admin&#8217;;
+answer: &#8216;.*password.*&#8217; with: &#8216;seaside&#8217;;
+install: &#8216;Seaside2.8a1&#8217;;
+install: &#8216;Scriptaculous&#8217;.
+
+&#8220;Seaside Jetsam&#8221;
+Installer ss project: &#8216;Jetsam&#8217;;
+install: &#8216;Seaside28Jetsam-kph.67&#8217;.
+
+&#8220;Seaside helper&#8221;
+Installer ss project: &#8216;MagmaTester&#8217;;
+answer:&#8217;username&#8217; with:&#8217;admin&#8217;;
+answer:&#8217;password&#8217; with:&#8217;seaside&#8217;;
+install: &#8216;Magma seasideHelper&#8217;.
+
+&#8220;SeasideProxyTester&#8221;
+Installer ss project: &#8216;SeasideExamples&#8217;;
+install: &#8216;SeasideProxyTester&#8217;.
+
+&#8220;Configure the packages&#8221;
+&#8220;Start Seaside&#8221;
+WAKom startOn: 9001.
+
+&#8220;Unregister example apps&#8221;
+WADispatcher default trimForDeployment.
+
+&#8220;Unregister deployed apps&#8221;
+WADispatcher default
+unregister: (WADispatcher default entryPointAt: &#8216;/browse&#8217;);
+unregister: (WADispatcher default entryPointAt: &#8216;/config&#8217;).
+
+&#8220;Save with a new name&#8221;
+SmalltalkImage current saveAs: &#8216;seaside&#8217;.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script install Seaside 2.8, Magma seasideHelper and the SeasideProxyTester app that we will use to test the setup. Besides, start Seaside on port 9001, unregister unnecessary apps from the Seaside dispatcher and save the image as seaside.
+
+<strong><em>seaside-run.st:</em></strong>
+
+&#8220;When a file named seaside.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving&#8221;
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: &#8216;seaside.shutdown&#8217;)
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ]
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+&#8220;To save CPU cycles&#8221;
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<strong><em>start_app.sh:</em></strong>
+
+#!/bin/sh
+
+HOME=&#8221;/srv/example&#8221;
+NOHUP=&#8221;/usr/bin/nohup&#8221;
+VM=&#8221;/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null&#8221;
+IMAGES=&#8221;$HOME/pharo&#8221;
+SCRIPTS=&#8221;$HOME/scripts&#8221;
+LOGS=&#8221;$HOME/logs&#8221;
+START_PORT=9001
+END_PORT=9004
+
+# Delete command files
+
+[ -f $IMAGES/magma.shutdown ] &amp;&amp; rm $IMAGES/magma.shutdown
+[ -f $IMAGES/magma.startvnc ] &amp;&amp; rm $IMAGES/magma.startvnc
+[ -f $IMAGES/magma.stopvnc ] &amp;&amp; rm $IMAGES/magma.stopvnc
+[ -f $IMAGES/seaside.shutdown ] &amp;&amp; rm $IMAGES/seaside.shutdown
+
+# Start the Magma image
+echo &#8220;Starting Magma image&#8221;
+$NOHUP $VM $IMAGES/magma.image $SCRIPTS/magma-run.st &gt;&gt; $LOGS/magma.nohup &amp;
+
+# To give Magma time to open the repository
+sleep 5
+
+# Start the Seaside images
+for PORT in `seq $START_PORT $END_PORT`; do
+echo &#8220;Starting Seaside image on port: $PORT&#8221;
+$NOHUP $VM $IMAGES/seaside.image $SCRIPTS/seaside-run.st port $PORT &gt;&gt; $LOGS/seaside$PORT.nohup &amp;
+done
+
+I will explain this script later.
+
+<strong>Prepare images</strong>
+
+Make sure that the previous scripts are saved to the $WORK directory. Then build the images:
+
+cd $WORK
+
+# Build magma image from PharoCore image
+$VM PharoCore-1.0-10451-BETA.image $WORK/magma-image.st
+
+# Build seaside image from the magma image
+$VM magma.image $WORK/seaside-image.st
+
+This will take the PharoCore image and, by using the scripts given, will build the magma image. Then, using the magma image, will build the seaside image.
+
+The build scripts are based on the scripts included in the pharo-dev and pharo-web images created by <a title="Damien Cassou" href="http://damiencassou.seasidehosting.st/seaside/pier">Damien Cassou</a>.
+
+The magma-run.st and seaside-run.st scripts are based on the ones Ramon Leon posted on his <a title="Ramon Leon" href="http://onsmalltalk.com">blog</a>.
+]]></content>
+  </entry>
   
 </feed>

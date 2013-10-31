@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>VirtualBox - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Como en el 90% de los trabajos, el sistema operativo de cabecera es alguna versión de Windows. Mi actual trabajo no es la excepción.
+Y no hay nada &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/03/01/virtualbox">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">VirtualBox</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-03-01T00:00:00-06:00" pubdate data-updated="true">Mar 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Como en el 90% de los trabajos, el sistema operativo de cabecera es alguna versión de Windows. Mi actual trabajo no es la excepción.
+Y no hay nada más aburrido que un Windows con Office como único software instalado. Si quieres tener una máquina interesante debes instalarle un mundo de software para que los 3GHz y 1GB de memoria RAM sirvan para algo mejor que para escribir documentos, oficios y presentaciones. Pero instalar software en Windows es poco menos que cavernícola, sobre todo después de haber usado Debian. Tienes que buscar el software que necesitas, descargar la versión más reciente y esperar que instale todo en c:\Archivos de programa\ en lugar de c:\Program Files&#46; Si todo sale bien, ya tienes tu software instalado. Repite esto N veces y después de un par de horas tienes un sistema más o menos decente. Todo bien hasta que alguien te dice que existe una nueva versión de tal software.
+Entonces repites el proceso de instalación para dicho paquete. Y una vez más para otro software y así hasta el infinito por los siglos de los siglos. ¡Qué flojera!
+
+
+<!--more-->
+
+En Debian todo se reduce a un simple <code>aptitude install</code> <em>software</em>.
+Dada la cantidad de software que existe en los repositorios de Debian, es difícil no encontrar alguno que satisfaga tu necesidad.
+Y mejor aún, para actualizar todo el software que tenga actualizaciones, simplemente ejecutas un <code>aptitude update</code> y listo! Actualizaciones para los 20 paquetes que instalaste o para los 235 paquetes que instalaste o para todo el sistema completo. ¡Un solo comando!.
+Tan acostumbrado estoy a esto que entre más pasan los meses más complejo se vuelve el vivir día a día con Windows.
+Y a pesar de que en el trabajo no tengo opción de instalarle Debian a mi máquina, existe la posibilidad de usarla sin tener que formatear, reinstalar o de alguna manera modificar Windows.
+Para poder hacer esto hago uso de software de virtualización, de manera que en mi máquina física, que ejecuta Windows, se agrega una segunda capa, formada por el software de virtualización, que ejecuta a su vez otro sistema operativo, en este caso Debian GNU/Linux.
+Hay varias opciones de software de virtualización: VMWare, Virtual PC, QEMU y VirtualBox. Este último fue liberado como free software en enero de 2007 y rápidamente ganó aceptación.
+Anteriormente había usado VMWare Server para ejecutar un Debian Sarge, pero no dejaba de tener la impresión que era lento, pesado como elefante. Debian no se sentía natural. Lo mismo paso cuando instale Debian Etch.
+Cuando VirtualBox salió a la luz decidí intentarlo. De esta manera, si todo iba bien, podría librarme del software propietario y a la vez tener un sistema ejecutándose más eficientemente. Sobre todo si a pesar de que mi máquina tiene 3GHz y 1 GB de RAM Debian parece como si se ejecutara en una Pentium con 128 MB de RAM
+Finalmente, una vez instalado VirtualBox con Debian Etch dentro de él, todo resulto mucho mejor de lo esperado. En este momento escribo esto desde la máquina virtual de Debian Etch, ejecutandose con 700MB de RAM, y 10 GB de disco, sobre un host Windows XP con 1GB de RAM.
+El performance es excelente. La mayor parte del tiempo me olvido de que estoy trabajando sobre una máquina virtual. Todas las ventajas de Debian al alcance de mis manos y ninguna de las incomodidades de Windows.
+Pruébalo, descarga <a href="http://www.virtualbox.org">virtualbox</a> e instala tu sistema operativo favorito. No te fallará
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-03-01T00:00:00-06:00" pubdate data-updated="true">Mar 1<span>st</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/03/01/virtualbox/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/03/01/virtualbox/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/03/01/sun-java-5-en-debian-etch/" title="Previous Post: Sun Java 5 en Debian Etch">&laquo; Sun Java 5 en Debian Etch</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/03/05/the-geek-test/" title="Next Post: The geek test">The geek test &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

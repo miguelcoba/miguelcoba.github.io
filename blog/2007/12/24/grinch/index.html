@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Grinch - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Ya sé, parezco al Grinch. Pero es que cada año es lo mismo. Escuchas felicitaciones por todos lados, recibes abrazos de gente con la que en el año &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/12/24/grinch">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Grinch</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-12-24T00:00:00-06:00" pubdate data-updated="true">Dec 24<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Ya sé, parezco al Grinch. Pero es que cada año es lo mismo. Escuchas felicitaciones por todos lados, recibes abrazos de gente con la que en el año cruzaste las mismas dos palabras (buenos días) o que mirabas al pasar por los pasillos, pero de la que no sabes más que trabaja en el mismo edificio que tú. En las calles hasta los taxistas te felicitan como si te conocieran o al menos como si les importara. Todo mundo destila, emana, prodiga y se desvive enviando buenos deseos.
+
+
+
+<!--more-->
+
+
+Por otro lado están las fiestas. Fiestas por todos lados, posadas, reuniones, más posadas, más reuniones. Llegan a tal grado que de pronto dices ¡ya basta! quiero dormir, quiero vacaciones de las fiestas de vacaciones para disfrutar de mis vacaciones (que por otro lado yo no tengo ya voy a trabajar todos los días menos el 25 y el 1 de enero, pero eso no es la causa de tan amargo post).
+
+En la fiesta de navidad ni se puede disfrutar a gusto porque hay que salir corriendo a casa de &lt;suegros, padres, abuelos, parientes, etc&gt; para que podamos estar con todos el mismo día. Por qué no se ponen de acuerdo y en navidad la hacen unos y en año nuevo otros.  Cosas de la vida.
+
+Pero lo que más detesto es la descarada campaña de las tiendas para que compres y te gastes tu pobre sueldo en regalos (y no sólo eso, sino que te dan oportunidad de que las pagues en 18 meses, para que la siguiente navidad todavía sigas pagando tus regalos).
+
+Algunos dicen que regalas a quien quieres regalarle, o sea, que en la tarjetita dice <em>De: fulanito Para: sutanito</em>. Otros dicen que el 24 viene Santa Claus y te deja regalos si escribes tu carta y te portaste bien. Nadie se pone de acuerdo y los niños terminan todos confundidos porque algunos reciben su regalo después de la cena y otros hasta el otro día. Pobres niños. Además están los Santos Reyes Magos. O los Reyes Magos o como diablos se llamen. Nadie sabe con certeza.
+
+Y las fotos en la alameda (o en cualquier parque en estos días tan capitalistas) con Santa Claus y con los reyes. Ahora hasta hay Santa Claus en motocicleta y en Plaza Universidad hay un Santa Claus que tiene de ayudantes a unas chicas (con minifaldita más que llamativa) que de elfos (a menos que sean del señor de los Anillos) no tienen un pelo. Más de un papá le saca la foto a los chamacos más por verle las piernas o el escote a las ayudantes de santa que por otra cosa.
+
+Pero corrijo, lo que más detesto no son los regalos sin sentido o con un pretexto tan poco sólido. Lo que más me desconcierta de todo esto es la proliferación, de unos años para acá, de toda la decoración navideña: santas, renos, nieve, árboles, tiggers vestidos de santa y, en una casa de Cd. Satelite, tienen en la puerta de la casa un Grinch verde vestido de santa de 2 metros de altura. Tambíen hay por la Colonia del Valle (cual película <em>Home Alone</em>) una calle donde varias casas están decoradas con foquitos hasta el extremo me imagino de requerir una subestación eléctrica para aguantar la carga de tanta decoración .
+
+¿Qué nos pasa, qué pasa con México? ¿Nos estamos volviendo gringos wannabe o qué? No es posible. El 95% de los méxicanos jamás ha visto o verá nieve en su vida. Y a pesar de que nominalmente somos parte de norteamérica (algunos dicen, y ahora les creo, que somos el patio trasero de los Estados Unidos), estamos más cerca del ecuador que del polo norte. Aquí no hay nieve y lo que cae en el cerro del Ajusco cuando hace mucho frío (uy cuanto frío, -5 grados y ya estamos quejándonos) no es mas que una vil helada que nuestros reporteros de noticias, muy pomposamente, llaman nieve para emocionarnos cual si vivieramos en la Suiza o en Finlandia. No señor.  Y renos ni siquiera hay aquí. Para nosotros lo más parecido que tenemos es un venado cola blanca. Y esos solamente los vemos en el museo de Chapultepec, junto con el pobre oso polar que no festeja mucho la navidad sufriendo del calor del centro del país .
+
+Al igual que la fiesta de día de muertos, que últimamente se ha rebautizado como Halloween (¡haganme favor!), con calaveras, fantasmas y brujas con verrugas y escoba. Así de irreal es México y su gente. Ay mi México, como dicen: &#8220;tan lejos de Dios y tan cerca de los Estados Unidos&#8221;.
+
+El caso es que estamos en navidad y las posadas aquí en el DF no son posadas como siempre las conocí, con rezo y procesión, y velitas y aguinaldos, y piñata y ponche. No, aquí las posadas son reventones en un antro o sea una fiesta en casa de alguien o en una discoteque. El ponche es una cosa con frutas y alcohol y el aguinaldo es un regalo que reciben los adultos y usan para endeudarse el año siguiente en lugar de una bolsita con dulces para los niños.
+
+Y no es que sea mocho, no lo soy, nunca lo he sido, pero si me parece ridículo festejar algo que originalmente era una fiesta religiosa como si fuera simplemente una fiesta cualquiera. Hasta un cumpleaños o el día del trabajo tiene más significado en esta ciudad tan agringada. Es como si en estos tiempo festejáramos una <a href="http://es.wikipedia.org/wiki/Bacanal" title="Bacanal">bacanal</a> sólo por el hecho de hacer una orgía, olvidando el sentido original de la fiesta como un culto a Dioniso (con todas sus sutilezas y simbolismos, de los cuales sabemos poco). Una fiesta es sólo en relación a su entorno original. Fuera de su entorno y despojado de sus creencias y motivaciones se vuelve hueco, sin sentido. Como una máscara en lugar de un rostro. Algo tieso, inexpresivo, falto de espíritu. Eso pasa con la navidad y el día de muertos en el DF, son una fiesta sin sentido y ya sin fundamento. Por eso para los capitalinos son noticia de primera plana la fiesta de Mixquic. Por eso es atractivo, en el sentido de espectáculo, las posadas tradicionales con rezo y procesión.
+
+Por eso es que me quejo, por festejar sin festejar. Por comercializar con ello. Por hacer un producto, una temporada de ventas y descuentos, un medio de obtener ganancias monetarias de algo que tenía significado profundo para el México tradicional y creyente. Por que nos estamos dejando despojar de nuestra cultura y sustituyéndola por malas copias de la &#8220;cultura&#8221; de un país acultural que se ha creado su propia cultura a falta de una real (como el museo de la coca-cola, a eso llegan). Desde el Porfiriato con la cultura francesa, o si somos honestos, desde la conquista, siempre nos hemos dejado deslumbrar por la cuentas de vidrio que damos a cambio de nuestras creencias hechas de oro a los extranjeros que vienen a quitarnos lo poco que tenemos. Y no aprendemos. Me incluyo entre ellos porque es difícil extraerte de tu entorno y ser independiente de él, pero me doy cuenta, al menos en estas cosas, de que seguimos siendo conquistados y despojados de lo nuestro, de que seguimos haciendo trueques desfavorables y <a href="http://etimologias.dechile.net/?leonino" title="Leonino">leoninos</a> ya no entre nuestro oro (que ya no tenemos) y las cuentas de vidrio y espejitos, sino entre nuestras creencias (influenciadas por la iglesia, no lo niego, pero al fin de cuentas más nuestras que la nieve y el viejito barbón) y las creencias de otros.
+
+A donde iremos a parar.
+
+Así que esta época soy un grinch, un tipo de grinch. Un grinch morenito y qujumbroso.
+
+Pero no todo esta perdido. Me gusta la comida, me gusta que estemos juntos. Pero más me gustaría que siempre estemos junto y que no haga falta un pretexto para reunirnos. Para abrazarnos, para conocernos y no tener que hacerla de tonto a fin de año abrazando a una bola de completos desconocidos con los que trabajaste todo un año, más de ocho horas al día. Más me gustaría que cuando regales no regales para que no se sientan ofendidos porque a tal o cual no le diste regalo pero a su hermano si. Se regala porque se quiere, no porque se debe. No hay una lista de personas a las que se les compra regalo. Hasta una sonrisa o una buena palmada en la espalda dice mucho más de cuánto aprecias a una persona que un regalo envuelto en papel importado de los menguantes bosques Chinos. Un buen trago de ponche o de tequila junto a las personas que aprecio es para mi el mejor regalo que puedo tener en esta época. Estar con mi familia, con mi esposa y con mi hijo, todos sanos y felices me hace sentir que es una época especial. No los adornos ni el árbol, ni los regalos. Es la gente. Pero igual sería feliz si tuviera todo esto en un 15 de julio o un 3 de febrero.
+
+Pero ahora por ser Navidad, no veo nacimientos, sólo regalos y árboles con luces y mucha nieve de plástico. Por tanto, en lugar de decir feliz Navidad, digo, que disfruten sus vacaciones y que cenen rico.
+
+Uf.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-12-24T00:00:00-06:00" pubdate data-updated="true">Dec 24<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/12/24/grinch/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/12/24/grinch/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/12/14/viernes/" title="Previous Post: Viernes">&laquo; Viernes</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/12/26/test-driven-development/" title="Next Post: Test Driven Development">Test Driven Development &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

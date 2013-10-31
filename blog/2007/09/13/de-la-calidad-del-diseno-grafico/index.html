@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>De la calidad del diseño gráfico. - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Hace tiempo que intento terminar un proyecto alterno que estoy haciendo con un amigo. Es una aplicación web. Ya saben, lo tradicional: PostgreSQL, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/09/13/de-la-calidad-del-diseno-grafico">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">De La Calidad Del Diseño Gráfico.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-13T00:00:00-05:00" pubdate data-updated="true">Sep 13<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Hace tiempo que intento terminar un proyecto alterno que estoy haciendo con un amigo. Es una aplicación web. Ya saben, lo tradicional: PostgreSQL, Java, Struts, Tomcat. Eso no es importante, sobre todo a la vista de los últimos posts donde explico mis razones para dejar atrás ese tipo de tecnología (me refiero a Struts). Lo importante es que desde el inicio decidí que iba a separar completamente la presentación de la aplicación, de manera que el producto se pudiera personalizar (cambiarle el tema) si así lo prefería el cliente.
+
+Si alguien me hubiera dicho que eso iba a ser toda una aventura, no lo hubiera creído.
+
+
+
+<!--more-->
+
+
+El caso es que decidí que el html debería estar límpio, es decir, nada de especificar colores, tipografías, tamaños, alineaciones, etc.  En lugar de eso agregué a los tags de html atributos <em>id</em> o <a href="http://www.w3schools.com/html/html_standardattributes.asp"><em>class</em></a> para especificar el estilo que debería aplicarse a los mismos.  La idea era que todo el estilo estuviera contenido en una hoja de estilos (css). Todo perfecto en la teoría. Según mis proyecciones, una vez terminado el proyecto no debería llevar más de una semana a un diseñador competente el crear una imagen para nuestro producto (css, imagenes, etc) que yo integraría al mismo sustituyendo a la hoja de estilos mínima que usamos durante el desarrollo.
+
+Y aquí es donde inicia el drama. El proyecto fue terminado desde abril. Comenzó mi amigo a buscar a un diseñador (yo no conozco a ninguno) que se encargara de la última parte del proyecto. Después de un par de semanas a la espera del diseñador, finalmente consiguió a uno que dijo que podía encargarse del trabajo. El diseñador comenzó a trabajar en una imagen para el producto. Todo esto sin estar yo muy involucrado porque por ese entonces nació mi hijo y no tenía mucho tiempo para otra cosa. El caso es que cuando reanudé el trabajo con mi amigo me dijo que ya estaba lista la imagen para el producto y que solo faltaba que yo lo viera para que estimara cuanto me llevaría integrarlo. Nos reunimos y finalmente vi lo que había hecho el diseñador.
+
+Ja, pues resulta que su diseño no nos era útil. Era un conjunto de imágenes png que mostraban su concepción artística del producto. ¿Qué? Si, imágenes, generadas por Dreamweaver o una cosa de esas. Afirmé que eso no nos servía para nada. Argumentó que el siempre entregaba sus trabajos así. Que lo que el hacia eran diseños (y no niego que tenía talento para eso) pero que él nunca había trabajado con hojas de estilo ni sabía para que servían. ¿?¿? ¿Pues qué les enseñan entonces en la escuela de diseño? Finalmente accedió a aprender css (con links que yo le pasé, porque ni siquiera hubo iniciativa para buscar en google) pero con la advertencia de que le llevaría tiempo hacer eso.
+
+Después de 3 largas semanas de emails de ida y vuelta preguntándome cosas sobre css (que yo no sé obviamente, y que fue la razón por la que inicialmente lo contratamos) y respondiéndole con links a google, tuvimos una versión mediocre de la hoja de estilos y las imágenes. Bueno, pues tuve que rehacer gran parte del trabajo porque, además, no se basó en los nombres que yo ya había usado en mis tags de html. Finalmente preferimos pagarle lo que había hecho y buscar a alguien que nos corrigiera y agregara lo que aún hacía falta.
+
+Parte 2. Nuevos diseñadores. Les pasé la hoja de estilos que yo había corregido, las imágenes que ya teníamos, y un montón de archivos html de nuestra aplicación que hacían uso de esa hoja de estilos y las imágenes para que las usaran como prueba durante su modificación de los css. Pasa 1 semana y me avisa mi amigo que ya terminaron las modificaciones. Woa, son rápidos. Veamos que hicieron. Me manda mi amigo lo que hicieron los diseñadores y, oh sorpresa, modificaron mis html (los que sólo eran para que probaran el css), y me mandan un nuevo css y varias imagenes nuevas. Pero no sólo modifican los archivos de html que les mandé, sino que mezclan ahí mismo los estilos, los colores, las imágenes, todo!!! Es un html salido de 1998 y caído en mi proyecto de 2007.
+Cuando les pregunto que pasó, me dicen: &#8220;si, es que las modificamos con Dreamweaver para que quedaran como las querías!&#8221; ¿Qué? Pero si les dije que el html era para pruebas. Para pruebas solamente. Les dije que yo solo necesitaba el css y las imágenes y ya. &#8220;Ah, de veras? Es que no entendimos esa parte&#8221;
+
+¿Qué pasa aquí? Una cosa no se puede negar: somos malos para solicitar un cierto tipo de trabajo. Pero creo que eso no es el meollo del asunto. Lo grave aquí es que a los diseñadores con los que nos topamos, no están actualizados. Siguen pensando que HTML es para especificar el cómo deben verse los elementos de una página web: tablas, cajas de selección, botones, etc. ¿Qué no están al día? ¿Qué sus maestros no tienen conocimiento de CSS? ¿Qué ellos no investigan en la Web cuáles son las tendencias del momento? Hace años que se crearon los CSS con el objetivo principal y muy claro de evitar seguir mezclando contenido y presentación dentro de un archivo HTML. Debajo de qué piedra viven, que piensan que un diseño es simplemente tirar HTML que por fuera se ve bien pero que por dentro parece spaguetti  y que no es apto para ser usado de manera profesional por los programadores.
+
+Sin ánimo de menospreciar, ni mucho menos, cada quien debe hacer lo que mejor sabe hacer. Los desarrolladores de software deben de hacer las aplicaciones y los diseñadores hacer que esas aplicaciones (que a los ingenieros no salen muy feas) se vean bonitas, agradables, profesionales. Pero siempre actualizados. No es posible que no sepan por lo menos de pasada para qué sirve un CSS. Es como si yo no supiera qué es una clase, un web service o REST. Es algo básico. Es algo de lo que debo estar al tanto simplemente porque me dedico a esto. No hay excusa.
+
+Repito, ¿qué les enseñan? Ser diseñador gráfico no es solamente hacer cosas bonitas. No es saber medio utilizar Dreamweaver, o Corel o lo que sea que usen. Esas son herramientas. Y las herramientas no van a sustituir al conocimiento nunca. Ser diseñador es hacer cosas bonitas que puedan ser usados de manera práctica. Si no entonces deberían ser artistas. Así no habría cuestionamientos sobre la utilidad de su trabajo. Simplemente sería una obra de arte para admirar, para experimentar, para sentir. Pero no es así, aunque indudablemente hay un elemento artístico en su trabajo. Desafortunadamente para un diseñador gráfico o un diseñador industrial, su trabajo debe ser bonito (artístico) y también útil (funcional, usable, adaptable).
+
+Desgraciadamente no hemos encontrando un diseñador gráfico aún. Estamos a la espera ahora de que el lunes nos entreguen la versión correcta de lo que pedimos. Ojalá que esta vez si sea la última.
+
+Uff!
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-13T00:00:00-05:00" pubdate data-updated="true">Sep 13<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/09/13/de-la-calidad-del-diseno-grafico/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/09/13/de-la-calidad-del-diseno-grafico/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/09/05/aberraciones-en-programacion/" title="Previous Post: Aberraciones en programación">&laquo; Aberraciones en programación</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/" title="Next Post: Beyond Java (and Java Frameworks). Part 3">Beyond Java (and Java Frameworks). Part 3 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

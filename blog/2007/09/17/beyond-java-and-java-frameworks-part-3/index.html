@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Beyond Java (and Java Frameworks). Part 3 - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Los lenguajes de programación, como los lenguajes naturales, vienen en muchas variedades, cada una de las cuales tiene distintas características que &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/09/17/beyond-java-and-java-frameworks-part-3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Beyond Java (and Java Frameworks). Part 3</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-17T00:00:00-05:00" pubdate data-updated="true">Sep 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Los lenguajes de programación, como los lenguajes naturales, vienen en muchas variedades, cada una de las cuales tiene distintas características que los hacen, en mayor o menor medida, aptos para expresar ideas.
+
+En el caso de los lenguajes naturales, hay varios grupos que definen características comunes entre ellos. Uno de esos grupos es el formado por las lenguas romances (español, francés, italiano, etc). Otro grupo contiene a las lenguas del norte de Europa (alemán, Sueco, holandés), por no hablar de las lenguas orientales (japonés, chino, coreano,  etc). No hay que olvidar las lenguas nativas de los distintos pueblos y naciones antiguas (las islas del pacífico, las lenguas indígenas de latinoamérica, las lenguas de las tribus de indios de norteamérica). En fin, no soy lingüista ni mucho menos y este es terreno peligroso si entramos en detalles.
+
+El punto importante es la amplia variedad de lenguajes existentes, cada uno de los cuales expresa con mayor o menor precisión los conceptos de la mente humana.
+
+<!--more-->
+
+
+Por ejemplo, es de sobra conocido que la filosofía es la rama de la actividad humana donde, en las distintas épocas de la historia, se han incubado las ideas más trascendentales e innovadoras respecto a nuestro lugar dentro del universo. Algo característico de la filosofía es que gran parte del corpus filosófico ha sido escrito en alemán y por alemanes. Por supuesto hay filosofía en inglés, francés, español y algunos otros idiomas. Pero mucho (muchísimo) se ha documentado en el idioma alemán.
+
+¿A que se puede deber esto? Yo afirmo que en gran medida se debe al idioma en si mismo.
+
+No hay duda que la genialidad no tiene nacionalidad ni elige un lenguaje. Hay genios en todos los países y en todas las lenguas. Pero estoy seguro de que el lenguaje moldea a la mente. No sólo eso, sino que el lenguaje limita nuestra imaginación. El lenguaje es el límite del potencial humano. Y con lenguaje me refiero también a las manifestaciones artísticas, como la pintura, la escultura, el baile o la danza. Son expresiones de lo que está dentro de nosotros. De lo que nos hace humanos. Son el medio por el cual nos expresamos.
+
+Que pasa entonces si, dados dos lenguajes, intentamos expresar una idea que esta germinando dentro de nosotros. Necesariamente el lenguaje que sea más &#8220;potente&#8221; me permitirá expresar de mejor manera mi idea. Pongamos un ejemplo, mientras leía el libro de El Señor de los Anillos me era imposible no imaginar la belleza de los escenarios que recorren los hobbits durante la jornada hacia Mordor (ya un poco influenciada por John Howe, Alan Lee y las películas de Peter Jackson) o la majestuosidad y sobrecogimiento de las batallas de la guerra del Anillo entre elfos y hombres contra las criaturas oscuras de Sauron. Mientras leía el libro, decía, se iba creando en mi mente una imagen basada en las palabras de Tolkien, y de repente, a mitad de la lectura pensé ¿cómo dibujaría yo tal paisaje, tal escena? Y es entonces cuando caigo en la cuenta de que, a pesar de todo lo maravilloso del paisaje que (según yo :D)  he imaginado, no tengo manera de expresarlo de manera que pueda ser experimentado, aunque sea pálidamente, por otras personas de la misma manera en que yo lo hago. No puedo, me es muy difícil, si no imposible.
+
+En cambio, <a href="http://en.wikipedia.org/wiki/Alan_Lee" title="Alan Lee">Alan Lee</a> y <a href="http://en.wikipedia.org/wiki/John_Howe" title="John Howe">John Howe</a>, si pueden hacerlo. Al ver su grabados e ilustraciones sobre los libros de Tolkien no puede uno más que pensar, &#8220;sí, así es como yo lo había imaginado, es aún mejor de lo que había imaginado&#8221;.
+
+¿Por qué sucede esto? Porque yo no domino el lenguaje que ellos dominan, el lenguaje del dibujo, de la pintura. Por tanto mi desconocimiento de ese lenguaje me limita. Limita lo que yo puedo expresar y más aún, lo que yo puedo imaginar. Porque lo que yo imagino, casi indudablemente, será una mezcla de cosas que ya he visto, un <em>collage</em> de recuerdos y experiencias. En el caso de ellos es así también, en gran medida. Pero también hay una parte que es completamente nueva y que se deriva de cosas tan simples, y a la vez maravillosas, como el deseo de mover el pincel de la manera que &#8220;sienten&#8221; que es la correcta. No es una acción consciente, es algo que los impulsa, que es necesario hacer para que la obra sea perfecta. Esta es su aportación al lenguaje. A su propio lenguaje.
+
+Pero aún haciendo a un lado la parte de la creatividad y la genialidad (¿qué es la genialidad?), es indudable que el lenguaje les permite a los artistas expresar de manera fiel sus ideas. Y cuando no es suficiente el lenguaje, tienen el derecho, y hasta la obligación, de aumentar el lenguaje para que les permita expresarlas.
+
+Regresando al tema de los lenguajes naturales, sucede lo mismo. Shakespeare y Cervantes crearon palabras para expresar ideas novedosas, conceptos nuevos, pensamientos abstractos que no tenían manera de expresar con el lenguaje de su época. Lo mismo hacen los filósofos. Han creado palabras y frases que tienen un significado que no existe en el lenguaje de la época, o que, aun pudiéndolo expresar con el lenguaje de su época, no es sencillo, conciso, exacto o práctico. Así pues, las palabras nuevas definen y nombran conceptos nuevos.
+
+En el caso del idioma alemán, regresando todavía más atrás en esta larga divagación, éste es muy útil para crear palabras, debido a las características propias del mismo. Es muy fácil crear palabras nuevas a partir de palabras existentes, cambiando el sufijo o el prefijo. consiguiendo con esto palabras con un significado completamente nuevo. Tanto así que muchas de las palabras de la filosofía que no están en griego, están en alemán. Se puede argumentar que también sucede lo mismo con otros idiomas, no lo niego. Pero mi punto es que la proliferación de conceptos nombrados usando palabras de origen alemán es signo de que el lenguaje permite la creación de palabras de una manera que no es fácil de encontrar en otros lenguajes.
+
+La consecuencia de todo esto es que, al no interponerse el lenguaje entre la mente y el mundo, el proceso creativo es más eficiente, más productivo. Podemos decir entonces que la persona puede concentrar sus esfuerzos en la expresión de sus ideas en lugar de dedicarlos a la búsqueda de palabras, alegorías o símiles que, de manera tosca e incompleta, describan lo que intenta expresar.
+
+Bueno, y todo esto qué tiene que ver con el título de este post. Pues todo.
+
+En los lenguajes de programación hay también distintos tipos de lenguajes, cada uno con mayor o menor poder expresivo. Hay lenguajes que son de uso específico en un dominio de problemas. Pero también los hay de aplicación general y que no por eso abandonan su poder expresivo.
+
+Java, junto con la familia de lenguajes .Net de Microsoft, son los lenguajes de moda. Hasta debajo de las piedras encuentra uno programadores para este tipo de lenguajes. Pero el que esté de moda no implica que los lenguajes sean particularmente expresivos o poderosos. Solo es resultado del aparato de marketing que hay detrás de ellos.
+
+Si uno sabe programar en BASIC, es fácil saltar a Pascal. Lo mismo sucede de Pascal a C, de C a C++, de C++ a Java o de C++ a C#. Un par de conceptos más (programación orientada a objetos, garbage collector, etc) pero fundamentalmente, fundamentalmente, nada nuevo bajo el sol.
+
+Por otro lado, mientras en el mundo empresarial todos estos lenguajes tenían sus 15 minutos de gloria, en el mundo académico se fueron creando lenguajes y ambientes de desarrollo basados en conceptos puramente teóricos. La mayoría de estos lenguajes fueron desechados por los encargados de tomar decisiones en las empresas como meros juguetes académicos sin aplicación práctica en el mundo empresarial.
+
+A diferencia de los lenguajes comerciales estos lenguajes académicos tenían una base teórica muy sólida que les permitía expresar conceptos de orden superior. Al mismo tiempo facilitaban el modelado de problemas tradicionalmente difíciles de una manera conceptualmente simple y elegante. Como resultado del poder expresivo de estos lenguajes, se comenzaron a usar en campos no tradicionales e inaccesibles a los lenguajes tradicionales: inteligencia artificial, resolución automática de teoremas lógicos, bases de conocimiento, diagnóstico médico, reconocimiento de patrones, maquinas virtuales, sistemas autocorrectivos, sistemas de navegación entre otros.
+
+¿Por qué, a pesar de su potencial expresivo, no fueron capaces de hacerse de un lugar en el mundo empresarial? Buena pregunta. Muchos factores influyeron en esto:
+<ol>
+<li>Marketing. Falta del respaldo de una compañía o entidad que se encargara de promocionar el lenguaje y sus bondades.</li>
+<li>Desconocimiento. Los que toman las decisiones en las empresas no están al tanto de los avances en lenguajes de programación y siguen utilizando lo conocido.</li>
+<li>Temor a la escasez de programadores. Este es un círculo vicioso. Al no haber proyectos que usen el lenguaje no hay demanda del mismo y por tanto los programadores no se interesan en aprenderlo.</li>
+<li>Falta de aplicaciones famosas. Aunque hay sistemas exitosos desarrollados en estos lenguajes, generalmente son de aplicación muy específica o usados internamente, por lo que no reciben mucha difusión y en consecuencia no pueden usarse como ejemplos de casos de éxito a la hora de proponer el uso de estos lenguajes.</li>
+<li>Hardware adecuadamente poderoso para poder ejecutar las aplicaciones. Muchos de los lenguajes no comerciales son lenguajes dinámicos (o scripting languages o interpreted languages) lo cual implica que son mucho más lentos que los lenguajes tradicionales, particularmente en procesos mayoritariamente numéricos. Por tanto, necesitan hardware más potente para realizar las misma funcionalidad en el mismo tiempo que un lenguaje tradicional.</li>
+<li>Falta de una especificación de referencia del lenguaje. Muchos de los lenguajes no comerciales carecen de un estándar que defina lo que es y lo que no es parte del lenguaje. Generalmente hay varias implementaciones del lenguaje, a veces incompatibles entre sí, lo cual contribuye a fragmentar más la ya de por sí pequeña comunidad de programadores.</li>
+</ol>
+Uno de los factores que en el último par de años ha venido a mitigar estos problemas y proporcionarles mayor promoción a los lenguajes académicos es el advenimiento, a precios accesibles, de hardware más potente y capaz de hacer una realidad el desarrollo de aplicaciones reales usando estos lenguajes.
+
+Esto explica el auge que han tenido lenguajes como Phyton, Ruby, Smalltalk, Scala, Io y Lisp entre otros. Y junto con estos lenguajes han surgido aplicaciones que intentan demostrar la viabilidad de los mismos como herramientas de desarrollo, tales como Django (Phyton),  Ruby on Rails (Ruby), Seaside (Smalltalk) o Weblocks (Lisp).
+
+Estas aplicaciones han levantado revuelo y un tremendo interés en estos lenguajes &#8220;oscuros&#8221; y salidos de las aulas. De todos lados surgen argumentos a favor y en contra del uso de tales lenguajes. Son lentos, arcaicos, nadie los usa, el mundo no necesita más lenguajes, cómo es posible que las variables no tengan un tipo asociado, los lenguajes interpretados son difíciles de mantener, dicen unos; son más expresivos, aumentan la productividad al tener que escribir menos código y usar expresiones más concisas, no necesitas realmente tipos en tus variables, solamente que la variable sepa responder a un mensaje, dicen los otros.
+
+Lo que es un hecho es que los lenguajes comerciales verán reducidos en los años subsiguientes el número de desarrollos nuevos en las empresas, los cuales serán ahora asignados a lenguajes y proyectos menos convencionales.
+
+Y no es para menos. Los frameworks que se han creado alrededor de estos lenguajes explotan de manera asombrosa, por no decir abrumadora, las características de los mismos. Ante esto, los lenguajes tradicionales no pueden sino reafirmar sus propias (aunque reducidas y cada vez menos) capacidades y herramientas de desarrollo. Pero el Sol no se puede tapar con un dedo. Los lenguajes &#8220;académicos&#8221; son mejores conceptualmente y, a menos que los lenguajes comerciales se rediseñen desde cero, hay poco que puedan hacer para competir frente a frente contra los nuevos contendientes.
+
+Definitivamente, tiempos interesantes.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-17T00:00:00-05:00" pubdate data-updated="true">Sep 17<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/09/13/de-la-calidad-del-diseno-grafico/" title="Previous Post: De la calidad del diseño gráfico.">&laquo; De la calidad del diseño gráfico.</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/09/18/smalltalksqueak/" title="Next Post: Smalltalk/Squeak">Smalltalk/Squeak &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Deploying Seaside: load testing results - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="I made a series of test with different values of the parameters. All of them are for reference purpose only. As with any benchmark, a lot of factors &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-load-testing-results">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Deploying Seaside: Load Testing Results</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-02T00:00:00-05:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">I made a series of test with different values of the parameters. All of them are for reference purpose only. As with any benchmark, a lot of factors affect the results. The advice is, try to isolate your environment so that the results are meaningful
+
+My machine is
+<ul>
+	<li>Intel(R) Core(TM)2 Duo CPU     T6400  @ 2.00GHz</li>
+	<li>Cache: 2048 KB</li>
+	<li>RAM: 4GB</li>
+</ul>
+with a lot of processes running and the same machine hosting lighttpd, JMeter and the images.
+
+There are two series of tests. The first one test the seaside.example.com. That is the application that stores everything on memory in each image. So this will be very fast.
+The second one test the magma.example.com. So each request is accessing the Magma database. As we increase the number of images, the database will be the bottleneck. Keep that in mind when comparing results. Also, don&#8217;t bash Magma as magma is very fast. It is just that the SeasideMagmaTester isn&#8217;t optimized yet. It is just a simple application for measuring a *simple* Magma-Seaside integration. In a real production environment you&#8217;ll put the database in the most powerful server (at least for writing performance), and for read performance, you can add several servers to the magma <a title="Magma High-Availability" href="http://wiki.squeak.org/squeak/6101">node</a> and get a lot of reads/sec. But that is another problem. We just want to test the SeasideProxyTester as is. Optimize your application as you see fit.
+
+First the seaside.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>113</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>49971</th>
+<th>114</th>
+<th>1.85</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>117</th>
+<th>60.03</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>140</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>137</th>
+<th>0.97</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>158</th>
+<th>39.56</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>170</th>
+<th>0.43</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>129</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>4000</th>
+<th>100</th>
+<th>100</th>
+<th>600600</th>
+<th>187</th>
+<th>47.49</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>600</th>
+<th>30</th>
+<th>1000</th>
+<th>600600</th>
+<th>205</th>
+<th>76.12</th>
+</tr>
+</tbody></table>
+Now the magma.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>50</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>75</th>
+<th>1.11</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>102.9</th>
+<th>78.32</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>57</th>
+<th>50</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>120</th>
+<th>73.21</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>197935</th>
+<th>160</th>
+<th>91.64</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>44</th>
+<th>89.28</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>167</th>
+<th>97.24</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>206</th>
+<th>95.59</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>45</th>
+<th>89.38</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>150</th>
+<th>98.72</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>179686</th>
+<th>255</th>
+<th>99.99</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>2</th>
+<th>300</th>
+<th>3</th>
+<th>0</th>
+</tr>
+</tbody></table>
+Those results as I said, are just a reference. YMMV.
+
+<strong>Comments:</strong>
+
+The seaside.example.com results are very varying. With one seaside image, you get 113 requests/second. Thats a lot of requests. Really. I hope someday I have a site that receive that number of requests. But have in mind that the seaside.example.com application it is just storing the counters in memory. Also, the server (that is, my laptop) is just handling 1 process for the magma image (not used), 1 process for the seaside image (heavily used), 1 process for the lighttpd server (heavily used) and 1 process for JMeter. Not a lot of work for the cpu and the Linux process scheduler.
+But if you see the results for 2 seaside images, the best you get is 140 requests/second without getting errors. That is unexpected, because if 1 image can handle 113, 2 images should handle at least 200 request. That is even more notorious when you use 10 or 30 Seaside images. The best you get is 154 requests/second. As I said before a lot of things affect this results. First my CPU isn&#8217;t as powerful as the ones from real servers. My laptop is doing a lot of other processes (webbrowser, gaim, JMeter on GUI mode, the GNOME desktop, the wireless, the music). In a dedicated server more resources are reserved for the Seaside images. In the worst case, with 30 Seaside images (each of them doing a lot of work by itself) the laptop CPU is doing a lot of process context switching giving each image a slice of processor time. Each image, in turn, is doing its own process scheduling between Komanche, Seaside and the others processes that run in a Pharo image. If you consider this you can explain why there isn&#8217;t a linear scaling in the requests/second as you increment the number of images. The best, appears to be, is to use different servers for the webserver and for the images. Also, distributing the images on two or more small servers (as my laptop is), can get the best of the images and from the balancer.
+
+Now for the Magma results. They are ugly and disappointing. But, remember, isn&#8217;t optimized yet. It is just the simplest way of getting Magma and Seaside working. For example, if your app reads a lot more than writes to the database (as most application are, unless you are storing the results of subatomic collisions ;)) you can add more read only server to a magma node to improve the read performance. Besides, you can use different read strategies and use Magma Collections to store your data. The PROBLEM WITH THIS PARTICULAR APPLICATION is that all the images are trying to write to the same slots on the dictionary that holds the counters. This, when you have a lot of processes trying to write, necessarily results in a lot of commit errors. Suppose session 1 reads the current counter value in order to increase it. Before it can commit the new value (current value + 1) the Pharo scheduler switches to other session on the same image or the OS scheduler switches to other Pharo image. The new scheduled session  (session 2) reads the current value (not yet updated by the first session) and if not uncheduled like the session 1, successfully commits the new value. Some time later the session 1 get scheduled again and tries to resume from the exact same place where it left. So update the value and send the commit to magma. Magma notes that the value has changed since it was read and marks a dirty object (that is, the client must do an abort to get the new value) and a magma conmit conflict. The error is arrives to the final user and is counted by JMeter as an error because of the status 503 from the headers.
+In a real application, the common scenario is that each user writes to its own section of the database or to different parts of a common collection, this is handled very well by Magma, even better if you use Magma Collections. So in a more realistic scenario, you won&#8217;t have that many commit conflicts, if any. But that is Magma optimization and you know better than anybody your own application. Maybe Chris Muller (Magma creator) or Keith Hodges (Magma seasideHelper creator) can replicate this results and suggest better ways to test Magma and use Magma seasideHelper. I repeat: the apparent errors are a consequence of the application tested and not from Magma. How do you know? Because in every case we get a response from the Magma server, that is, a commit conflict error response. So the server is alive and healthy, responding appropriately every request made by a Seaside image. Keep that in mind before bashing Magma.
+One better way to test this application is to give each session its own counter on the database (as if each user were getting its own private data) and all of those private counters being held on a Magma Collection (that is, a collection of user data). This way each session will update its own data and that by its own nature, won&#8217;t produce commit errors. But that is left as an exercise to the reader.
+
+So, to test your apps.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-02T00:00:00-05:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-load-testing-results/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2009/10/02/deploying-seaside-load-testing-results/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/10/02/deploying-seaside-adding-ssl-to-your-site/" title="Previous Post: Deploying Seaside: Adding SSL to your site">&laquo; Deploying Seaside: Adding SSL to your site</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/12/05/tercer-aniversario-nino-en-camino-y-mas-noticias/" title="Next Post: tercer aniversario, niño en camino y más noticias">tercer aniversario, niño en camino y más noticias &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

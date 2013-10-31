@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Deploying Seaside: SeasideProxyTester - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="We have a working deployment setup. It runs a Magma image and several Seaside images. The Seaside images are all of them running copies of a single &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-seasideproxytester">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Deploying Seaside: SeasideProxyTester</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">We have a working deployment setup. It runs a Magma image and several Seaside images. The Seaside images are all of them running copies of a single Seaside image. This Seaside image has a copy of the application we want to deploy. In this tutorial the application is the SeasideProxyTester from the SeasideExamples of squeaksource.com.
+
+The SeasideProxyTester is very simple because it doesn&#8217;t want to show any particular Seaside feature. It is a tool to test a setup of proxied Seaside images behind a proxy webserver. It consists of three classes:
+<ul>
+	<li>SPTApplication. It is a Seaside application registered as seasideProxyTester.</li>
+	<li>SPTApplicationMagma. It is a Seaside application registered as magmaProxyTester</li>
+	<li>SPTDatabase. It is used as the root of the domain objects in the Magma repository. It is used by SPTApplicationMagma to store the number of requests made to the application</li>
+</ul>
+SPTApplication and SPTApplicationMagma are very simple. When each application is accessed a simple page is rendered, showing the number of requests made so far to the application. The request can be counted in three ways:
+<ol>
+	<li>By Seaside session. Number of requests made as part of the same Seaside session (that is, _s is the same for all of them).</li>
+	<li>By Seaside image. Number of requests made to the same image, no matter if they are from different Seaside sessions (that is, the requests have the same value for the server cookie: app9001, app9002, etc)</li>
+	<li>By application. Number of requests made to the application, no matter if they are from different Seaside sessions or Seaside images (that is is a global counter of the requests made to any of the images in any of the created Seaside sessions).</li>
+</ol>
+The magmaProxyTester works exactly as the previous points explain. The Magma database is used to store the global request number and a request number for each image.
+
+The seasideProxyTester can&#8217;t, by their nature, keep track of the third counter, that is the global request counter or application request counter. This is because each image is an autonomous entity that has no way to communicate between them to share and update the global request counter. So, although each SPTApplication in each image has a class instance variable to track the number of requests, this is scoped to the image and only can track the number of request that reached the image is part of. So each image has it very own global counter that tracks the requests that has processed. If you sum the global counter of each Seaside image for the SPTApplication, you can get the real global request counter for the seasideProxyTester application. In the SPTApplicationMagma app, the magma database is the external (to the image) holder of those counters, and is also responsible of mediating between them when updating the counters.
+
+So with this warning out of the way. What can you get from this SeasideProxyTester. Lets begin with the magma.example.com application. The first time I access it it shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 1</li>
+	<li>serverPort: 9001 requests: 1</li>
+</ul>
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+This shows that the request was served by the first Seaside image listening on port 9001.  This request has been correctly counted. If I reload the page I create a new Seaside session but i remain in the same Server (as my browser has accepted the cookie with value app9001). Now the page shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 2</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 3
+
+Total requests: 2</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+As you can see you are on the same server (the one listening on port 9001) and the global counters have been updated accordingly.
+
+Now, I delete the cookies of my browser so that the next reload it doesn&#8217;t include the server cookie. lighttpd will use round-robin to proxy to the next available server, that is, the one on port 9002. Now I see:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: 9002 requests: 1</li>
+	<li>serverPort: Total requests: 3</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;1">Reset database.</a></td>
+<td>Listening on port: 9002
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9002
+
+Previous request served on port: 9002
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+You are now on a different server, the one listening on port 9002. Well, you get the idea.
+
+Now, there are two links on the page. The first one, &#8220;Reset database&#8221;, as you can guess, will reset the global counters. But, as this is also a request, the counters won&#8217;t be 0 but 1 the next time the page is rendered.
+
+The second one &#8220;Make a new request inside this session&#8221; will make a new request (by means of a Seaside callback) that is part of the same session (same _s parameter). This, as always, changes the global counters, but also increments the session request counter.
+
+So far so good.
+
+The seasideProxyTester works very similar, the only problem, as I have said is that there is no way for all the Seaside images to update a group of shared global counters (this, in the end, will need a external database, the role Magma is playing in the magmaProxyTester), so each image has a class instance variable that tries to keep track of the global counters but this is only valid inside the image scope. Repeat the same requests made with the magma.example.com using the seaside.example.com and you&#8217;ll note that each time you change of Seaside server you get a different global counter. Only if you sum all the global counters you will have the real global request counter.
+
+Now you can put your stress loading tools to work by pointing them to your new setup and measure the results.
+
+Or, wait for the next post and I will show you one way to do load testing on Seaside applications
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-seasideproxytester/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-seasideproxytester/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/09/22/deploying-seaside-prepare-the-images/" title="Previous Post: Deploying Seaside: Prepare the images">&laquo; Deploying Seaside: Prepare the images</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/09/25/30/" title="Next Post: 30">30 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

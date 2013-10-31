@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="In fact I don&#8217;t have anything against VirtualBox, either the full version or the OSE version. What is more, it is a wonderful piece of software &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/page/6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager/">Goodbye VirtualBox, Welcome KVM/virt-manager</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T00:00:00-06:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">In fact I don&#8217;t have anything against VirtualBox, either the full version or the OSE version. What is more, it is a wonderful piece of software and it never gave me any serious problem. The interface it is one of the most friendly and easy to use that I have found.<br />In spite of that, I felt that VirtualBox was more focused to the user having a couple of virtual machines running for short periods of time (note: It never had a problem when I let it run several days continuously) than aimed to the datacenter where there are dozens of vms running uninterrupted.<br />On the other side, when I wanted to have a 64bit guest (in times of VirtualBox 1.5, version 2 supports 64 bit guests and hardware virtualization without problem) it didn&#8217;t have support for it. So, searching I found KVM and, in principle at least, it had the same functionality than VirtualBox. But it had some additional very interesting. For example, the ability to migrate the vm (while running) from one host to another. Or at least so they said. The problem. It didn&#8217;t have a decent GUI. All controlled by the command line. Of course I don&#8217;t have any problem with that, as my blog title very clearly states. But for some simple activities, the number of parameters to write was very overwhelming and, accustomed to VirtualBox simplicity, it was too much typing.<br />Well, this guys at Red Hat have created virt-manager. And it really aimed high in order to easy the management of vms. I am glad that they are succeeding in their goal, because virt-manager it is ready to take the datacenters by storm. In fact, Ubuntu 8.10 it is fully committed to the virtualization trend and virt-manager it is the tool they chose.<br />Well, enough words, I want to say to the VirtualBox team, thank you very much, your software it is marvelous and have showed what it is possible. At the same time I say welcome to KVM/virt-manager that, by the way, it is completely integrated to the Linux kernel and in the long term this will result in a very strong contender in the virtualization arena.<br /><br />So, I followed the instructions from the debian <a href="http://wiki.debian.org/KVM">wiki</a>:<br /><br /># aptitude install kvm virt-manager<br /><br />Added myself to the libvirt group:<br /><br /># adduser miguel libvirt<br /><br />According to the instructions you must now log out and log in in order to use virt-manager and start creating vms for the dozen. But no, there is something you must do before. You must fix the network for virt-manager. Keep reading.<br /><br />First stop dnsmasq:<br /><br /># /etc/init.d/dnsmasq stop<br /><br />Disable autostart for it editing /etc/default/dnsmasq and changing:<br /><br />ENABLED=1<br /><br />to<br /><br />ENABLED=0<br /><br />This is because virt-manager and libvirtd will start the dnsmasq with the appropriate configuration and the default config for dnsmasq conflicts with it and prevents the &#8220;default&#8221; network from virt-manager to start.<br /><br />Now, log out, log in again, restart the libvirtd (or restart the machine) in order to the changes to take effect.<br /><br />If everything works ok, you should see something like this in your processlist:<br /><br />$ ps ax|grep dnsmasq<br />14482 ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0:00 dnsmasq &#8211;keep-in-foreground &#8211;strict-order &#8211;bind-interfaces &#8211;pid-file&nbsp; &#8211;conf-file&nbsp; &#8211;listen-address 192.168.122.1 &#8211;except-interface lo &#8211;dhcp-leasefile=/var/lib/libvirt/dhcp-default.leases &#8211;dhcp-range 192.168.122.2,192.168.122.254<br /><br />If you see a dnsmasq process with status Z (zombie), then review your configuration and the instructions.<br /><br />Ok, with dnsmasq working correctly, start virt-manager as your user and try to connect to the localhost machine you&#8217;ll see in the virt-manager window. Before creating the first virtual machine, we must start the network. Click the &#8220;Details&#8221; button, after selecting localhost and you&#8217;ll see the &#8220;Host Details&#8221; dialog box. Select the &#8220;Virtual Network&#8221; tab. There you&#8217;ll see the &#8220;default&#8221; network in an inactive status (it only appears if you are connected to the machine). Start it. Now you can create your virtual machines without problems.<br /><br />As you can see, the &#8220;default&#8221; network isn&#8217;t configured to autostart itself. And after a while, you get tired of starting it before running or creating a vm. To enable autostart, run the following in the command line (because I didn&#8217;t find a way to do it with the GUI):<br /><br />$ virsh net-autostart default<br /><br />From now on, the network will always start with the libvirtd. <br /><br />Now, grab your prefered OS instalation CDs and proceed to create all the virtual machines you want.<br /><br />Right now we have only used the functionality to create virtual machines in a analogous way to VirtualBox, but if you check the documentation for KVM and virt-manager, you&#8217;ll see that you can have a lot of host machines, remotely managed, where you can create virtual machines on demand. Also, you can monitor the resources consumed; start and stop the machines and to configure some kind of network storage for your virtual machines to use. Very enterprisey isn&#8217;t? Check the output of<br /><br />$ virsh help<br /><br />to have an idea that will come.&nbsp; <br /><br /><br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/11/22/goodbye-sun-java5-jdk-welcome-openjdk-6-jdk/">Goodbye Sun-java5-jdk, Welcome Openjdk-6-jdk</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T00:00:00-06:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">With Debian Lenny, I finally can install openjdk instead of the official java from sun.com.<br /><br />As root:<br /><br /># aptitude install openjdk-6-jdk<br /><br />This uninstalled (I think, because I don&#8217;t remember if I first uninstalled the sun-java5-jdk :)) the sun-java5-jdk version and installed the new openjdk-6-jdk.<br /><br />I updated the alternatives from debian:<br /><br /># update-java-alternatives -s java-6-openjdk<br /><br />And finally, to test:<br /><br /># java -version<br />java version &#8220;1.6.0_0&#8221;<br />OpenJDK&nbsp; Runtime Environment (build 1.6.0_0-b11)<br />OpenJDK 64-Bit Server VM (build 1.6.0_0-b11, mixed mode)<br /><br />Great.<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/11/22/boda/">Boda</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T00:00:00-06:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Al fin le llegó el día a Talina.<br />Se casa.<br />Con Markus.<br />Y habrá pachanga.<br />Y vestido y perfume.<br />También abrazos y buenos deseos.<br />Y cuentan que una luna de miel en Cancún.<br /><br />Así que en nombre de mis amigos y mi familia, les deseamos a Talina y Markus:<br /><br />MUCHAS FELICIDADES Y NUESTROS MEJORES DESEOS.<br /><br />Congratulations Herr Wagner and Frau Eslava.<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/10/29/oracle-database-10g-administrator-certified-associate/">Oracle Database 10g Administrator Certified Associate</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-29T00:00:00-06:00" pubdate data-updated="true">Oct 29<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Several weeks have passed since the last post. Well, I have been busy attending an Oracle course kindly paid by my employer.<br />This monday was the first certification exam and I passed it. So, now I am an<br /><br /><div align="center"><b>Oracle Certified Associate</b><br /></div><br />Now to update my Curriculum Vitae.<br /><br />The last week of November I will be attending the second course and in early December the second exam will take place, this time for the Oracle Certified Professional. That will be harder than this one, I am sure. So to practice.<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/27/gemstones-and-fastcgi-with-lighttpd/">Gemstone/S and FastCGI With Lighttpd</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-27T00:00:00-05:00" pubdate data-updated="true">Sep 27<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">I was reading the <a href="http://programminggems.wordpress.com/2008/09/12/slice-4/">post</a> from James Foster about configuring Apache/FastCGI for serving Seaside. I prefer Lighttpd because, as its name implies, it needs less resources to run. And with virtual hosting, as I have my servers, memory it is a big factor. <br /><br />I followed the <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">steps</a> to install Gemstone/S in my machine. Instead of a hosted server, I used my laptop with my user as server.<br />After testing that Seaside was running OK in my machine, using:<br /><br />miguel@laptop:~$ source /opt/gemstone/product/seaside/defSeaside<br />miguel@laptop:~$ startGemstone<br />miguel@laptop:~$ startSeaside_Hyper 8080<br /><br />and navigating to:<br /><br />http://localhost:8080/seaside<br /><br />I stoped the Hyper Webserver with Ctrl+C.<br /><br />Now to install lighttpd in my Debian GNU/Linux 4.0 etch machine. As root:<br /><br />laptop:~# aptitude install lighttpd lighttpd-doc<br /><br />and backup the default config file:<br /><br />laptop:~# cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.bak<br /><br />then use this configuration for lighttpd.conf:<br /><br /># Modules activated<br />server.modules = ( &#8220;mod_access&#8221;, &#8220;mod_alias&#8221;, &#8220;mod_accesslog&#8221;, &#8220;mod_fastcgi&#8221; )<br /># Document root, maybe there you have other sites also<br />server.document-root = &#8220;/var/www/&#8221;<br /># logs<br />server.errorlog = &#8220;/var/log/lighttpd/error.log&#8221;<br />accesslog.filename = &#8220;/var/log/lighttpd/access.log&#8221;<br /># Welcome file<br />index-file.names = ( &#8220;index.html&#8221; )<br /># Do not server files beginning with<br />url.access-deny = ( &#8220;~&#8221;, &#8220;.inc&#8221; )<br /># Server config<br />server.port = 80<br />server.pid-file = &#8220;/var/run/lighttpd.pid&#8221;<br />dir-listing.encoding = &#8220;utf-8&#8221;<br />server.dir-listing = &#8220;disable&#8221;<br />server.username = &#8220;www-data&#8221;<br />server.groupname = &#8220;www-data&#8221;<br /># FastCGI<br /># Debug enabled, disable on production sites<br />fastcgi.debug = 1<br /># Do FastCGI for anything with prefix /seaside<br /># load-balancing with 3 hosts<br /># check-local disable searching the requested file in the lighttpd document root and<br /># forward the request to the fastcgi hosts<br />fastcgi.server = ( &#8220;/seaside&#8221; =&gt; (<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;),<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;),<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;)<br />&nbsp; )<br />)<br /><br />Instead of starting Seaside over Gemstone/S with startSeaside_Hyper &lt;port&gt;, I used the provided script to start 3 gems for fastcgi as per James&#8217; <a href="http://programminggems.wordpress.com/2008/09/12/slice-4/">instructions</a>:<br /><br />miguel@laptop:~$ runSeasideGems start<br /><br />This started 3 fastcgi gems, listening in ports 9001, 9002 and 9003.<br /><br />Then I restarted lighttpd:<br /><br />laptop:~# /etc/init.d/lighttpd restart<br />Stopping web server: lighttpd.<br />Starting web server: lighttpd.<br /><br />And tested that the default index page for lighttpd (located in /var/www/index.html) was served statically (you can add anything here)&nbsp; from the server document root (/var/www/), pointing the browser to:<br /><br />http://localhost/<br /><br />Finally, I tested that the /seaside part was correctly delegated to Gemstone/S using FastCGI, pointing the browser to:<br /><br />http://localhost/seaside<br /><br />This time I get the dispatcher from Seaside, from where you can navigate the links from Seaside without problems.<br /><br />This way you can use, for example, <a href="http://http//www.blueprintcss.org/">blueprint</a> for the CSS style of your app, or maybe <a href="http://tinymce.moxiecode.com/">TinyMCE,</a> for having a full fledged text editor. All you have to do is to put them in a directory inside the document root of lighttpd (/var/www in this example) and in the Seaside application, you reference them with the absolut path to your website, for example:<br /><br />http://mysite.com/styles/blueprint.css<br /><br />or<br /><br />http://mysite.com/tinymce/jscripts/tiny_mce/tiny_mce.js<br /><br />So, the webserver to serve the static content of your site (faster) and Seaside to serve your webapp.<br /><br />Enjoy.<br /><br /><br /><br /><br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/24/okcoba-fest/">Okcoba Fest</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-24T00:00:00-05:00" pubdate data-updated="true">Sep 24<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Yo, Miguel Cobá, en mi carácter de representante absoluto y vitalicio de mí mismo, con fecha 24 de <i>setiembre</i> del <i>año del señor</i> 2008, siendo las 16:39
+horas en el horario local, 21:39 hrs en el horario universal, en la centenaria, hermosa y ahora muy atribulada Ciudad de México<br /><br /><div align="center"><b>DECLARO<br /><br /></b></div>oficialmente iniciados los festejos conmemorativos del natalicio de nuestro humilde, sonriente, amigable, entrañable, guapo, inteligente, trabajador y muy modesto representado.<br />En este tenor <br /><br /><div align="center"><b>ORDENO<br /><br /></b></div>que, a partir de las 23:59 minutos en tiempo local y durante un periodo no menor a 3 días y no mayor a lo que sea saludable para el buen mantenimiento de la salud del hígado humano normal de una persona adulta de 29 años, deberá festejarse, en cualquier lugar donde se encuentre uno, a la hora en que así sea conveniente, solo o en compañía, de manera preferente con el interesado, con toda suerte de sustancias y actividades tradicionalmente usadas al efecto en ocasiones de similar trascendencia, y apegados a la tradición, tanto mexicana como ingenieríl, incluyendo sin limitar: <br /><ul><li>derivados etílicos de la uva, la cebada, el agave azul, el arroz y las frutas dulces, así como bebidas dulces, derivadas de frutas o carbonatadas que produzcan una combinación agradable al gusto humano</li><li>los derivados lácteos en sus diversas variedades generalmente conocidas como quesos, preferentemente en sus presentaciones edam, de cabra, manchego y con ceniza</li><li>abrazos, besos (preferentemente de personas del sexo femenino, aunque del pequeño caballero de la mesa redonda se aceptan sin chistar y con emoción), actividades intimas y lúdicas para adultos (con exclusividad total para la filósofa y aspirante a curadora de arte, mejor conocida como Frau Kunst)</li><li>actividades de mesa incluyendo sin excepción, cartas, dominó, jenga, así como concursos coloquialmente conocidos como fondos y <i>muppets</i><br /></li><li>narración de anécdotas típicas, emotivas, avergonzantes, divertidas, por n-ésima ocasión al calor de la velada, así como la tradicional reinterpretación del sentido de la vida, del hombre y sus motivaciones, el espíritu del vino y el secreto escondido en el cuerpo de las mujeres y en la risa de los niños.</li><li>música al gusto del momento, con especial atención a la preferida por nuestro conmemorado</li></ul>Sin otro afán que el de agradar y hacer patente nuestro amor y la felicidad que nos da el pretexto para honrar a Baco en su más mundana faceta y a participar de Eros en su más práctica y apapachante expresión, decreto:<br /><br /><div align="center"><b>QUE INICIE EL &#8220;OKCOBA FEST&#8221; 2008</b><br /></div><br />PD. La sede principal de los festejos será, como siempre, la residencia oficial de nuestro conmemorado donde se les espera el día sábado 27 a las 19 horas tiempo local y hasta que el cuerpo (o el hígado) aguanten.<br /><br />PPD. No se aceptan regalos, solamente asistencias, risas, &#8220;saluds&#8221;, abrazos y llamadas telefónicas (así como sus equivalentes modernos Web 2.0). Abstemios, se les insta a hacer un esfuerzo y dejar atrás sus arcaicas y no sociales prácticas :).<br /><br />PPPD. Si alguien quiere traer regalos, estos no serán despreciados sino que se aceptarán con el más humilde y sincero agradecimiento.<br /><br />PPPPD. Pero no son obligatorios los regalos.<br /><br /><br />Al margen un sello con el escudo nacional que dice: &#8220;Patronato Oficial para el Festejo del 29-nario del Natalicio de Miguel Cobá&#8221;. Una firma ilegible. Secretario General del Patronato para el festejo de Miguel Cobá.<br /><br />Extiendo la presente en 2 fojas útiles, en México, Distrito Federal, a los 24 días del mes de <i>setiembre</i> del <i>año de nuestro señor </i>dos mil ocho, a fin de que sea publicada en el diario oficial de la federación, y en los diarios de mayor circulación nacional a fin de que sea de conocimiento general de la ciudadanía. <br /><br />Miguel Cobá, Presidente del Consejo de Administración del Fideicomiso 2008/09/25MCM/ aprobado por la H. Cámara de Diputados, en su sesión extraordinaria y urgente del 23 de <i>setiembre</i> del <i>año de nuestro señor</i> dos mil ocho, para la creación del Patronato para el Festejo del N-ario del Natalicio de Miguel Cobá. Presente.<br /><br /><br /><br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/22/fing-mysql/">F***ing MySQL</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">One more time, I am having trouble with the MySQL database I administer. <br />Look, this MySQL database was inherited. It contains ~30 databases, most of them MyISAM type. One of them, the biggest, with more than 30GB of data (150 millions registers). The configuration for MySQL especified a first innodb tablespace file of 20GB and a second file of 10MB, with autoextend. From my.cnf:<br /><br />innodb_data_home_dir = /data/mysql/data<br />innodb_data_file_path = ibdata1:20000M;ibdata2:10M:autoextend<br /><br />I was in the migration from MyISAM to InnoDB, in order to have transaction support. But, as I noted after starting the migration of tables, the innodb files used for storing the mysql tables NEVER shrinks. Never, even if you delete tables, drop tables or drop databases. Always grows but never returns unused space to the operating system. Unbelievable. <br />According to the bug tracking system for mysql (bugs <a href="http://bugs.mysql.com/bug.php?id=1341">1341</a>, <a href="http://bugs.mysql.com/bug.php?id=1287">1287</a>) this is a design decision to improve performance: if the space were disposed each time a delete is peformed, it would need to be allocated again when more data were written to the database. So it is only marked as deleted but not returned to the operating system. That is reasonable. In fact it is a good point. But there are times when you just need to free the innodb unused space and IT IS NOT possible, in an automatic or, at least, in a manual way.<br />Why would you need this. Supose, for example, that I have a 100 GB disk. It is used only for mysql. There is only a database of 40GB in it. So I have ~60GB of space free. One day I need to restore an old backup for this database. I create a new database and restore the old backup inside this database. If I have MySQL configured as all Innodb, the new database would be created in the innodb tablespace, so MySQL will grow the tablespace to say 80GB so the restored backup can be loaded. At this moment, I have 80GB used by the tablespace and only 20GB of free space in the disk. After extracting the data from the backup, I delete the restored database. One would think that the 40GB would be returned to the OS, but NO! The table space size is 80GB although only 40GB are really used, in fact, SHOW TABLE STATUS would show that it is only 50% used. If my original database doesn&#8217;t grows to fill the 80GB used by the innodb tablespace or grows very slowly I have actually lost 40GB from my disk and I can not do anything easy to recover that space. In other words, I have lost that space.<br />Of course there are workarounds for this problem, but they involve dumping and restoring the databases and more important, YOU MUST shutdown the database. That is not always posible. Maybe in a weekend or in the night, but that can be too late if you are running out of disk space.<br />It is needed a command to force MySQL to free unused space, under the responsability of the DB administrator. At this time, there isn&#8217;t any.<br />So the only way to add more free space to my database was by means of the operating system. My filesystem was like this:<br /><br />[root@usp02 root]# df -h<br />Filesystem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp; Used Avail Use% Mounted on<br />/dev/cciss/c0d0p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 64G&nbsp;&nbsp; 36G&nbsp;&nbsp; 26G&nbsp; 59% /<br />/dev/cciss/c0d0p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 99M&nbsp;&nbsp; 11M&nbsp;&nbsp; 83M&nbsp; 12% /boot<br />/dev/cciss/c0d1p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67G&nbsp;&nbsp; 62G&nbsp; 2.4G&nbsp; 97% /data<br />none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.9G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 2.9G&nbsp;&nbsp; 0% /dev/shm<br /><br />and there were still 3 tables in the migration process. I was feeling real panic. Besides, it is Monday morning. The only feasible moment for shutdown is the next weekend or, in case of extreme urgency, until tonight.<br />Finally, after several hours searching for a solution for the problem in MySQL, I decided to search ways to free space in the filesystem of the operating system. Happily I found a way to reduce the space reserved for root in a ext2 filesystem from the default 5% of the disk size to 1%. The instructions are <a href="http://boncey.org/2006_11_18_reclaiming_ext3_disk_space">here</a>. And I don&#8217;t even have to remount the filesystem. The change was applied inmediately.<br />I just typed: <br /><br />[root@usp02 root]# tune2fs -m 1 /dev/cciss/c0d1p1<br />tune2fs 1.32 (09-Nov-2002)<br />Setting reserved blocks percentage to 1 (177816 blocks)<br />[root@usp02 root]# df -h<br />Filesystem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp; Used Avail Use% Mounted on<br />/dev/cciss/c0d0p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 64G&nbsp;&nbsp; 36G&nbsp;&nbsp; 26G&nbsp; 59% /<br />/dev/cciss/c0d0p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 99M&nbsp;&nbsp; 11M&nbsp;&nbsp; 83M&nbsp; 12% /boot<br />/dev/cciss/c0d1p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67G&nbsp;&nbsp; 62G&nbsp; 5.1G&nbsp; 93% /data<br />none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.9G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 2.9G&nbsp;&nbsp; 0% /dev/shm<br /><br />So I could get 2.7GB that hopefully will last until I can shutdown MySQL, remove the autoextend from the second innodb file and add a third tablespace in another filesystem with enought free space.<br /><br />One more thing I don&#8217;t like about MySQL.<br /><br />Uff.<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/19/mon-premier-post-en-francais/">Mon Premier Post en Français</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-19T00:00:00-05:00" pubdate data-updated="true">Sep 19<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Je m&#8217; appelle Miguel. Ma femme s&#8217; appelle Aline. J&#8217; ai un garçon. Il s&#8217; appelle Tristán et il a 1 ans. J&#8217; habite à Mexico, en Mexique. Je suis mexicain. J&#8217; aime Aline et Tristán. Je suis ingenieur et je parle espagnol, anglais, allemand et un peu français.<br />Comment allez-vous?<br /><br />Au revoir!<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/08/31/je-ne-comprends-pas/">Je Ne Comprends Pas!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-31T00:00:00-05:00" pubdate data-updated="true">Aug 31<span>st</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">El lunes anterior inicié mis clases de francés. No sé muchas cosas aún, sólo números y algunas frases sueltas:<br /><br />un<br />deux<br />trois<br />quatre<br />cinq<br /><br />Je ne comprends pas!<br /><br />Bonjour, je suis Miguel Cobá.<br /><br />:)<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/08/03/stand-by/">Stand By</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-03T00:00:00-05:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Hoy es domingo, un domingo como tantos, aunque este está nublado y nosotros enfermos. Cansados. Cansados de lo cotidiano y de las fiestas que rompen lo cotidiano. Desveladas, desmañanadas. Cansancio.<br />Tristán está imparable. Agotador. Ahora que camina es muy difícil aguantarle el paso. Yo tengo gripe, Aline tiene la espalda lastimada. Tristán sigue camine y camine. Hermoso. Y agotador.<br />En este momento esta en su sillón favorito. Recién acaba de tomar su jugo. Esta &#8220;platicando&#8221; con su perro de peluche. Aline recostada para aliviar el dolor de su espalda, yo aqui escribiendo.<br />Estas semanas que han pasado han sido grises. Al menos para mí. No he sentido ganas de hacer nada. Trabajo, curso, transporte público, problemas del trabajo que una vez que cruzas la puerta de salida parecen tan irreales, tan poco merecedoras del estres al que nos sometieron.<br />Nos mandaron a curso de certificación de una tecnología que no me gusta (es como programar jsp hace 6 años: javascript, html, codigo en una sola página. spaguetti code). Dos semanas de absoluto aburrimiento, desesperación por no aprender algo nuevo, algo INTERESANTE. Además sin internet. Sólo con Windows y sin internet. Es como mi idea del infierno. Al menos estaba instalado el Spider. Pero luego de 30 juegos también es aburrido. Leí 2 libros en ese curso. <br />Me falta motivación, los libros que comencé a escribir siguen detenidos. Y yo sin ganas de continuarlos. Las tres ideas que tenía para proyectos propios siguen en eso, en ideas.<br />El tiempo sigue pasando, día tras día, sin detenerse. Sin esperarnos.<br />Ojalá nos esperara.<br />
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/5/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

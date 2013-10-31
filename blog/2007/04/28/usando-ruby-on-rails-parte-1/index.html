@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Usando Ruby on Rails - Parte 1 - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Esta es la primera entrega de una serie de posts que pretenden crear un sistema básico sobre el cual construir una aplicación completa.
+Este código &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/04/28/usando-ruby-on-rails-parte-1">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Usando Ruby on Rails - Parte 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-28T00:00:00-05:00" pubdate data-updated="true">Apr 28<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Esta es la primera entrega de una serie de posts que pretenden crear un sistema básico sobre el cual construir una aplicación completa.
+Este código surgió después de investigar las mejores prácticas de programación en Ruby on Rails para el proyecto que estoy desarrollando actualmente.
+Como ya había comentado en otro post, el proyecto que estoy haciendo será el típico sistema web que permite a usuarios registrarse, obtener una cuenta de acceso al sistema y comenzar a usar la funcionalidad propia de la aplicación.
+Como todo lo relacionado con RoR, hay muchísimas referencias y tips para hacer determinada funcionalidad. Estos posts reflejan lo que a mi consideración es la mejor manera, al momento, de crear una aplicación en RoR.
+
+
+<!--more-->
+
+Necesitaremos:
+<ul>
+<li><a href="http://www.sqlite.org">sqlite3</a> - Base de datos para desarrollo. Cuando la aplicación sea puesta a producción, configuraremos <a href="http://www.postgresql.org">PostgreSQL</a></li>
+<li><a href="http://agilewebdevelopment.com/plugins/restful_authentication">restful_authentication</a> - Para hacer la autenticación de los usuarios en el sistema</li>
+<li><a href="http://openid.net/">openid</a> - Para poder hacer autenticación de usuarios que ya cuenten con un identity URL de OpenID</li>
+</ul>
+
+Además, la aplicación tratará de ser, en la medida de lo posible, lo más RESTful que se pueda.
+El ambiente en el que desarrollo es una máquina Debian GNU/Linux etch, con los repositorios oficiales y donde ya tengo instalado ruby y rubygems.
+
+Aquí vamos!
+
+<strong>Instalar sqlite3</strong>
+
+Primero instalamos las bibliotecas de sqlite3 para poder usarla como base de datos de desarrollo.
+Como root, instalamos la biblioteca directamente de los repositorios de Debian usando aptitude:
+
+<code>
+debian:~# aptitude install sqlite3 libsqlite3-dev
+</code>
+
+Después instalamos la gem de para usar sqlite3 con ruby, también como root:
+
+<code>
+debian:~# gem install sqlite3-ruby
+</code>
+
+Generamos el proyecto indicando que queremos usar sqlite3 como nuestra base de datos:
+
+<pre>
+<code>
+miguel@debian:~$ rails -d sqlite3 rails_app
+miguel@debian:~$ cd rails_app/
+miguel@debian:~/rails_app$ rake db:migrate
+(in /home/miguel/rails_app)
+miguel@debian:~/rails_app$
+</code>
+</pre>
+
+Si todo está bien instalado, no debería obtener ningún error durante el rake db:migrate.
+
+En el siguiente post crearemos un sistema de autenticación usando restful_authentication.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-28T00:00:00-05:00" pubdate data-updated="true">Apr 28<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/04/28/usando-ruby-on-rails-parte-1/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/04/28/usando-ruby-on-rails-parte-1/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/04/18/rest-for-newbies/" title="Previous Post: REST for newbies">&laquo; REST for newbies</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/05/13/usando-ruby-on-rails-parte-2/" title="Next Post: Usando Ruby on Rails - Parte 2">Usando Ruby on Rails - Parte 2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

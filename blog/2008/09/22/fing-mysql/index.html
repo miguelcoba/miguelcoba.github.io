@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>F***ing MySQL - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="One more time, I am having trouble with the MySQL database I administer. Look, this MySQL database was inherited. It contains ~30 databases, most of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/09/22/fing-mysql">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">F***ing MySQL</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">One more time, I am having trouble with the MySQL database I administer. <br />Look, this MySQL database was inherited. It contains ~30 databases, most of them MyISAM type. One of them, the biggest, with more than 30GB of data (150 millions registers). The configuration for MySQL especified a first innodb tablespace file of 20GB and a second file of 10MB, with autoextend. From my.cnf:<br /><br />innodb_data_home_dir = /data/mysql/data<br />innodb_data_file_path = ibdata1:20000M;ibdata2:10M:autoextend<br /><br />I was in the migration from MyISAM to InnoDB, in order to have transaction support. But, as I noted after starting the migration of tables, the innodb files used for storing the mysql tables NEVER shrinks. Never, even if you delete tables, drop tables or drop databases. Always grows but never returns unused space to the operating system. Unbelievable. <br />According to the bug tracking system for mysql (bugs <a href="http://bugs.mysql.com/bug.php?id=1341">1341</a>, <a href="http://bugs.mysql.com/bug.php?id=1287">1287</a>) this is a design decision to improve performance: if the space were disposed each time a delete is peformed, it would need to be allocated again when more data were written to the database. So it is only marked as deleted but not returned to the operating system. That is reasonable. In fact it is a good point. But there are times when you just need to free the innodb unused space and IT IS NOT possible, in an automatic or, at least, in a manual way.<br />Why would you need this. Supose, for example, that I have a 100 GB disk. It is used only for mysql. There is only a database of 40GB in it. So I have ~60GB of space free. One day I need to restore an old backup for this database. I create a new database and restore the old backup inside this database. If I have MySQL configured as all Innodb, the new database would be created in the innodb tablespace, so MySQL will grow the tablespace to say 80GB so the restored backup can be loaded. At this moment, I have 80GB used by the tablespace and only 20GB of free space in the disk. After extracting the data from the backup, I delete the restored database. One would think that the 40GB would be returned to the OS, but NO! The table space size is 80GB although only 40GB are really used, in fact, SHOW TABLE STATUS would show that it is only 50% used. If my original database doesn&#8217;t grows to fill the 80GB used by the innodb tablespace or grows very slowly I have actually lost 40GB from my disk and I can not do anything easy to recover that space. In other words, I have lost that space.<br />Of course there are workarounds for this problem, but they involve dumping and restoring the databases and more important, YOU MUST shutdown the database. That is not always posible. Maybe in a weekend or in the night, but that can be too late if you are running out of disk space.<br />It is needed a command to force MySQL to free unused space, under the responsability of the DB administrator. At this time, there isn&#8217;t any.<br />So the only way to add more free space to my database was by means of the operating system. My filesystem was like this:<br /><br />[root@usp02 root]# df -h<br />Filesystem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp; Used Avail Use% Mounted on<br />/dev/cciss/c0d0p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 64G&nbsp;&nbsp; 36G&nbsp;&nbsp; 26G&nbsp; 59% /<br />/dev/cciss/c0d0p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 99M&nbsp;&nbsp; 11M&nbsp;&nbsp; 83M&nbsp; 12% /boot<br />/dev/cciss/c0d1p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67G&nbsp;&nbsp; 62G&nbsp; 2.4G&nbsp; 97% /data<br />none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.9G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 2.9G&nbsp;&nbsp; 0% /dev/shm<br /><br />and there were still 3 tables in the migration process. I was feeling real panic. Besides, it is Monday morning. The only feasible moment for shutdown is the next weekend or, in case of extreme urgency, until tonight.<br />Finally, after several hours searching for a solution for the problem in MySQL, I decided to search ways to free space in the filesystem of the operating system. Happily I found a way to reduce the space reserved for root in a ext2 filesystem from the default 5% of the disk size to 1%. The instructions are <a href="http://boncey.org/2006_11_18_reclaiming_ext3_disk_space">here</a>. And I don&#8217;t even have to remount the filesystem. The change was applied inmediately.<br />I just typed: <br /><br />[root@usp02 root]# tune2fs -m 1 /dev/cciss/c0d1p1<br />tune2fs 1.32 (09-Nov-2002)<br />Setting reserved blocks percentage to 1 (177816 blocks)<br />[root@usp02 root]# df -h<br />Filesystem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size&nbsp; Used Avail Use% Mounted on<br />/dev/cciss/c0d0p3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 64G&nbsp;&nbsp; 36G&nbsp;&nbsp; 26G&nbsp; 59% /<br />/dev/cciss/c0d0p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 99M&nbsp;&nbsp; 11M&nbsp;&nbsp; 83M&nbsp; 12% /boot<br />/dev/cciss/c0d1p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67G&nbsp;&nbsp; 62G&nbsp; 5.1G&nbsp; 93% /data<br />none&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.9G&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp; 2.9G&nbsp;&nbsp; 0% /dev/shm<br /><br />So I could get 2.7GB that hopefully will last until I can shutdown MySQL, remove the autoextend from the second innodb file and add a third tablespace in another filesystem with enought free space.<br /><br />One more thing I don&#8217;t like about MySQL.<br /><br />Uff.<br />
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/09/22/fing-mysql/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/09/22/fing-mysql/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/09/19/mon-premier-post-en-francais/" title="Previous Post: Mon premier post en français">&laquo; Mon premier post en français</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/09/24/okcoba-fest/" title="Next Post: Okcoba Fest">Okcoba Fest &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Gemstone/S and FastCGI with lighttpd - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="I was reading the post from James Foster about configuring Apache/FastCGI for serving Seaside. I prefer Lighttpd because, as its name implies, it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/09/27/gemstones-and-fastcgi-with-lighttpd">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Gemstone/S and FastCGI With Lighttpd</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-27T00:00:00-05:00" pubdate data-updated="true">Sep 27<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">I was reading the <a href="http://programminggems.wordpress.com/2008/09/12/slice-4/">post</a> from James Foster about configuring Apache/FastCGI for serving Seaside. I prefer Lighttpd because, as its name implies, it needs less resources to run. And with virtual hosting, as I have my servers, memory it is a big factor. <br /><br />I followed the <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">steps</a> to install Gemstone/S in my machine. Instead of a hosted server, I used my laptop with my user as server.<br />After testing that Seaside was running OK in my machine, using:<br /><br />miguel@laptop:~$ source /opt/gemstone/product/seaside/defSeaside<br />miguel@laptop:~$ startGemstone<br />miguel@laptop:~$ startSeaside_Hyper 8080<br /><br />and navigating to:<br /><br />http://localhost:8080/seaside<br /><br />I stoped the Hyper Webserver with Ctrl+C.<br /><br />Now to install lighttpd in my Debian GNU/Linux 4.0 etch machine. As root:<br /><br />laptop:~# aptitude install lighttpd lighttpd-doc<br /><br />and backup the default config file:<br /><br />laptop:~# cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.bak<br /><br />then use this configuration for lighttpd.conf:<br /><br /># Modules activated<br />server.modules = ( &#8220;mod_access&#8221;, &#8220;mod_alias&#8221;, &#8220;mod_accesslog&#8221;, &#8220;mod_fastcgi&#8221; )<br /># Document root, maybe there you have other sites also<br />server.document-root = &#8220;/var/www/&#8221;<br /># logs<br />server.errorlog = &#8220;/var/log/lighttpd/error.log&#8221;<br />accesslog.filename = &#8220;/var/log/lighttpd/access.log&#8221;<br /># Welcome file<br />index-file.names = ( &#8220;index.html&#8221; )<br /># Do not server files beginning with<br />url.access-deny = ( &#8220;~&#8221;, &#8220;.inc&#8221; )<br /># Server config<br />server.port = 80<br />server.pid-file = &#8220;/var/run/lighttpd.pid&#8221;<br />dir-listing.encoding = &#8220;utf-8&#8221;<br />server.dir-listing = &#8220;disable&#8221;<br />server.username = &#8220;www-data&#8221;<br />server.groupname = &#8220;www-data&#8221;<br /># FastCGI<br /># Debug enabled, disable on production sites<br />fastcgi.debug = 1<br /># Do FastCGI for anything with prefix /seaside<br /># load-balancing with 3 hosts<br /># check-local disable searching the requested file in the lighttpd document root and<br /># forward the request to the fastcgi hosts<br />fastcgi.server = ( &#8220;/seaside&#8221; =&gt; (<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;),<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;),<br />&nbsp;&nbsp;&nbsp; ( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003, &#8220;check-local&#8221; =&gt; &#8220;disable&#8221;)<br />&nbsp; )<br />)<br /><br />Instead of starting Seaside over Gemstone/S with startSeaside_Hyper &lt;port&gt;, I used the provided script to start 3 gems for fastcgi as per James&#8217; <a href="http://programminggems.wordpress.com/2008/09/12/slice-4/">instructions</a>:<br /><br />miguel@laptop:~$ runSeasideGems start<br /><br />This started 3 fastcgi gems, listening in ports 9001, 9002 and 9003.<br /><br />Then I restarted lighttpd:<br /><br />laptop:~# /etc/init.d/lighttpd restart<br />Stopping web server: lighttpd.<br />Starting web server: lighttpd.<br /><br />And tested that the default index page for lighttpd (located in /var/www/index.html) was served statically (you can add anything here)&nbsp; from the server document root (/var/www/), pointing the browser to:<br /><br />http://localhost/<br /><br />Finally, I tested that the /seaside part was correctly delegated to Gemstone/S using FastCGI, pointing the browser to:<br /><br />http://localhost/seaside<br /><br />This time I get the dispatcher from Seaside, from where you can navigate the links from Seaside without problems.<br /><br />This way you can use, for example, <a href="http://http//www.blueprintcss.org/">blueprint</a> for the CSS style of your app, or maybe <a href="http://tinymce.moxiecode.com/">TinyMCE,</a> for having a full fledged text editor. All you have to do is to put them in a directory inside the document root of lighttpd (/var/www in this example) and in the Seaside application, you reference them with the absolut path to your website, for example:<br /><br />http://mysite.com/styles/blueprint.css<br /><br />or<br /><br />http://mysite.com/tinymce/jscripts/tiny_mce/tiny_mce.js<br /><br />So, the webserver to serve the static content of your site (faster) and Seaside to serve your webapp.<br /><br />Enjoy.<br /><br /><br /><br /><br />
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-27T00:00:00-05:00" pubdate data-updated="true">Sep 27<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/09/27/gemstones-and-fastcgi-with-lighttpd/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/09/27/gemstones-and-fastcgi-with-lighttpd/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/09/24/okcoba-fest/" title="Previous Post: Okcoba Fest">&laquo; Okcoba Fest</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/10/29/oracle-database-10g-administrator-certified-associate/" title="Next Post: Oracle Database 10g Administrator Certified Associate">Oracle Database 10g Administrator Certified Associate &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Seaside es un framework sorprendente. No hace falta más que ver los demos y ejemplos existentes. Pero es una lata encontrar documentación adecuada. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/page/13">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/20/documentacion-sobre-seaside/">Documentación Sobre Seaside</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-20T00:00:00-05:00" pubdate data-updated="true">Sep 20<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Seaside es un framework sorprendente. No hace falta más que ver los demos y ejemplos existentes. Pero es una lata encontrar documentación adecuada. La existente esta dispersa, atrasada, muy específica o muy básica. Es la mayor deficiencia de Seaside. El principal problema es que mucha documentación está hecha para versiones antiguas de Seaside, que usan WAHtmlRenderer en lugar de la más reciente y  recomendada WARenderCanvas
+
+Aquí van algunos de los mejores links que he encontrado:
+<ul>
+<li><a href="http://wiki.squeak.org/squeak/5671">http://wiki.squeak.org/squeak/5671</a> Documentos</li>
+<li><a href="http://wiki.squeak.org/squeak/792#Seaside">http://wiki.squeak.org/squeak/792#Seaside</a> Tutorías</li>
+<li><a href="http://www.lukas-renggli.ch/smalltalk/seaside/artofseaside.pdf">http://www.lukas-renggli.ch/smalltalk/seaside/artofseaside.pdf</a> Presentación por Lukas Renggli (muy bueno, aunque simplificado)</li>
+<li><a href="http://onsmalltalk.com/programming/smalltalk/terse-guide-to-seaside/">http://onsmalltalk.com/programming/smalltalk/terse-guide-to-seaside/</a> Muy claro en la presentación general de la arquitectura y uso de las clases principales de Seaside</li>
+<li><a href="http://www.shaffer-consulting.com/david/Seaside/">http://www.shaffer-consulting.com/david/Seaside/</a> Muy buena tutoría, más estructurado, aunque basado en WAHtmlRenderer. Es necesario modificar los ejemplos para adaptarlos a usar WARenderCanvas. Sin embargo, la adaptación del código es un excelente ejercicio para entender completamente WARenderCanvas.</li>
+<li><a href="http://www.lukas-renggli.ch/smalltalk/seaside">http://www.lukas-renggli.ch/smalltalk/seaside</a> Una tutoría de Lukas Renggli</li>
+<li>UPDATE: <a href="http://inchingforward.blogspot.com/2007/01/wanted-tutorial-to-kick-off-new-year-i.html">http://inchingforward.blogspot.com/2007/01/wanted-tutorial-to-kick-off-new-year-i.html</a> Este muestra un ejemplo completo usando Seaside 2.7.</li>
+</ul>
+¡A leer!
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/18/smalltalksqueak/">Smalltalk/Squeak</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-18T00:00:00-05:00" pubdate data-updated="true">Sep 18<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">El 14 de septiembre se publicó el libro <a href="http://www.squeakbyexample.org/" title="Squeak by example">Squeak by Example</a>. Hoy lo terminé. Es fantástico. El lenguaje es impresionante. El modelo teórico en el que está basado es absolutamente asombroso Todo es un objeto. ¡Todo! Y si creías que sabías programación orientada a objetos porque programabas en Java, C++ o C#, déjame romper tu burbuja. No es así. Lo digo por experiencia propia. Me he dado cuenta de que he vivido engañado.
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2007/09/18/smalltalksqueak/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/">Beyond Java (and Java Frameworks). Part 3</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-17T00:00:00-05:00" pubdate data-updated="true">Sep 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Los lenguajes de programación, como los lenguajes naturales, vienen en muchas variedades, cada una de las cuales tiene distintas características que los hacen, en mayor o menor medida, aptos para expresar ideas.
+
+En el caso de los lenguajes naturales, hay varios grupos que definen características comunes entre ellos. Uno de esos grupos es el formado por las lenguas romances (español, francés, italiano, etc). Otro grupo contiene a las lenguas del norte de Europa (alemán, Sueco, holandés), por no hablar de las lenguas orientales (japonés, chino, coreano,  etc). No hay que olvidar las lenguas nativas de los distintos pueblos y naciones antiguas (las islas del pacífico, las lenguas indígenas de latinoamérica, las lenguas de las tribus de indios de norteamérica). En fin, no soy lingüista ni mucho menos y este es terreno peligroso si entramos en detalles.
+
+El punto importante es la amplia variedad de lenguajes existentes, cada uno de los cuales expresa con mayor o menor precisión los conceptos de la mente humana.
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2007/09/17/beyond-java-and-java-frameworks-part-3/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/13/de-la-calidad-del-diseno-grafico/">De La Calidad Del Diseño Gráfico.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-13T00:00:00-05:00" pubdate data-updated="true">Sep 13<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Hace tiempo que intento terminar un proyecto alterno que estoy haciendo con un amigo. Es una aplicación web. Ya saben, lo tradicional: PostgreSQL, Java, Struts, Tomcat. Eso no es importante, sobre todo a la vista de los últimos posts donde explico mis razones para dejar atrás ese tipo de tecnología (me refiero a Struts). Lo importante es que desde el inicio decidí que iba a separar completamente la presentación de la aplicación, de manera que el producto se pudiera personalizar (cambiarle el tema) si así lo prefería el cliente.
+
+Si alguien me hubiera dicho que eso iba a ser toda una aventura, no lo hubiera creído.
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2007/09/13/de-la-calidad-del-diseno-grafico/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/05/aberraciones-en-programacion/">Aberraciones en Programación</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-05T00:00:00-05:00" pubdate data-updated="true">Sep 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Leyendo el blog de <a href="http://onsmalltalk.com">Ramon Leon</a> encontré un excelente <a href="http://onsmalltalk.com/programming/my-personal-pet-peeves-i-see-in-other-peoples-code/">artículo</a> listando algunas de las aberraciones que he encontrado en el código que he tenido que modificar y algunos que yo, me da pena decirlo, use en algún momento, como poner prefijos a las variables para indicar su tipo (la culpa es de Pascal).
+
+Algunas citas memorables, enfatizado por mi:
+
+<em>Don’t comment closing tags.</em>
+<pre>if(foo == bar){
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+//bunch of code
+} //end if(foo == bar)</pre>
+<em>this is beyond ignorant, you <strong>should be shot.</strong></em>
+
+¡Ja ja, nada más cierto!
+
+O, dirigido al mundo de Java:
+
+<em>XML is for configuration files and data transport, <strong>not for general purpose programming</strong>.</em>
+
+Para alegrarse el día
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/04/beyond-java-and-java-frameworks-part-2/">Beyond Java (and Java Frameworks). Part 2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-04T00:00:00-05:00" pubdate data-updated="true">Sep 4<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">En el post <a href="http://blog.leugim.com.mx/index.php/2007/09/03/beyond-java-and-java-frameworks-part-1/">anterior</a> detalle mi búsqueda de nuevas opciones en frameworks para desarrollo web en Java. Los finalistas fueron Wicket y RIFE. Mencionaba también que estos frameworks son distintos de los &#8220;tradicionales&#8221; en que son basados en componentes y en que manejan todo el estado de la sesión con el usuario del lado del servidor.
+
+¿Pero que significa que sean basados en componentes? De entrada es una nueva manera de pensar las aplicaciones web. En lugar de modelar una aplicación web como un conjunto de páginas relacionadas que la conforman, comenzamos a pensar en elementos más pequeños pero a la vez más poderosos.
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2007/09/04/beyond-java-and-java-frameworks-part-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/03/beyond-java-and-java-frameworks-part-1/">Beyond Java (and Java Frameworks). Part 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-03T00:00:00-05:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Al fin llegué a mi límite. Demasiado esfuerzo para hacer cosas simples. Demasiados archivos que modificar para realizar un cambio. Y lo peor de todo, ¡demasiado XML para programar!
+
+Java no es un lenguaje que se distinga por ser conciso para expresar algoritmos y soluciones a problemas. Es tolerado tomando en cuenta sus otras ventajas (garbage collector, una buena biblioteca de clases, entre otras). Pero si además de eso agregamos toneladas de XML para realizar la mitad de la programación y configuración de tu aplicación llegamos a un punto extremo.
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2007/09/03/beyond-java-and-java-frameworks-part-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/01/puebla-vacaciones-boda-comida-y-talavera/">Puebla: Vacaciones, Boda, Comida Y Talavera</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-01T00:00:00-05:00" pubdate data-updated="true">Sep 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Hace 2 semanas tuve vacaciones y nos fuimos a Puebla. Tres días fuera del DF siempre son bienvenidos. Además, no fueron solamente vacaciones, también fuimos a la <a href="http://fotos.leugim.com.mx/main.php?g2_itemId=377">boda</a> de mi hermano. Muchas felicidades a los novios.
+
+Llegamos un día antes de la boda y nos dimos una buena paseada por <a href="http://fotos.leugim.com.mx/main.php?g2_itemId=395">Puebla.</a> Muy bonita ciudad. No importa cuantas veces la visite, siempre me parecerá muy interesante. Lo mejor de todo es su comida. Probamos de todo: mole poblano, chalupas, cemitas, pipián, camotes, etc. Además, aprovechamos para comprar talavera poblana. Y aunque nos agarró la lluvia un día y no alcanzamos a subir al turibús, fueron unas vacaciones memorables.
+
+Así que no dejen de visitar Puebla, la comida y la ciudad no decepcionarán a nadie (exceptuando quizá a Marco Rodríguez, que no quedó muy convencido de que el papalo sea un buen ingrediente para las cemitas :D).
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/01/noticias-desde-alemania/">Noticias Desde Alemania</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-01T00:00:00-05:00" pubdate data-updated="true">Sep 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">El lunes 27 de agosto fue el examen de maestría de <a href="http://fotos.leugim.com.mx/main.php?g2_itemId=77">Talina</a>. Todo salió muy bien, según me cuenta (ya que estaba un poco complicado asistir :D). Así que un saludo y muchos abrazos hasta la lejana tierra de Alemania.
+
+Felicidades!
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/01/fotos/">Fotos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-01T00:00:00-05:00" pubdate data-updated="true">Sep 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Después de algunos días de tener abajo la sección de fotos ha regresado corregida y mejorada.
+
+Inicialmente tuve la intención de usar alguno de los sitios de fotos de internet como <a href="http://www.flickr.com/">Flickr</a> o <a href="http://picasaweb.google.com/">Picasa Web</a>. Picasa Web era el candidato ideal porque ya tengo cuenta en Google y por tanto ya no tenía que registrarme en otro sitio como es el caso de Flickr. Finalmente me decidí a hostear yo mismo mis imágenes. De esta manera yo tengo el control completo de todo. Después de buscar un rato y comparar las opciones me decidí por <a href="http://gallery.menalto.com/" title="Gallery 2">Gallery2</a>.
+
+Entre todas las ventajas que tiene gallery, la más importante es que puedo subir directamente las fotos desde <a href="http://f-spot.org" title="f-spot">f-spot</a> o <a href="http://digikam.org">digikam.</a>
+
+Por tanto cree un nuevo subdominio para poner ahí la galería. La dirección es <a href="http://fotos.leugim.com.mx" title="Fotos">http://fotos.leugim.com.mx</a>.
+
+Inicialmente, manejaba mis fotografías usando f-spot. La interfaz es muy amigable y en cuanto a manejo de fotografías no le pide nada a Picasa o a iPhoto. Pero desgraciadamente no hace lo mismo con los videos. Algo muy importante para mi era la capacidad de almacenar tags y comentarios directamente en las imágenes (usando EXIF e IPTC) y no en una base de datos externa  (como XML o sqlite). De esta manera, si en algún momento decido cambiar de aplicación para el manejo de mis fotos, no tengo que volver a clasificarlas y comentarlas.
+
+Desafortunadamente, f-spot no lo hace en la versión que viene con Debian Etch (0.2.1) y para instalar la versión de Debian Testing me marcaba demasiados conflictos. Por tanto intenté instalarlo a partir del código fuente. ¡Ja!, toda una aventura. Finalmente desistí y busque una mejor solución.
+
+Encontré que digikam puede almacenar los tags y comentarios directamente en el archivo, y que además, aunque la versión que viene con Debian Etch no es la que trae esta funcionalidad, es mucho más sencillo instalar la <a href="http://www.digikam.org/?q=download/svn">versión</a> más reciente directamente desde el repositorio svn de <a href="http://www.kde.org/">kde</a>. Así que por el momento estoy usando digikam 0.9.3, compilado a partir del svn y no tengo ningún problema. Todos mis tags y comentarios son guardados en el archivo de la foto. Además, como cereza del pastel, al exportar las imágenes a gallery, éste obtiene los tags y comentarios que asigné a las imágenes y las utiliza para poner los títulos y comentarios que aparecen en la galería.  :D <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY</a> en acción.
+
+Así que ahora a subir fotos por montones.
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/14/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/12/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

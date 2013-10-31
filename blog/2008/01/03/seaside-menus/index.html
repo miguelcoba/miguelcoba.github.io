@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Seaside menus - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Finally, after long hours (days and more exactly months) searching the archives, the Smalltalk/Seaside blogosphere and the web, I had my Aha! moment &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/01/03/seaside-menus">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Seaside Menus</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-03T00:00:00-06:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Finally, after long hours (days and more exactly months) searching the archives, the Smalltalk/Seaside blogosphere and the web, I had my <a href="http://www.mindhacks.com/blog/2005/07/understanding_aha.html" title="Aha moment">Aha! moment</a> with Seaside.
+
+I was trying to grasp the Seaside way to do menus. First I was using call:/answer to make the links in the menu work. So in my menu I had something like:
+<pre>
+<code>
+renderContentOn: html
+html anchor on: #newContact of: self.
+html space.
+html anchor on: #contactList of: self.
+
+newContact
+| contact |
+contact :=  self call: (ContactEditor contact: Contact new)
+contact ifNotNil: [ContactDatabase contacts add: contact].
+
+contactList
+self call: (ContactList contacts: ContactDatabase contacts)
+</code></pre>
+This would show a pair of links: &#8216;New Contact&#8217; for adding a new Contact to the database and &#8216;Contact List&#8217; for listing the current contents of your database.
+
+What is the problem with this code? It worked, sort of. See: you want to add a contact, so you press the &#8216;New contact&#8217; link and a ContactEditor call: is invoked. A contact form is presented for you to fill it. A pair of buttons (Save, Cancel) are shown too. The Save button submits the form and adds the Contact to the Contacts database. The cancel button, well, just cancels the process. But, as the menu is always visible, you could as well click the &#8216;New contact&#8217; link instead of pressing the Cancel button in order to get a new blank Contact form.
+What it is wrong with this? You are doing a new call: to a new ContactEditor and this call: is stacked in Seaside. The same happens if you click 5 or 4000 times the &#8216;New Contact&#8217; link.
+If, after clicking the &#8216;New contact&#8217; many times, you fill the form and press the Save button, the last ContactEditor invoked answers back the Contact and it&#8217;s saved to the database. But Seaside, noting that a call: was just answered, returns the application to the point where the call: was made. That is, to the 4th or 3999th call: stored in the stack. That is not the way you want the application to behave.
+In a classical menu, for example in Wordpress when I click the &#8216;Write a new post&#8217; link many times, it is the same as clicking it only once. You don&#8217;t have a stack growing and growing endless.
+
+How to solve it?
+
+
+
+<!--more-->
+
+
+As I said before, I searched the lists and blogs and I found the answer. You don&#8217;t use call: with menus, because you don&#8217;t always expect them to return. Most times, a menu triggers an event or a process and when you are done with it (or indeed, in the middle of it) you can jump to another unrelated one. And you don&#8217;t want colateral effects.
+
+This <a href="http://www.justplayitgrand.com/?p=12" title="Beginnings of a PIM Example">post</a> from Eric Hochmeister was the first hint that my problem had a more Seaside-ish solution. After a few days, in my feed reader appeared a <a href="http://methodsandmessages.vox.com/library/post/a-few-bits-about-children-in-seaside.html" title="A few bits about children in Seaside">post</a> from Randal Schwartz (of Perl fame) confirming Eric post. Finally, the last piece of code needed to reach my Aha! moment was the new MenuExample (at least for me, as the last time I checked SeasideExamples it wasn&#8217;t there yet) in <a href="http://www.squeaksource.com/SeasideExamples/" title="SeasideExamples">SeasideExamples</a> that, besides showing how to do a menu, is a simple example of using the Announcements framework for loose coupling of components.
+
+So I did a small demo webapp with 4 parts: header, footer, menu and content to show this new technique I just learned.
+
+I use a main component to render this 4 parts:
+<pre>
+<code>
+WAComponent subclass: #MDMain
+instanceVariableNames: 'header footer menu content'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'MenuDemo'
+</code></pre>
+Initialize the main component. Here I assign the components that will be rendered in each part of the page. Header and footer are no problems. Initially the content will show a blank page (a WAComponent doesn&#8217;t render anything by default)
+The interesting part is the setup of the menu. There I assign callbacks to the links in the menu that will swap the current content to the desired content
+<pre>
+<code>
+initialize
+super initialize.
+header := MDHeader new.
+footer := MDFooter new.
+content := WAComponent new. "Initially a blank page is rendered"
+"We setup the menu"
+menu := MDMenu new
+add: [self newContact] named: 'New Contact';
+add: [self listContacts] named: 'Contact list';
+yourself.
+</code></pre>
+This is how I swap the default content for the Contact list component:
+<pre>
+<code>
+listContacts
+content := MDContactList new.
+</code></pre>
+Very important, as this main component renders 4 other components, I have to override children:
+<pre>
+<code>
+children
+^ Array with: header with: footer with: menu with: content.
+</code></pre>
+Furthermore, as the MDMain component changes over time, it needs to be backtracked so, we override the states message (thanks to Philippe Marschall for the tip):
+<pre>
+<code>
+states
+^ Array with: self
+</code></pre>
+Finally the main component renders the parts of our page:
+<pre>
+<code>
+renderContentOn: html
+html render: header.
+html render: menu.
+html render: content.
+html render: footer.
+</code></pre>
+The menu Component is interesting too:
+<pre>
+<code>
+WAComponent subclass: #MDMenu
+instanceVariableNames: 'entries'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'MenuDemo'
+</code></pre>
+The entries is just an OrderedCollection:
+<pre>
+<code>
+initialize
+super initialize.
+entries := OrderedCollection new.
+</code></pre>
+Each entry is an association of &#8216;Link Title&#8217; -&gt; [code to execute when clicked]:
+<pre>
+<code>
+add: aCallback named: aTitle
+entries add: aTitle -&gt; aCallback
+</code></pre>
+The rendering of the menu:
+<pre>
+<code>
+renderContentOn: html
+html unorderedList: [
+entries do: [ :each |
+html listItem: [
+html anchor
+callback: each value;
+with: each key]]]
+</code></pre>
+That is all. So simple that it is amazing.
+You can find the complete application in the <a href="http://www.squeaksource.com/SeasideExamples.html" title="SeasideExamples">SeasideExamples</a> page on SqueakSource as MenuDemo.
+Enjoy.
+
+<strong>UPDATE 2008-01-04:</strong> Philippe Marschall noted a bug in the code. I wasn&#8217;t taking care of backtracking for the MDMain component. This is necessary because the MDMain component changes over time. I have uploaded a new version with the fix to SqueakSource<strong>.</strong>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-01-03T00:00:00-06:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/01/03/seaside-menus/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/01/03/seaside-menus/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/12/31/english-computers-and-wife/" title="Previous Post: English, computers and wife">&laquo; English, computers and wife</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/01/15/blame-apple-laptop-on-sale/" title="Next Post: Blame Apple. Laptop on sale!">Blame Apple. Laptop on sale! &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

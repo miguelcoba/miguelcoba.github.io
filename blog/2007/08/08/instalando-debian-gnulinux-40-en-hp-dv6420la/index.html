@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Instalando Debian GNU/Linux 4.0 en HP dv6420la - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Aquí están los pasos que seguí para instalar Debian GNU/Linux 4.0 (etch) en mi nueva laptop HP dv6420la Aquí están las características de la máquina &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Instalando Debian GNU/Linux 4.0 en HP Dv6420la</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-08T00:00:00-05:00" pubdate data-updated="true">Aug 8<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">Aquí están los pasos que seguí para instalar Debian GNU/Linux 4.0 (etch) en mi nueva laptop HP dv6420la
+<a href="http://miguel.leugim.com.mx/index.php/2007/08/06/laptop/" target="_self">Aquí</a> están las características de la máquina
+
+Antes de comenzar es importante tener en cuenta lo siguiente. La tarjeta de red inalámbrica es una Broadcom BCM4310 que no está soportada de manera nativa en el kernel que viene en el instalador de Debian etch. Para hacerla funcionar es necesario usar ndiswrapper y los drivers propietarios que se obtienen de la página de HP. Pero para poder descargar esos drivers necesitamos una conexión de red. Así que, en resumen, durante la instalación no habrá red inalámbrica. Usaremos la red alámbrica para realizar la instalación y una vez que tengamos instalado debian instalaremos los drivers propietarios para usar la conexión inalámbrica. Lo mismo sucede si están tratando de instalar Ubuntu 7.04 (Feisty Fawn). El disco de instalación de ubuntu no contiene los drivers propietarios del BCM4310.
+
+<!--more-->
+
+Los siguientes links, y los links dentro de ellos, fueron indispensables para lograr instalar debian en la laptop:
+
+<a title="https://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty" href="https://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty">https://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty</a>
+<a title="http://ubuntuforums.org/showthread.php?t=185174" href="http://ubuntuforums.org/showthread.php?t=185174" target="_blank">http://ubuntuforums.org/showthread.php?t=185174</a>
+<a title="http://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty_No-Fluff" href="http://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty_No-Fluff">http://help.ubuntu.com/community/WifiDocs/Driver/bcm43xx/Feisty_No-Fluff</a>
+
+Una vez aclarado esto, el proceso es como sigue:
+
+1. Descargar los discos de instalación de Debian GNU/Linux 4.0 (etch) para amd64.
+
+2. Bootear desde el CD-ROM y agregar parámetros al kernel.
+Cuando salga el prompt de linux escribir:
+
+<code>Press F1 for help, or ENTER to boot: install noapic nolapic noriqpoll</code>
+
+Esto evitará que la máquina se congele a mitad del proceso de instalación o que el entorno gráfico no arranque
+
+3. Instalar debian de la manera normal.
+La instalación debería proceder sin ningún problema.
+
+4. Agregar los parámetros de booteo a grub si es que no existen.
+Ya con el nuevo sistema debian instalado procederemos a agregar las opciones a la configuración de grub para que siempre arranque el sistema con ellas. Abrimos /boot/grub/menu.lst y buscamos la sección para agregar las opciones de default al kernel. En mi caso la sección quedó de la siguiente manera:
+<pre><code>
+## ## Start Default Options ##
+## default kernel options
+## default kernel options for automagic boot options
+## If you want special options for specific kernels use kopt_x_y_z
+## where x.y.z is kernel version. Minor versions can be omitted.
+## e.g. kopt=root=/dev/hda1 ro
+##      kopt_2_6_8=root=/dev/hdc1 ro
+##      kopt_2_6_8_2_686=root=/dev/hdc2 ro
+# kopt=root=/dev/mapper/debian-root ro noapic nolapic noirqpoll
+</code></pre>
+Después de eso ejecuté como root:
+
+<code># update-grub</code>
+
+5. Agregar bcm43xx a la blacklist de modprobe
+
+<code># echo 'blacklist bcm43xx' | tee -a /etc/modprobe.d/blacklist</code>
+
+6. Instalar los paquetes necesarios.
+
+<code># aptitude install module-assistant cabextract</code>
+
+7. Instalar ndiswrapper
+<pre><code>
+# m-a prepare
+# m-a a-i ndiswrapper
+</code></pre>
+contestando afirmativamente las preguntas que aparezcan.
+
+8. Descargar los drivers propietarios de la página de HP.
+El driver usado comunmente es el ftp://ftp.hp.com/pub/softpaq/sp33001-33500/sp33008.exe, pero en <a href="http://ndiswrapper.sourceforge.net/joomla/index.php?/component/option,com_openwiki/Itemid,33/id,list_b/">http://ndiswrapper.sourceforge.net/joomla/index.php?/component/option,com_openwiki/Itemid,33/id,list_b/</a> aconsejan, para los modelos dv6000 (que es nuestro caso), usar mejor ftp://ftp.hp.com/pub/softpaq/sp34001-34500/sp34152.exe.
+En mi caso el sp33008 no me funcionó (me marcaba errores al hacer el modprobe) pero el sp34152 funcionó de maravilla.
+
+9. Descomprimir el driver.
+<pre><code>
+# mkdir sp34152
+# cp sp34152.exe sp34152
+# cd sp34152
+# cabextract sp34152.exe
+</code></pre>
+10. Instalar el driver usando ndiswrapper.
+<pre><code>
+# ndiswrapper -i bcmwl5.inf
+# ndiswrapper -l
+# depmod -a
+# modprobe ndiswrapper
+# cp /etc/network/interfaces /etc/network/interfaces.orig
+# echo -e 'auto loniface lo inet loopbackn' | tee /etc/network/interfaces
+# ndiswrapper -m
+# echo 'ndiswrapper' | tee -a /etc/modules
+# echo 'ENABLED=0' | tee -a /etc/default/wpasupplicant
+</code></pre>
+11. Reiniciar
+Finalmente reiniciamos y verificamos que al ingresar como usuario normal el network-manager indique que detecta redes inalámbricas.
+Si las detecta lo único que resta es seleccionar <em>conectarse a otra red inalámbrica</em> e ingresar los datos de su red inalámbrica para conectarse.
+
+<strong>UPDATE:</strong>
+
+Los botones de acceso rapido de la parte superior del teclado funcionan excelentemente configurándolos con la GNOME, en el menú:
+<strong>Escritorio -&gt; Preferencias -&gt; Combinaciones de teclas</strong>
+Para configurar una tecla, primero elegimos la acción que ejecutará de la lista que aparece y a continuación presionamos la tecla. Esta aplicación hará el mapeo entre las teclas y las acciones.
+
+Para hacer funcionar la webcam, adaptando las instrucciones de <a href="http://raseck.wordpress.com/2007/02/07/webcam-integrada-en-hp-pavilion/">http://raseck.wordpress.com/2007/02/07/webcam-integrada-en-hp-pavilion/</a>
+primero ejecutamos lsusb como root para verificar el modelo de la webcam. En mi caso es:
+<code>
+# lsusb
+</code>
+En mi caso es:
+<code>
+ID 0c45:62c0 Microdia
+</code>
+A continuación procedemos a instalar linux-uvc con el module-assistant:
+<code>
+# m-a prepare
+# m-a a-i linux-uvc
+</code>
+Y finalmente el libpt-plugins-v4l2 usando aptitude:
+<code>
+# aptitude install libpt-plugins-v4l2
+</code>
+
+Finalmente cargamos el modulo
+<code>
+# modprobe uvcvideo
+</code>
+
+De se necesario, lo agregamos a /etc/modules para que siempre lo cargue al iniciar.
+
+Para probar la webcam, abrímos Ekiga desde <strong>Aplicaciones -&gt; Internet -&gt; Softphone Ekiga</strong> y la configuramos entrando al menú <em>Editar</em> de Ekiga, y luego a <em>Preferencias</em>. Una vez ahí, en la sección dispositivos elegir V4L2 como complemento de vídeo.
+Después de esto debería funcionar la webcam
+
+<strong>UPDATE 2:</strong>
+
+El sensor de control remoto que está al frente funcionó perfectamente sin tener que instalar nada extra. Lo mismo con los conectores para audífonos. El conector para micrófono no lo he podido probar porque carezco de uno.
+
+<strong>UPDATE 3 (20080419):</strong>
+
+Finalmente el kernel de linux incluye el código necesario para hacer funcionar la tarjeta inalámbrica BCM4312 rev 02 que viene con este módelo de laptop. Ya no es necesario usar ndiswrapper, por lo que pueden saltarse toda esa sección y seguir las instrucciones de <a title="Kernel support for BCM4312 rev 02" href="http://miguel.leugim.com.mx/index.php/2008/04/19/linux-kernel-powered-wireless-card/">aquí</a>.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-08T00:00:00-05:00" pubdate data-updated="true">Aug 8<span>th</span>, 2007</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/08/07/sobrinos-y-bodas/" title="Previous Post: Sobrinos y bodas">&laquo; Sobrinos y bodas</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/08/13/mas-bodas-mas-sobrinos/" title="Next Post: Más bodas, más sobrinos">Más bodas, más sobrinos &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

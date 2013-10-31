@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Deploying Seaside: Prepare the images - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="You have a working squeak vm install. Now we will create the directories we&#8217;ll use. Create directories export WORK=/home/miguel/work mkdir -p $ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-prepare-the-images">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Deploying Seaside: Prepare the Images</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">You have a working squeak vm install. Now we will create the directories we&#8217;ll use.
+
+<strong>Create directories
+</strong>
+
+export WORK=/home/miguel/work
+mkdir -p $WORK
+
+export DEPLOY=/home/miguel/example
+mkdir -p $DEPLOY/{pharo,magma,backup,logs,scripts,website}
+
+We will use two directories, put them where you want. I chose to put them on my home directory but you can use any other if you wish. The important thing is to have the environment variables correctly assigned. This will ease the following steps.
+
+The work directory is to hold temporary files as we setup the deploy directory. At the end will be discarded.
+
+The deploy directory is what we will populate with the images and other useful scripts to host our Seaside application and data. As you can see has directories for the images (pharo), for the database (magma), for the magma backups (backups), for the logs (currently only has the output of the nohups used to start the images), for the scripts (guess, scripts!) and for the static content of your application, that you wisely have the webserver to serve and not the Seaside server (website). More on this later.
+
+<strong>Download PharoCore</strong>
+
+Now go to the Pharo <a title="Pharo download page" href="http://pharo-project.org/pharo-download">download page</a> look for the section &#8220;Sources files&#8221; and download the Sources zip file. At the moment is:
+
+SqueakV39.sources.zip
+
+Now go to the bottom of the page and follow the link that says &#8220;Pharo-core images and other files&#8221;. Find the most recent PharoCore zip file. Currently is:
+
+PharoCore-1.0-10451-BETA.zip
+
+but any newer will do.
+
+Unzip this two zip files. The PharoCore will create a directory and inside it will be the image and changes files. The Sources zip contains one file. Now, copy this three files to the $WORK directory:
+
+cp PharoCore-1.0-10451-BETA.image $WORK
+cp PharoCore-1.0-10451-BETA.changes $WORK
+cp SqueakV39.sources $WORK
+
+So far so good. You have a PharoCore image with its changes file and a sources file. This, together with the virtual machine gives you a complete Pharo environment to work. You can try it:
+
+cd $WORK
+$VM PharoCore-1.0-10451-BETA.image
+
+You should see the PharoCore image running. Quit the image WITHOUT saving.
+
+<strong>Save scripts</strong>
+
+Save the following scripts to the $WORK directory.
+
+<strong><em>magma-image.st:</em></strong>
+
+&#8220;Install Magma Server on a PharoCore image&#8221;
+
+&#8220;Set some preferences&#8221;
+Preferences enable: #fastDragWindowForMorphic.
+Preferences disable: #windowAnimation.
+Preferences enable: #updateSavesFile.
+Preferences disable: #windowAnimation.
+
+&#8220;Update from pharo update stream (only works/recomended for PharoCore)&#8221;
+Utilities updateFromServer.
+
+&#8220;Your name, like MiguelCoba or VincentVanGogh, dont  use spaces or accents, just ASCII&#8221;
+Author fullName: &#8216;FirstnameLastname&#8217;.
+
+&#8220;Install Installer&#8221;
+ScriptLoader
+loadLatestPackage: &#8216;Installer-Core&#8217; fromSqueaksource: &#8216;Installer&#8217;.
+
+&#8220;RFB&#8221;
+Installer lukas project: &#8216;unsorted&#8217;;
+install: &#8216;RFB&#8217;.
+
+&#8220;Magma server&#8221;
+Installer ss project: &#8216;Magma&#8217;;
+install: &#8216;1.0r42 (server)&#8217;.
+
+&#8220;Configure the packages&#8221;
+RFBServer current
+initializePreferences;
+allowEmptyPasswords: false;
+allowLocalConnections: true;
+allowRemoteConnections: false;
+allowInteractiveConnections: true;
+connectionTypeDisconnect;
+configureForMemoryConservation;
+setFullPassword: &#8216;useyourownpasswordhere&#8217;.
+
+&#8220;Save with a new name&#8221;
+SmalltalkImage current saveAs: &#8216;magma&#8217;.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script when executed on a PharoCore image, will set some preferences, apply updates from the Pharo project if available and then install some packages directly from their repositories. The packages installed are RFBServer (a VNC server for Squeak and Pharo) and the Magma server. Finally it configures the packages and saves the image with a new name: magma. Be sure to change your full name and the RFBServer before saving the file.
+
+<em><strong>magma-run.st:</strong></em>
+
+&#8220;When a file named magma.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving&#8221;
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.shutdown&#8217;)
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ].
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.startvnc&#8217;)
+ifTrue: [ Project uiProcess resume.  RFBServer start:0 ].
+(FileDirectory default fileOrDirectoryExists: &#8216;magma.stopvnc&#8217;)
+ifTrue: [ RFBServer stop. Project uiProcess suspend ].
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+&#8220;To save CPU cycles&#8221;
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<em><strong>seaside-image.st:</strong></em>
+
+&#8220;Install Seaside on a PharoCore image&#8221;
+
+&#8220;Install packages&#8221;
+
+&#8220;Comanche&#8221;
+Installer ss project: &#8216;KomHttpServer&#8217;;
+install: &#8216;DynamicBindings&#8217;;
+install: &#8216;KomServices&#8217;;
+install: &#8216;KomHttpServer&#8217;.
+
+&#8220;Seaside&#8221;
+Installer ss project: &#8216;Seaside&#8217;;
+answer: &#8216;.*username.*&#8217; with: &#8216;admin&#8217;;
+answer: &#8216;.*password.*&#8217; with: &#8216;seaside&#8217;;
+install: &#8216;Seaside2.8a1&#8217;;
+install: &#8216;Scriptaculous&#8217;.
+
+&#8220;Seaside Jetsam&#8221;
+Installer ss project: &#8216;Jetsam&#8217;;
+install: &#8216;Seaside28Jetsam-kph.67&#8217;.
+
+&#8220;Seaside helper&#8221;
+Installer ss project: &#8216;MagmaTester&#8217;;
+answer:&#8217;username&#8217; with:&#8217;admin&#8217;;
+answer:&#8217;password&#8217; with:&#8217;seaside&#8217;;
+install: &#8216;Magma seasideHelper&#8217;.
+
+&#8220;SeasideProxyTester&#8221;
+Installer ss project: &#8216;SeasideExamples&#8217;;
+install: &#8216;SeasideProxyTester&#8217;.
+
+&#8220;Configure the packages&#8221;
+&#8220;Start Seaside&#8221;
+WAKom startOn: 9001.
+
+&#8220;Unregister example apps&#8221;
+WADispatcher default trimForDeployment.
+
+&#8220;Unregister deployed apps&#8221;
+WADispatcher default
+unregister: (WADispatcher default entryPointAt: &#8216;/browse&#8217;);
+unregister: (WADispatcher default entryPointAt: &#8216;/config&#8217;).
+
+&#8220;Save with a new name&#8221;
+SmalltalkImage current saveAs: &#8216;seaside&#8217;.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script install Seaside 2.8, Magma seasideHelper and the SeasideProxyTester app that we will use to test the setup. Besides, start Seaside on port 9001, unregister unnecessary apps from the Seaside dispatcher and save the image as seaside.
+
+<strong><em>seaside-run.st:</em></strong>
+
+&#8220;When a file named seaside.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving&#8221;
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: &#8216;seaside.shutdown&#8217;)
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ]
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+&#8220;To save CPU cycles&#8221;
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<strong><em>start_app.sh:</em></strong>
+
+#!/bin/sh
+
+HOME=&#8221;/srv/example&#8221;
+NOHUP=&#8221;/usr/bin/nohup&#8221;
+VM=&#8221;/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null&#8221;
+IMAGES=&#8221;$HOME/pharo&#8221;
+SCRIPTS=&#8221;$HOME/scripts&#8221;
+LOGS=&#8221;$HOME/logs&#8221;
+START_PORT=9001
+END_PORT=9004
+
+# Delete command files
+
+[ -f $IMAGES/magma.shutdown ] &amp;&amp; rm $IMAGES/magma.shutdown
+[ -f $IMAGES/magma.startvnc ] &amp;&amp; rm $IMAGES/magma.startvnc
+[ -f $IMAGES/magma.stopvnc ] &amp;&amp; rm $IMAGES/magma.stopvnc
+[ -f $IMAGES/seaside.shutdown ] &amp;&amp; rm $IMAGES/seaside.shutdown
+
+# Start the Magma image
+echo &#8220;Starting Magma image&#8221;
+$NOHUP $VM $IMAGES/magma.image $SCRIPTS/magma-run.st &gt;&gt; $LOGS/magma.nohup &amp;
+
+# To give Magma time to open the repository
+sleep 5
+
+# Start the Seaside images
+for PORT in `seq $START_PORT $END_PORT`; do
+echo &#8220;Starting Seaside image on port: $PORT&#8221;
+$NOHUP $VM $IMAGES/seaside.image $SCRIPTS/seaside-run.st port $PORT &gt;&gt; $LOGS/seaside$PORT.nohup &amp;
+done
+
+I will explain this script later.
+
+<strong>Prepare images</strong>
+
+Make sure that the previous scripts are saved to the $WORK directory. Then build the images:
+
+cd $WORK
+
+# Build magma image from PharoCore image
+$VM PharoCore-1.0-10451-BETA.image $WORK/magma-image.st
+
+# Build seaside image from the magma image
+$VM magma.image $WORK/seaside-image.st
+
+This will take the PharoCore image and, by using the scripts given, will build the magma image. Then, using the magma image, will build the seaside image.
+
+The build scripts are based on the scripts included in the pharo-dev and pharo-web images created by <a title="Damien Cassou" href="http://damiencassou.seasidehosting.st/seaside/pier">Damien Cassou</a>.
+
+The magma-run.st and seaside-run.st scripts are based on the ones Ramon Leon posted on his <a title="Ramon Leon" href="http://onsmalltalk.com">blog</a>.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-prepare-the-images/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2009/09/22/deploying-seaside-prepare-the-images/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2009/09/22/deploying-seaside-populate-directories/" title="Previous Post: Deploying Seaside: Populate directories">&laquo; Deploying Seaside: Populate directories</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2009/09/22/deploying-seaside-seasideproxytester/" title="Next Post: Deploying Seaside: SeasideProxyTester">Deploying Seaside: SeasideProxyTester &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

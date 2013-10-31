@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="Well the images are ready now to populate the directories that will be uploaded to the production server. Populate directories There is a directory &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/page/3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/22/deploying-seaside-populate-directories/">Deploying Seaside: Populate Directories</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Well the images are ready now to populate the directories that will be uploaded to the production server.
+
+<strong>Populate directories</strong>
+
+There is a directory named website inside the $DEPLOY directory. This directory is to be used to host your static content: images, CSS files, javascripts, etc. But as we are going to proxy requeste from the webserver to the Seaside images, there must be a way for the webserver to know what to proxy and what not to. Requests for static content must not be proxied to the Seaside server and the easiest way for the webserver to recognize those requests is by means of the URL path of the request. So we will have a rule in the webserver configuration so that everything that has a path that begins with &#8216;/resources/&#8217; will not be proxied but served directly by the webserver. The Seaside images never get those requests. The only generates the html that asks the webserver for that static content. So if a request arrives to the webserver with the &#8216;/resources/&#8217; path in it, the webserver will try to find it on its document root. As the webserver will have its document root pointing to the website directory, a path of &#8216;/resources/&#8217; will search for a directory resources in the website/ directory. So if a request arrives asking for:
+
+http://seaside.example.com/resources/somefile.jpg
+
+the webserver will try to serve the file located on:
+
+website/resources/somefile.jpg
+
+So create a directory named resources/ on the $DEPLOY/website directory:
+
+mkdir $DEPLOY/website/resources/
+cp website_files/* $DEPLOY/website/
+
+and copy to it the files you want to be served directly by the webserver (website_files/ is the directory that currently has your content).
+
+The SeasideProxyTester doesn&#8217;t have a lot of static content but it will show the Pharo logo, so lets download the Pharo logo from:
+
+<a title="Pharo logo" href="http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg">http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg</a>
+
+and save it to $DEPLOY/website/resources/ as pharocard.jpg. This will be the static content for the SeasideProxyTester.
+
+Now copy the scripts and images from the $WORK directory to the correct location on $DEPLOY:
+
+cp $WORK/magma-run.st $DEPLOY/scripts
+cp $WORK/seaside-run.st $DEPLOY/scripts
+cp $WORK/start_app.sh $DEPLOY/scripts
+cp $WORK/SqueakV39.sources $DEPLOY/pharo
+cp $WORK/magma.image $DEPLOY/pharo
+cp $WORK/magma.changes $DEPLOY/pharo
+cp $WORK/seaside.image $DEPLOY/pharo
+cp $WORK/seaside.changes $DEPLOY/pharo
+
+<strong>Create the magma repository</strong>
+
+Next step, create the magma repository. First load the magma image:
+
+cd $DEPLOY/pharo
+/opt/pharo/squeak magma.image
+
+open a workspace and &#8220;DoIt&#8221; the following Smalltalk code:
+
+&#8220;Create the repository&#8221;
+MagmaRepositoryController
+create: &#8216;../magma/&#8217;
+root: Dictionary new.
+
+&#8220;Start the server&#8221;
+MagmaServerConsole new
+open: &#8216;../magma/&#8217;;
+processOn: 51969;
+inspect.
+
+&#8220;Save and quit the image&#8221;
+SmalltalkImage current snapshot: true andQuit: true.
+
+This do several things. First it creates the magma database in the $DEPLOY/magma directory, by using relative paths. It uses a Dictionary as the root of the repository. Inside this root we will put our application root object (our domain root). Next, it starts the server console listening on the port 51969 for incoming connections. This port will be used by the Magma seasideHelper code to connect the Seaside application to the Magma server. Finally it saves the image and quits. Next time that you start this image, the Magma server will automatically start and bound to the port, ready to accept connections. If you open the image, quit WITHOUT saving.
+
+We are almost ready to test the application. We have already finished the directory setup. This $DEPLOY directory can be uploaded to the production server but before that we must configure the webserver to do load balancing and proxy to our Seaside images.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/22/deploying-seaside-install-the-squeak-vm/">Deploying Seaside: Install the Squeak VM</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">We are going to deploy a Seaside application that uses Magma seasideHelper to connect to a Magma database in a production server. The production server will have an image for the Magma server and serveral Seaside images with the application code. All the images will be PharoCore images with just the necessary packages loaded and nothing else. The users&#8217; sessions will be load balanced and proxied by a web server. The Magma image, the Seaside images and the webserver will be hosted on the production server. For this tutorial we will use the SeasideProxyTester application from the <a title="Seaside Examples" href="http://squeaksource.com/SeasideExamples.html">SeasideExamples</a> project on SqueakSource.com. You can use your own code given that you do a few minor modifications that I will detail later.
+
+Although this tutorial host everything on a single production machine, you can use as many servers as you want. For example, you can use a server for Magma, a group of servers for the Seaside images and a hardware load balancer instead of the webserver. Is up to you. I want to keep things simple here and I show a setup that involves the minimal set of parts but that explains the way to deploy a Seaside app to production.
+
+You can follow this instructions directly on the production server and get exactly the same results but I recommend to first do it on your development machine and, when is working correctly, stop it, zip it, copy it to the production server, unzip it and start it. But as you want. I will do it on my development machine and the last part, the copying to production server, is left as an exercise for you (but it is very simple, really).
+
+I will work with a development machine that has Debian GNU/Linux Testing (Squeeze), but my production server has Debian GNU/Linux 5.0 (Lenny). The instructions apply to both unchanged.
+
+You can install and configure your production server following <a title="Debian setup" href="http://articles.slicehost.com/2007/9/5/debian-etch-setup-page-1">this</a> instructions. So to the first step.
+
+<strong>Install the Squeak VM</strong>
+
+The version of squeak installed on Debian Lenny and Debian Squeak with the following command:
+
+# aptitude install squeak-vm
+
+installs a vm that is not closure enabled (for explanations search the Squeak or Pharo mailing lists). As we are going to use the PharoCore we need VM that support closures. So we won&#8217;t install squeak from the Debian repositories (at least until they ship a closure vm, in which case I will update this instructions) but we will download the VM from the Pharo project <a title="Pharo download page" href="http://pharo-project.org/pharo-download">download page</a>. There you&#8217;ll find a section named Virtual Machines. Download the Linux/Unix VM. Currently is
+
+pharo-vm-0.15.2d-linux.zip
+
+but any newer version will be ok.
+
+Now, as the root user, copy the zip file to /opt, unzip it and make a symbolic link:
+
+cd /opt
+unzip pharo-vm-0.15.2d-linux.zip
+ln -s pharo-vm-0.15.2d-linux pharo
+
+Back as your normal user, test it:
+
+export VM=/opt/pharo/squeak
+$VM -help
+
+This will show the help of the squeak vm executable. Read it carefully to understand the options we will use to start our images.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/22/deploying-seaside-configuring-the-webserver/">Deploying Seaside: Configuring the Webserver</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-22T00:00:00-05:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">We have already populated the $DEPLOY directory with the images and scripts that will go to the production server, but before, we need to configure the webserver.
+
+<strong>Copy deploy directory to final location</strong>
+
+As root, copy the $DEPLOY directory to the /srv directory. From there it will be served to the world. Note that the $DEPLOY environment variable was defined for your normal user, not for root so you must use the full path to the $DEPLOY directory (/home/miguel/example/ in this example):
+
+mv /home/miguel/example /srv/
+
+Now, configure the start script:
+
+vi /srv/example/script/start_app.sh
+
+Now the explanation of this script. The script defines some variables. The important ones are:
+
+HOME=&#8221;/srv/example&#8221;
+
+Defines the &#8220;final&#8221; location of the $DEPLOY directory (/srv/example in this example).
+
+VM=&#8221;/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null&#8221;
+
+Defines the VM location and the options passed to the virtual machine. If you read the text on the squeak vm help you&#8217;ll know that this options limits the memory that an image can use (if not specified, will grow without limits and in a production server with several images running it is better to limit them). The vm-sound-null and vm-display-null will start the images headless. In a server you don&#8217;t need the graphics or the sound. Also, we have the VNC server to connect to the Magma server on demand.
+
+START_PORT=9001
+END_PORT=9004
+
+This variables defines how many Seaside images will be launched. Only one magma image will be launched. The webserver configuration depends on the values you set here. Also, you can launch as many Seaside images as you want as long as you don&#8217;t use ALL the RAM of the production server. Otherwise it will begin swapping and the performance will drop. The number of images that you can launch depends on RAM and on the value of mmap you use on the VM variable.
+
+For example if you are deploying to a dedicated server with 4 GB of RAM and you don&#8217;t plan to have other services you can safely reserve 500MB to OS processes and use 3500 MB of RAM for your images. If you choose a mmap of 200MB you can put 15 Seaside images + 1 Magma image, 16 images * 200 MB/image = 3400 MB and use almost all the RAM. If you use mmap=100M then you can put 30 Seaside images and 1 Magma image for a total of 3100MB that is more reasonable.
+
+Anyway, you must adapt it to your server and *do* load testing while monitoring not only request/second but also OS performance, RAM usage, disk usage and a lot of things. That&#8217;s your homework.
+
+Remember the value of mmap limits how much the image can grow and in consequence, the number of Seaside sessions you can create in a single Seaside image. Same goes for the magma image. If the image needs to grow for some operation, the mmap will limit it. Again, test your setup and adapt it as needed.
+
+Well enough advise.
+
+Each image launched will write its output to a file that is stored on the logs/ directory. Also the processes are launched by means of nohup so that they remain running even in when you disconnect from the production server.
+
+So we are now ready to launch the images.
+
+<strong>Start the images</strong>
+
+As your normal user execute:
+
+sh /srv/example/scripts/start_app.sh
+
+This will start on the ports you especified in the start_app.sh script. If you try to point your web browser to one of the port you may or may not get a fully functional application. This depends on the way you emit URLs in your app. When we reach to the SeasideProxyTester explanation I will detail the settings that you need to configure in your app in order to prepare it for a proxy setup. More on this later.
+
+So before you can test the images, lets configure the webserver.
+
+<strong><em>lighttpd.conf:</em></strong>
+
+##
+# Core
+##
+server.pid-file = &#8220;/var/run/lighttpd.pid&#8221;
+server.errorlog = &#8220;/var/log/lighttpd/error.log&#8221;
+server.username = &#8220;www-data&#8221;
+server.groupname = &#8220;www-data&#8221;
+server.document-root = &#8220;/var/www/&#8221;
+server.dir-listing = &#8220;disable&#8221;
+index-file.names = ( &#8220;index.html&#8221;, &#8220;index.php&#8221; )
+static-file.exclude-extensions = ( &#8220;.fcgi&#8221;, &#8220;.php&#8221;, &#8220;.rb&#8221;, &#8220;~&#8221;, &#8220;.inc&#8221; )
+server.modules = ( &#8220;mod_access&#8221;, &#8220;mod_accesslog&#8221;, &#8220;mod_compress&#8221;, &#8220;mod_redirect&#8221;, &#8220;mod_proxy&#8221;, &#8220;mod_rewrite&#8221;, &#8220;mod_alias&#8221; )
+
+##
+# debug options
+##
+#debug.log-request-header = &#8220;enable&#8221;
+#debug.log-request-handling = &#8220;enable&#8221;
+proxy.debug = 1
+
+##
+# dirlisting module (loaded by default)
+##
+dir-listing.encoding = &#8220;utf-8&#8221;
+
+##
+# access module
+##
+url.access-deny = ( &#8220;~&#8221;, &#8220;.inc&#8221; )
+
+$HTTP[&#8220;url&#8221;] =~ &#8220;/.svn/&#8221; {
+url.access-deny = (&#8220;&#8221;)
+}
+
+##
+# accesslog module
+##
+accesslog.filename = &#8220;/var/log/lighttpd/access.log&#8221;
+
+##
+# compress module
+##
+compress.cache-dir = &#8220;/var/cache/lighttpd/compress/&#8221;
+compress.filetype = ( &#8220;text/plain&#8221;, &#8220;text/html&#8221;, &#8220;application/x-javascript&#8221;, &#8220;text/css&#8221; )
+
+##
+# Global settings
+##
+$HTTP[&#8220;host&#8221;] =~ &#8220;^www&#46;(.*)&#8221; {
+# no www for domains
+url.redirect = ( &#8220;^/(.*)&#8221; =&gt; &#8220;http://%1/$1&#8221; )
+}
+
+##
+# othersite.com
+##
+$HTTP[&#8220;host&#8221;] == &#8220;othersite.com&#8221; {
+server.document-root = &#8220;/srv/www/othersite.com/&#8221;
+}
+
+$HTTP[&#8220;host&#8221;] == &#8220;seaside.example.com&#8221; {
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+# We&#8217;ll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+&#8221;^/resources/(.*)&#8221; =&gt; &#8220;$0&#8221;,             # Unaltered
+&#8221;^/(.*)&#8221; =&gt; &#8220;/seaside/seasideProxyTester$1&#8221;   # Rewritten
+)
+
+# Anything with seaside/seasideProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP[&#8220;cookie&#8221;] !~ &#8220;server=app&#8221; {
+proxy.balance = &#8220;round-robin&#8221;
+proxy.server = (
+&#8220;/seaside/seasideProxyTester&#8221; =&gt; (
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)
+)
+)
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9001&#8221; { # Has a cookie, proxy to the corresponding port
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9002&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9003&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9004&#8221; {
+proxy.server = ( &#8220;/seaside/seasideProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)))
+}
+}
+
+$HTTP[&#8220;host&#8221;] == &#8220;magma.example.com&#8221; {
+server.document-root = &#8220;/srv/example/website/&#8221;
+
+# We&#8217;ll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+&#8221;^/resources/(.*)&#8221; =&gt; &#8220;$0&#8221;,             # Unaltered
+&#8221;^/(.*)&#8221; =&gt; &#8220;/seaside/magmaProxyTester$1&#8221;   # Rewritten
+)
+
+# Anything with seaside/magmaProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP[&#8220;cookie&#8221;] !~ &#8220;server=app&#8221; {
+proxy.balance = &#8220;round-robin&#8221;
+proxy.server = (
+&#8220;/seaside/magmaProxyTester&#8221; =&gt; (
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003),
+( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)
+)
+)
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9001&#8221; { # Has a cookie, proxy to the corresponding port
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9001)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9002&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9002)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9003&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9003)))
+} else $HTTP[&#8220;cookie&#8221;] =~ &#8220;app9004&#8221; {
+proxy.server = ( &#8220;/seaside/magmaProxyTester&#8221; =&gt; (( &#8220;host&#8221; =&gt; &#8220;127.0.0.1&#8221;, &#8220;port&#8221; =&gt; 9004)))
+}
+}
+
+#### external configuration files
+## mimetype mapping
+include_shell &#8220;/usr/share/lighttpd/create-mime.assign.pl&#8221;
+
+## load enabled configuration files,
+## read /etc/lighttpd/conf-available/README first
+include_shell &#8220;/usr/share/lighttpd/include-conf-enabled.pl&#8221;
+
+Some things must be explained though. First, it declares a section for a host named othersite.com with its document root in /srv/www/othersite.com. This permits you serve other sites from the same webserver. Then declares two sections for the example.com subdomains. They are identical in its structure. The differences are in the entry points proxied to by lighttpd. In the case of seaside.example.com it proxies to a Seaside image using the entry point seasideProxyTester, conserving all the parameters (_s and _k). In the case of magma.example.com it rewrites the request and proxies to the magmaProxyTester. Additionally it verifies for paths beginning with &#8216;/resources&#8217;. Those requests are left unchanged. The rewrite rules trigger before the lighttpd engine processes the url so is after the rewrite that the cookies check is done. lighttpd checks for a cookie named appXXXX where XXXX is some of the ports we are using for the Seaside images. If it founds one, proxy to the corresponding Seaside image listening on that port. If it hasn&#8217;t a cookie like this, it uses a round-robin algorithm to choose a Seaside image to proxy the request to.
+
+This is how it works. A new user beginning the session in your app will not have the cookie as part of the request. So lighttpd will proxy the request to a random Seaside image. When the selected Seaside image receive this request will add the cookie (using its own port name as the value) to the response so that the next request will include it. This way the next request will arrive to lighttpd with the cookie established and the webserver will correctly proxy to the same image that received the first request of the session.
+
+The net result is that lighttpd is doing a kind of sticky session (meaning that the request of a session always goes to the same server being proxied) for Seaside.
+
+If none of the rules is triggered, the webserver tries to match the requested path to some file in the document root. This is what happens to the requests having &#8216;/resources&#8217; at the beginning of the path. They don&#8217;t match any rule and are served from the document root.
+
+That is what lighttpd is doing in order to proxy to the Seaside images. The same explanation applies for the two subdomains.
+
+Also note that you can serve several applications from the same Seaside images. You just proxy to a different entry point in order to Seaside correctly route the incoming request to the right application. This could or couldn&#8217;t be wise. The performance will degrade for all the apps if they are intensive. But again, test your setup and make a decision.
+
+So, finally, as root, put the lighttpd.conf file on /etc/lighttpd/ and restart the server
+
+/etc/init.d/lighttpd restart
+
+We&#8217;re almost done. Last thing you must do is to add the example.com domain to your
+
+/etc/hosts
+
+file so that you can test it on localhost. Add a line like the following or edit the existing pointing to localhost (or 127.0.0.1)
+
+127.0.0.1    laptop.localdomain    laptop <strong>seaside.example.com magma.example.com</strong>
+
+the part in bold is what you must add in order to resolve seaside.example.com and magma.example.com to the address 127.0.0.1. As I have lighttpd installed in localhost (my development image) the request will be redirected to it and then will proxy to the Seaside images.
+
+Now finally we can test the setup.
+
+Launch your web browser and write:
+
+http://seaside.example.com
+
+or
+
+http://magma.example.com
+
+The browser should resolve those domains to 127.0.0.1 and you should be greeted with the initial page of the SeasideProxyTester. Each reload of the page will increment the counters and you should see what Seaside image is serving your session requests.
+
+Try to delete your cookies and try again. You should see that a different Seaside server is serving your requests.
+
+So, you have a Seaside application running in a group of images, being proxied and load balanced by a webserver in sticky session way. Cool, isn&#8217;t?
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/18/deploying-seaside-applications/">Deploying Seaside Applications</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-18T00:00:00-05:00" pubdate data-updated="true">Sep 18<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">This is the first of a several post about <a title="Seaside" href="http://seaside.st">Seaside</a>.
+
+The goal: to deploy a Seaside application to the real world.
+
+Ingredients:
+<ul>
+	<li>Debian GNU/Linux</li>
+	<li><a title="Pharo project" href="http://pharo-project.org">PharoCore</a></li>
+	<li>Seaside</li>
+	<li><a title="Magma" href="http://wiki.squeak.org/squeak/2665">Magma</a></li>
+	<li><a title="Magma seasideHelper" href="http://wiki.squeak.org/squeak/6019">Magma seasideHelper</a></li>
+	<li><a title="Lighttpd" href="http://lighttpd.net">Lighttpd</a> 1.4.23.</li>
+	<li>Automated image setup</li>
+	<li><a href="http://httpd.apache.org/docs/2.0/programs/ab.html">ab</a></li>
+	<li><a title="Gnuplot" href="http://www.gnuplot.info/">Gnuplot</a></li>
+</ul>
+I must say that this is not the only way to do this kind of deployment. Ramon Leon&#8217;s <a href="http://onsmalltalk.com/scaling-seaside-more-advanced-load-balancing-and-publishing">post</a> explain other setup and also the Seaside <a href="http://book.seaside.st">book</a> has a section on scaling Seaside. This is the way I do it.
+
+Some things to discuss first. I will be using Debian GNU/Linux Squeeze but the procedure is the same for other versions of Debian and for other distributions. I think that this setup can be done in Windows too but I don&#8217;t plan to check. I will be using Seaside 2.8 because is the current stable version. When the 3.0 release is announced I will update the instructions accordingly. The Magma version will be the 1.0r42 (server) that was recently released and that since this version runs also in Pharo. I will be using Magma seasideHelper that although for the moment isn&#8217;t being mantained, the version used here works very well. This is used for easy integration of Magma and Seaside. I will use lighttpd because that is the webserver I use on my sites but the equivalent Apache configuration it is very easy and sometimes shorter that the ones I show. nginx or pound can be used too. The webserver will be used to proxy the requests from the users to the Seaside server images. It will be doing load balancing too. In order to test the setup a simple Seaside application has been developed and uploaded to the <a title="SeasideExamples" href="http://www.squeaksource.org/SeasideExamples.html">SeasideExamples</a> project on SqueakSource. This can be used to verify that the webserver is doing a sticky session kind of load balancing. This is necessary because for a setup of proxied Seaside images a session must be routed always to the same image where it was created. This is not necessary on applications deployed to Gemstone/S or <a title="GLASS" href="http://glass.gemstone.com/">GLASS</a> because on them the session data is persisted to the OODB and restored on subsecuent request no matter what stone the request is handled by. But, in a setup that doesn&#8217;t use Gemstone/S the proxy/load balancing server must guarantee that a session is always routed to the same image. Of course, on the first request of a session, the server choose a random image to handle the session so that the users are distributed uniformly between the images.
+
+The setup will be tested with ab, the tool from the apache project for load testing websites. This is a very simple test, as only request the first page of the application. This shows how many new sessions can be created in the cluster of Seaside images. It doesn&#8217;t test inner navigation of the application. Of course, the same setup can be tested with tools like <a href="http://seleniumhq.org/">Selenium</a>, JMeter, httperf, siege or jcrawler. This is left as an exercise to the reader. One cool feature of ab is that can output the results in a format understood by GNUPlot so that they can be plotted and visualized more easily.
+
+Scripts to automate image setup are provided too. They update a PharoCore image and prepare Magma and Seaside images with just the required packages. Also, they configure an RFBServer (VNC server) so you can connect to the Magma image to do routine tasks as database backup (this at least until you integrate that tasks to your app so you can launch them from Seaside without entering the image).
+
+Finally a script to start the images and procedures to stop them on demand are provided.
+
+So, a lot of steps, but at the end you&#8217;ll have a fully deployed app in a server using a domain name and suitable of scaling by adding more images or physical servers behind the proxy/load balancing server. Also, with the current <a href="http://wiki.squeak.org/squeak/6101">high availability</a> features of Magma you can also increase the persistence performance by adding more magma servers to the setup.
+
+Ready? Lets go&#8230;  to the Seaside.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/16/pharo-project/">Pharo Project</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-16T00:00:00-05:00" pubdate data-updated="true">Sep 16<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a title="Pharo project" href="http://pharo-project.org" target="_blank">Pharo</a> is a new FOSS Smalltalk. It is a fork of <a title="Squeak website" href="http://www.squeak.org" target="_blank">Squeak</a> and since has had a lot of improvements. It was forked after lenghty and sometimes harsh discussions in the squeak mailing list. Looking backwards it seems that was a good decision, but at the time it should be hard to decide to fork a project that has so many hackers/programmers contributing to it and spending effort and energy coding in it. This of course gave the forkers the stigma of traitors, even if not with these words. The fact is that they forked it. The reasons? Among other things, the perceived impossibility to reach a real agreement over important aspects and the sometimes inflexible positions with respect to changes affecting more than the superficial levels of squeak. I don&#8217;t claim that these are the main or the principals reasons to fork squeak, but to me, are the most visible ones that improved in the Pharo fork. I&#8217;ll explain, but from now on I will call it Pharo, as that is its name. The fork part, well, it is less important each day.
+
+So, the number of changes that Pharo has experienced is amazing, just check the <a title="Pharo bug tracking system" href="http://code.google.com/p/pharo/issues/">bugtrack</a> and you&#8217;ll see that 1125 bugs have been reported to date. From those, more than 900 have been fixed and closed. In fact for the upcoming 1.0 release only 25 remains open. Most of these bugs show that it really were a lot of things that the squeak community wanted to change. Pharo is the place where this is happening. The most visible of all of this things is the user interface. There are a lot of opinions here, but to many people, the colorful, sometimes childish and maybe playschool look &amp; feel of Squeak was a factor against the adoption of Squeak in more &#8220;enterprise&#8221; (whatever that means) environments. Pharo doesn&#8217;t look as a toy anymore. It has a look more akin to the MacOS X look &amp; feel, and that by itself, avoids pointless questions the first time you open an image in front of new potential users. But the changes are not only in the surface but also in the very foundations of the image. Pharo had full closures way before Squeak decided to include them (in fact they are not included in the official image, but in the ongoing unstable image, the trunk image) and, until squeak decides to release a new version, Pharo will be the only (of the two) with full closures available to the masses. Other thing that is remarkable is the policy of unloading all but the fundamental packages from the image and load them only when necessary. This makes the Pharo image very slim (8 MB in the current PharoCore image) and ideally suited to deploy your apps with it. Other things that were purged from the image are the etoys part that not only lack a mantainer, but that already forked years ago to build their own distribution as squeakland.org.
+
+But I don&#8217;t want to bash Squeak here, as they are currently having a lot of activity and a lot of things will improve. What I want to say is that Pharo is a refreshing, clean, lean, small and propositive option to develop Smalltalk projects.
+
+Pharo has to versions, PharoCore and Pharo properly. Both of them are Pharo, but they have different audiences.
+
+PharoCore is the image that the Pharo core developers work with and improve. This is the minimal image that runs (by loading the necessary dependencies first) your Smalltalk application. This is also the image that receives updates by means of the Software Update option on the menu inside the image. The test are run over this image also and the results are published on the pharo page for comparison and regression testing. This is the image that the Pharo project works on everyday.
+
+Pharo is an image built using PharoCore as base and loading several handy and useful packages in order to create an appealing, nice, useful product for the people to use. There are several distributions of Pharo that load different packages aimed to distinct people. There is the pharo-dev that includes syntax-coloring, autocompletition, several browsers for the source code and in general packages aimed to developers of Smalltalk applications. There is also the pharo-web that is a pharo-dev but also adds packages as Seaside and Pier and is intended to web developers. These two are built by Damien Cassou. Other new distribution is the one from Torsten Bergmann, the pharo ready made setup that tries to ease the user experience by downloading just one archive to test and try Pharo (currently only for windows users). Also, in the works is a one-click distribution that can run in Windows, GNU/Linux and MacOS X. All of these can be downloaded from the <a title="Pharo download page" href="http://pharo-project.org/pharo-download">pharo download page</a>.
+
+The ParoCore is, as I already said, perfect for deploying applications to production, as it has a very small footprint. In subsecuent posts I will show how to deploy an app in a PharoCore image with just the required dependencies and nothing else.
+
+Pharo, despite the number of changes that has integrated, it is very stable. As the 1.0 release aproaches, the pharo core developers focus in bug fixing and aren&#8217;t allowing new drastic changes. They are reserved for the 1.1 release, that will begin to prepare the next day following the 1.0 announce.
+
+Other good sign is that the <a title="Seaside" href="http://seaside.st">Seaside</a> core developers are already working daily on Pharo and some of then even have production sites running on Pharo without any problem. So if you are developing Seaside applications, as I am, this shows that the integration of Seaside with Pharo is very well tested.
+
+Also, a book for Pharo will be announced in the next days, called Pharo by Example, by the same authors of <a title="Squeak by Example" href="http://squeakbyexample.org/">Squeak by Example</a>.
+
+Don&#8217;t wait for the upcoming announce of the 1.0 release of <a title="Pharo project" href="http://pharo-project.org">Pharo</a> go there right now and become a Pharoer.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/14/back-in-the-wire/">Back in the Wire</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-14T00:00:00-05:00" pubdate data-updated="true">Sep 14<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">So much time since the last post. Well, a lot of things happened. But now I have more free time and will update this more frecuently.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/14/a-new-baby/">A New Baby</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-14T00:00:00-05:00" pubdate data-updated="true">Sep 14<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Yes, it is official.
+
+We are going to have another baby.
+
+The last weekend we went to the doctor and we saw the baby for the first time. He/she is 3 cm long and we heard also the sound of the heart. According to the doctor words everything is ok and we are very happy.
+
+Aline is very tired all days and Tristán has more energy than ever but the happiness is bigger.
+
+And we have the first pictures of the baby too :)
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/06/30/ciclos/">Ciclos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-30T00:00:00-05:00" pubdate data-updated="true">Jun 30<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Un ciclo se ha cerrado para Aline, ayer fue su examen de titulación y, tal y como yo lo esperaba y Aline insistía en dudar, le fue muy bien. Más que bien, diría yo, ya que, de manera sorpresiva y sin buscarlo ni esperarlo, obtuvo una calificación aprobatoria con mención honorífica.
+
+No hay palabras para expresar nuestra sorpresa con el anuncio. Literalmente todos abrimos los ojos al escuchar las palabras del jurado. Bueno, una excelente culminación para tan prolongado esfuerzo de su parte.
+
+Pero este evento significa mucho más para la familia Cobá. Mucha presión, tensión y frustraciones mágicamente se dispersan y se convierten en recuerdos que día a día se volverán más tenues y desprovistos de la fuerza que en su momento tuvieron. Unas cuantas palabras del jurado marcan un antes y un después para Aline. Un antes que le pesaba constantemente como una cadena atada a su pie. Ahora ya no es así. Ya es libre, literalmente, de olvidarse de la filosofía, por decirlo de alguna manera, y de dedicarse a cosas nuevas, principalmente a lo que, en los últimos meses, se ha convertido en una nueva motivación: la curaduría.
+
+Y yo estoy más que feliz, no sólo por el hecho de que haya terminado esa etapa de su vida, sino porque iniciamos ahora una nueva etapa juntos, los tres, Tristán incluido, que promete mucha felicidad.
+
+Adelante nos esperan: curso de curaduría para Aline, de creación literaria para Aline y para mi, de verano para Tristán; tiempo para estar juntos y ver películas, ir al cine, ir por nuestros acostumbrados cafés, ir a los viveros, a Coyoacán, a Puebla, a Tepoztlán, otra vez a Cancún, a New York; solicitar las becas para Europa, las becas de arte para Aline; y lo que vaya saliendo. En fin, una atadura menos al pasado, mucha fuerza para seguir caminando juntos.
+
+Por eso es que este evento es tan significativo. Por eso estamos celebrando. Por eso estamos felices.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/06/23/sequia/">Sequía</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-23T00:00:00-05:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Es más que obvio que en términos blog-ísticos, estoy en temporada de sequía.
+
+Tengo tanto que decir y tan poco que decir. Una paradoja infranqueable que, cual muro de tres metros de alto, no le permite a mi pobre cerebro saltarla sin ayuda de una buena escalera.
+
+Seguiremos esperando a que el foco prenda, o al menos, que alguien cambie los fusibles quemados.
+
+Uff
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/06/23/libros/">Libros</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-23T00:00:00-05:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Yo tuve muchos libros.
+
+Hace tiempo ya de eso. Ya ni siquiera recuerdo cuántos eran ni de si eran buenos. Yo creo que sí, si no no los hubiera tenido. Tenía de todo. Historias reales, historias ficticias. Historias tristes e historias alegres. Historias de hombres y de bestias, de magia y de tragedia. Hasta de ciencia y de poesía. Y si no mal recuerdo, hasta tenía algunos de literatura erótica y de fotos de mujeres desnudas.
+
+Maravillosos los libros que te arrancan de tu silla y te llevan a otros mundos. Te absorben de tu sillón y te llevan a llorar con otros y por otros. Te asustan en las noches, te convierten en heroe y villano, en guerrero y en cobarde. Provocan sensaciones en tu cuerpo que quizá nunca experimentarás en la vida real. Son tus aliadas y tus acusadoras. Pueden hacerte ver tus propias debilidades y deseos, tus perversiones y aspiraciones. Son denuncias públicas de tus secretos en palabras escritas por una persona que nunca conociste ni conocerás, pero que te conoce mejor de lo que tú te conoces.
+
+Yo tuve muchos libros.
+
+Ahora no tengo nada.
+
+Ahora estoy desnudo, despojado, condenado. Ahora soy menos hombre porque ya no puedo leerlos. Ahora una parte de mí ha muerto, una parte del mundo no existe. Ahora sólo tengo recuerdos. Ahora sólo puedo tocarlos, abrirlos, olerlos y cerrarlos.
+
+Ahora sólo tengo recuerdos.
+
+Ahora estoy ciego y ya no tengo libros, sólo hojas secas manchadas de tinta incomprensible.
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

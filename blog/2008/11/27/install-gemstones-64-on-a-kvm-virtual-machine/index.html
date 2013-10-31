@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Install Gemstone/S 64 on a KVM virtual machine - The command line</title>
+  <meta name="author" content="Miguel Cobá">
+
+  
+  <meta name="description" content="This instructions are very similar to the slicehost setup from James Foster&#8217;s post, but this time on a KVM virtual machine. Host Machine &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://miguelcoba.github.io/blog/2008/11/27/install-gemstones-64-on-a-kvm-virtual-machine">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The command line" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The command line</a></h1>
+  
+    <h2>GNU/Linux, web development and some other things</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:miguelcoba.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Install Gemstone/S 64 on a KVM Virtual Machine</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-27T00:00:00-06:00" pubdate data-updated="true">Nov 27<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content">This instructions are very similar to the slicehost setup from James Foster&#8217;s <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">post</a>, but this time on a KVM virtual machine.
+
+<strong>Host Machine</strong>
+Architecture: x86_64
+Name: laptop
+OS: Debian GNU/Linux 5.0 amd64 (Lenny)
+<strong>Virtual Machine</strong>
+Architecture: x86_64
+Name: vm0
+OS: Debian GNU/Linux 4.0 amd64 (Etch)
+<strong>Virtual Machine Software</strong>
+Gemstone/S 64 Web Edition 2.3
+
+Install the virtual machine following <a href="http://miguel.leugim.com.mx/index.php/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager/" target="_self">those</a> instructions. Add the IP address assigned to the virtual machine to /etc/hosts on the host machine. Log in to the virtual machine and, as root, add your normal user to the sudoers file
+
+vm0:~# visudo
+
+The last lines of the file should be like this:
+
+# User privilege specification
+root    ALL=(ALL) ALL
+miguel  ALL=(ALL) ALL
+
+Save changes and as normal user on the virtual machine, download Gemstone/S (Note: this instructions are identical to the ones from James Foster&#8217;s <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">post</a>);
+
+miguel@vm0:~$ wget http://seaside.gemstone.com/scripts/installGemstone2.3-Linux.sh
+miguel@vm0:~$ sh installGemstone2.3-Linux.sh
+
+This will ask for your user password and then will download and install Gemstone/S 64 Web Edition to the virtual machine&#8217;s /opt/gemstone.
+
+Reload your sysctl changes. Either running:
+
+miguel@vm0:~$ sudo sysctl -p
+
+or rebooting the virtual machine:
+
+miguel@vm0:~$ sudo reboot
+
+Log in again to the virtual machine if needed and execute:
+
+miguel@vm0:~$ echo &#8220;SHR_PAGE_CACHE_SIZE_KB = 100000;&#8221; &gt;&gt; /opt/gemstone/product/seaside/data/system.conf
+
+Start the start the Gemstone/S 64 Web Edition:
+
+miguel@vm0:~$ source /opt/gemstone/product/seaside/defSeaside
+miguel@vm0:~$ startGemstone
+miguel@vm0:~$ startSeaside_Hyper 8080
+
+And, from your host machine, test Seaside by pointing your web browser to:
+
+http://vm0:8080/seaside
+
+To stop Hyper press Ctrl+C and then stop Gemstone:
+
+miguel@vm0:~$ stopGemstone
+
+That&#8217;s all.
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Miguel Cobá</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-27T00:00:00-06:00" pubdate data-updated="true">Nov 27<span>th</span>, 2008</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://miguelcoba.github.io/blog/2008/11/27/install-gemstones-64-on-a-kvm-virtual-machine/" data-via="MiguelCobaMtz" data-counturl="http://miguelcoba.github.io/blog/2008/11/27/install-gemstones-64-on-a-kvm-virtual-machine/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/11/25/segundo-aniversario/" title="Previous Post: Segundo aniversario">&laquo; Segundo aniversario</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/11/27/install-squeakseaside-on-a-kvm-virtual-machine/" title="Next Post: Install Squeak/Seaside on a KVM virtual machine">Install Squeak/Seaside on a KVM virtual machine &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/20/time/">Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/05/sicp/">SICP</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/03/20/stop-the-radiation-misinformation/">Stop the Radiation Misinformation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/19/ilustradores-para-el-ejemplar-1-de-revista-orsai/">Ilustradores Para El Ejemplar #1 De Revista Orsai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/11/13/groovy-grails-tutorials/">Groovy & Grails Tutorials</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/miguelcoba">@miguelcoba</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'miguelcoba',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Miguel Cobá -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
