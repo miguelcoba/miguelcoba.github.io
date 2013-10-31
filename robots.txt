@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://miguelcoba.github.io/sitemap.xml 
