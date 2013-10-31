@@ -1,0 +1,48 @@
+---
+layout: post
+title: ! 'Deploying Seaside: Install the Squeak VM'
+categories: []
+tags:
+- deploy
+- pharo
+- seaside
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+We are going to deploy a Seaside application that uses Magma seasideHelper to connect to a Magma database in a production server. The production server will have an image for the Magma server and serveral Seaside images with the application code. All the images will be PharoCore images with just the necessary packages loaded and nothing else. The users' sessions will be load balanced and proxied by a web server. The Magma image, the Seaside images and the webserver will be hosted on the production server. For this tutorial we will use the SeasideProxyTester application from the <a title="Seaside Examples" href="http://squeaksource.com/SeasideExamples.html">SeasideExamples</a> project on SqueakSource.com. You can use your own code given that you do a few minor modifications that I will detail later.
+
+Although this tutorial host everything on a single production machine, you can use as many servers as you want. For example, you can use a server for Magma, a group of servers for the Seaside images and a hardware load balancer instead of the webserver. Is up to you. I want to keep things simple here and I show a setup that involves the minimal set of parts but that explains the way to deploy a Seaside app to production.
+
+You can follow this instructions directly on the production server and get exactly the same results but I recommend to first do it on your development machine and, when is working correctly, stop it, zip it, copy it to the production server, unzip it and start it. But as you want. I will do it on my development machine and the last part, the copying to production server, is left as an exercise for you (but it is very simple, really).
+
+I will work with a development machine that has Debian GNU/Linux Testing (Squeeze), but my production server has Debian GNU/Linux 5.0 (Lenny). The instructions apply to both unchanged.
+
+You can install and configure your production server following <a title="Debian setup" href="http://articles.slicehost.com/2007/9/5/debian-etch-setup-page-1">this</a> instructions. So to the first step.
+
+<strong>Install the Squeak VM</strong>
+
+The version of squeak installed on Debian Lenny and Debian Squeak with the following command:
+
+# aptitude install squeak-vm
+
+installs a vm that is not closure enabled (for explanations search the Squeak or Pharo mailing lists). As we are going to use the PharoCore we need VM that support closures. So we won't install squeak from the Debian repositories (at least until they ship a closure vm, in which case I will update this instructions) but we will download the VM from the Pharo project <a title="Pharo download page" href="http://pharo-project.org/pharo-download">download page</a>. There you'll find a section named Virtual Machines. Download the Linux/Unix VM. Currently is
+
+pharo-vm-0.15.2d-linux.zip
+
+but any newer version will be ok.
+
+Now, as the root user, copy the zip file to /opt, unzip it and make a symbolic link:
+
+cd /opt
+unzip pharo-vm-0.15.2d-linux.zip
+ln -s pharo-vm-0.15.2d-linux pharo
+
+Back as your normal user, test it:
+
+export VM=/opt/pharo/squeak
+$VM -help
+
+This will show the help of the squeak vm executable. Read it carefully to understand the options we will use to start our images.

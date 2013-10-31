@@ -1,0 +1,47 @@
+---
+layout: post
+title: Deploying Seaside applications
+categories: []
+tags:
+- debian
+- deploy
+- lighttpd
+- magma
+- pharo
+- scaling
+- seaside
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This is the first of a several post about <a title="Seaside" href="http://seaside.st">Seaside</a>.
+
+The goal: to deploy a Seaside application to the real world.
+
+Ingredients:
+<ul>
+	<li>Debian GNU/Linux</li>
+	<li><a title="Pharo project" href="http://pharo-project.org">PharoCore</a></li>
+	<li>Seaside</li>
+	<li><a title="Magma" href="http://wiki.squeak.org/squeak/2665">Magma</a></li>
+	<li><a title="Magma seasideHelper" href="http://wiki.squeak.org/squeak/6019">Magma seasideHelper</a></li>
+	<li><a title="Lighttpd" href="http://lighttpd.net">Lighttpd</a> 1.4.23.</li>
+	<li>Automated image setup</li>
+	<li><a href="http://httpd.apache.org/docs/2.0/programs/ab.html">ab</a></li>
+	<li><a title="Gnuplot" href="http://www.gnuplot.info/">Gnuplot</a></li>
+</ul>
+I must say that this is not the only way to do this kind of deployment. Ramon Leon's <a href="http://onsmalltalk.com/scaling-seaside-more-advanced-load-balancing-and-publishing">post</a> explain other setup and also the Seaside <a href="http://book.seaside.st">book</a> has a section on scaling Seaside. This is the way I do it.
+
+Some things to discuss first. I will be using Debian GNU/Linux Squeeze but the procedure is the same for other versions of Debian and for other distributions. I think that this setup can be done in Windows too but I don't plan to check. I will be using Seaside 2.8 because is the current stable version. When the 3.0 release is announced I will update the instructions accordingly. The Magma version will be the 1.0r42 (server) that was recently released and that since this version runs also in Pharo. I will be using Magma seasideHelper that although for the moment isn't being mantained, the version used here works very well. This is used for easy integration of Magma and Seaside. I will use lighttpd because that is the webserver I use on my sites but the equivalent Apache configuration it is very easy and sometimes shorter that the ones I show. nginx or pound can be used too. The webserver will be used to proxy the requests from the users to the Seaside server images. It will be doing load balancing too. In order to test the setup a simple Seaside application has been developed and uploaded to the <a title="SeasideExamples" href="http://www.squeaksource.org/SeasideExamples.html">SeasideExamples</a> project on SqueakSource. This can be used to verify that the webserver is doing a sticky session kind of load balancing. This is necessary because for a setup of proxied Seaside images a session must be routed always to the same image where it was created. This is not necessary on applications deployed to Gemstone/S or <a title="GLASS" href="http://glass.gemstone.com/">GLASS</a> because on them the session data is persisted to the OODB and restored on subsecuent request no matter what stone the request is handled by. But, in a setup that doesn't use Gemstone/S the proxy/load balancing server must guarantee that a session is always routed to the same image. Of course, on the first request of a session, the server choose a random image to handle the session so that the users are distributed uniformly between the images.
+
+The setup will be tested with ab, the tool from the apache project for load testing websites. This is a very simple test, as only request the first page of the application. This shows how many new sessions can be created in the cluster of Seaside images. It doesn't test inner navigation of the application. Of course, the same setup can be tested with tools like <a href="http://seleniumhq.org/">Selenium</a>, JMeter, httperf, siege or jcrawler. This is left as an exercise to the reader. One cool feature of ab is that can output the results in a format understood by GNUPlot so that they can be plotted and visualized more easily.
+
+Scripts to automate image setup are provided too. They update a PharoCore image and prepare Magma and Seaside images with just the required packages. Also, they configure an RFBServer (VNC server) so you can connect to the Magma image to do routine tasks as database backup (this at least until you integrate that tasks to your app so you can launch them from Seaside without entering the image).
+
+Finally a script to start the images and procedures to stop them on demand are provided.
+
+So, a lot of steps, but at the end you'll have a fully deployed app in a server using a domain name and suitable of scaling by adding more images or physical servers behind the proxy/load balancing server. Also, with the current <a href="http://wiki.squeak.org/squeak/6101">high availability</a> features of Magma you can also increase the persistence performance by adding more magma servers to the setup.
+
+Ready? Lets go...  to the Seaside.

@@ -1,0 +1,33 @@
+---
+layout: post
+title: Pharo project
+categories: []
+tags:
+- pharo
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<a title="Pharo project" href="http://pharo-project.org" target="_blank">Pharo</a> is a new FOSS Smalltalk. It is a fork of <a title="Squeak website" href="http://www.squeak.org" target="_blank">Squeak</a> and since has had a lot of improvements. It was forked after lenghty and sometimes harsh discussions in the squeak mailing list. Looking backwards it seems that was a good decision, but at the time it should be hard to decide to fork a project that has so many hackers/programmers contributing to it and spending effort and energy coding in it. This of course gave the forkers the stigma of traitors, even if not with these words. The fact is that they forked it. The reasons? Among other things, the perceived impossibility to reach a real agreement over important aspects and the sometimes inflexible positions with respect to changes affecting more than the superficial levels of squeak. I don't claim that these are the main or the principals reasons to fork squeak, but to me, are the most visible ones that improved in the Pharo fork. I'll explain, but from now on I will call it Pharo, as that is its name. The fork part, well, it is less important each day.
+
+So, the number of changes that Pharo has experienced is amazing, just check the <a title="Pharo bug tracking system" href="http://code.google.com/p/pharo/issues/">bugtrack</a> and you'll see that 1125 bugs have been reported to date. From those, more than 900 have been fixed and closed. In fact for the upcoming 1.0 release only 25 remains open. Most of these bugs show that it really were a lot of things that the squeak community wanted to change. Pharo is the place where this is happening. The most visible of all of this things is the user interface. There are a lot of opinions here, but to many people, the colorful, sometimes childish and maybe playschool look &amp; feel of Squeak was a factor against the adoption of Squeak in more "enterprise" (whatever that means) environments. Pharo doesn't look as a toy anymore. It has a look more akin to the MacOS X look &amp; feel, and that by itself, avoids pointless questions the first time you open an image in front of new potential users. But the changes are not only in the surface but also in the very foundations of the image. Pharo had full closures way before Squeak decided to include them (in fact they are not included in the official image, but in the ongoing unstable image, the trunk image) and, until squeak decides to release a new version, Pharo will be the only (of the two) with full closures available to the masses. Other thing that is remarkable is the policy of unloading all but the fundamental packages from the image and load them only when necessary. This makes the Pharo image very slim (8 MB in the current PharoCore image) and ideally suited to deploy your apps with it. Other things that were purged from the image are the etoys part that not only lack a mantainer, but that already forked years ago to build their own distribution as squeakland.org.
+
+But I don't want to bash Squeak here, as they are currently having a lot of activity and a lot of things will improve. What I want to say is that Pharo is a refreshing, clean, lean, small and propositive option to develop Smalltalk projects.
+
+Pharo has to versions, PharoCore and Pharo properly. Both of them are Pharo, but they have different audiences.
+
+PharoCore is the image that the Pharo core developers work with and improve. This is the minimal image that runs (by loading the necessary dependencies first) your Smalltalk application. This is also the image that receives updates by means of the Software Update option on the menu inside the image. The test are run over this image also and the results are published on the pharo page for comparison and regression testing. This is the image that the Pharo project works on everyday.
+
+Pharo is an image built using PharoCore as base and loading several handy and useful packages in order to create an appealing, nice, useful product for the people to use. There are several distributions of Pharo that load different packages aimed to distinct people. There is the pharo-dev that includes syntax-coloring, autocompletition, several browsers for the source code and in general packages aimed to developers of Smalltalk applications. There is also the pharo-web that is a pharo-dev but also adds packages as Seaside and Pier and is intended to web developers. These two are built by Damien Cassou. Other new distribution is the one from Torsten Bergmann, the pharo ready made setup that tries to ease the user experience by downloading just one archive to test and try Pharo (currently only for windows users). Also, in the works is a one-click distribution that can run in Windows, GNU/Linux and MacOS X. All of these can be downloaded from the <a title="Pharo download page" href="http://pharo-project.org/pharo-download">pharo download page</a>.
+
+The ParoCore is, as I already said, perfect for deploying applications to production, as it has a very small footprint. In subsecuent posts I will show how to deploy an app in a PharoCore image with just the required dependencies and nothing else.
+
+Pharo, despite the number of changes that has integrated, it is very stable. As the 1.0 release aproaches, the pharo core developers focus in bug fixing and aren't allowing new drastic changes. They are reserved for the 1.1 release, that will begin to prepare the next day following the 1.0 announce.
+
+Other good sign is that the <a title="Seaside" href="http://seaside.st">Seaside</a> core developers are already working daily on Pharo and some of then even have production sites running on Pharo without any problem. So if you are developing Seaside applications, as I am, this shows that the integration of Seaside with Pharo is very well tested.
+
+Also, a book for Pharo will be announced in the next days, called Pharo by Example, by the same authors of <a title="Squeak by Example" href="http://squeakbyexample.org/">Squeak by Example</a>.
+
+Don't wait for the upcoming announce of the 1.0 release of <a title="Pharo project" href="http://pharo-project.org">Pharo</a> go there right now and become a Pharoer.

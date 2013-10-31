@@ -1,0 +1,391 @@
+---
+layout: post
+title: Usando Ruby on Rails - Parte 3
+categories: []
+tags:
+- curso
+- openid
+- ruby on rails
+status: publish
+type: post
+published: true
+meta:
+  _oembed_d7d3b4e250f73552ec77bb4c33ff6e9c: ! '{{unknown}}'
+  _oembed_ecd779a84d0a72dfccf8309ab8a775b1: ! '{{unknown}}'
+---
+En el post anterior agregamos autenticación usando restful_authentication.
+En este haremos que la autenticación permita a los usuarios que ya cuenten con una cuenta de OpenID, usarla para acceder a nuestro sistema.
+
+
+<!--more-->
+
+<strong>Instalación de los gems de openid</strong>
+
+Instalamos los gems de openid como root:
+
+<pre>
+<code>
+miguel@debian:~/rails_app$ su -
+Password:
+debian:~# gem install -y ruby-openid
+Bulk updating Gem source index for: http://gems.rubyforge.org
+Successfully installed ruby-openid-1.1.4
+Installing ri documentation for ruby-openid-1.1.4...
+Installing RDoc documentation for ruby-openid-1.1.4...
+</code>
+</pre>
+
+Esta gem es una implementación de la especificación de OpenID en Ruby. Además de esto necesitaremos también el plugin de rails que nos evita el tener que escribir código de autenticación que haga uso del gem directamente. En este punto tenemos varias opciones:
+
+<ol>
+<li>openid_login_generator de <a href="http://janrain.com/">JanRain</a> (gem install openid_login_generator)</li>
+<li>openid_consumer de <a href="http://www.eastmedia.com/">Eastmedia</a>. Este fue el primer plugin creado para RoR y está basado en LoginGenerator.</li>
+<li>restful_open_id_authentication también de Eastmedia. Este es un rewrite de openid_consumer que además integra restful_authentication. Si no existiera el siguiente plugin, este sería el recomendado</li>
+<li>open_id_authentication del core team de RoR. Este plugin puede usarse en conjunto con Acts_as_authenticated o con restful_authentication. Al estar creado por los mismos individuos de RoR hay muchas posibilidades de que tenga mejor soporte y mayor cantidad de usuarios. Este es el plugin que usaremos en nuestra aplicación</li>
+</ol>
+
+Por tanto, instalamos el plugin:
+
+<pre>
+<code>
+miguel@debian:~/rails_app$ ./script/plugin install
+http://svn.rubyonrails.org/rails/plugins/open_id_authentication/
+</code>
+</pre>
+
+Este plugin crea un par de migraciones que debemos crear y aplicar:
+
+<pre>
+<code>
+miguel@debian:~/rails_app$ rake open_id_authentication:db:create
+miguel@debian:~/rails_app$ rake db:migrate
+</code>
+</pre>
+
+Las tablas creadas por la migración son necesarias para la autenticación por medio de OpenID.
+
+Debemos modificar nuestra tabla de usuarios para que se almacenen la información manejada por OpenID.
+Creamos una migración:
+
+<pre>
+<code>
+miguel@debian:~/rails_app$ ./script/generate migration add_openid_fields
+exists  db/migrate
+create  db/migrate/003_add_openid_fields.rb
+</code>
+</pre>
+
+y ponemos el siguiente código:
+
+<pre>
+<code>
+class AddOpenidFields < ActiveRecord::Migration
+def self.up
+add_column "usuarios", "nombre", :string
+add_column "usuarios", "identity_url", :string
+end
+
+def self.down
+remove_column "usuarios", "nombre"
+remove_column "usuarios", "identity_url"
+end
+end
+</code>
+</pre>
+
+Ejecutamos la migración para que se agreguen las columnas:
+
+<code>
+miguel@debian:~/rails_app$ rake db:migrate
+</code>
+
+
+Este plugin necesita que la acción de autenticación permita operaciones POST y GET. Debido a que estamos usando restful_authentication necesitamos permitir esto explícitamente en config/routes.rb. Agregamos el siguiente map justo <strong>antes</strong> de los demás maps que insertamos antes:
+
+<pre>
+<code>
+map.open_id_complete 'sesion', :controller => "sesion",
+:action => "create", :requirements => { :method => :get }
+</code>
+</pre>
+
+Después de esto tenemos que hacer varias modificaciones a nuestro código. No son complicadas una vez que las entiendes. Estas instrucciones están basadas en las señaladas en el <a href="http://svn.rubyonrails.org/rails/plugins/open_id_authentication/README">README</a> que viene con open_id_authentication, junto con las instrucciones de <a href="http://www.bencurtis.com/archives/2007/03/rails-openid-and-acts-as-authenticated/">Ben Curtis</a>.
+
+Copiaré aquí las versiones finales de los archivos que hay que modificar. El código es claro con un poco de estudio:
+
+app/controllers/sesion_controller.rb
+<pre>
+<code>
+class SesionController < ApplicationController
+skip_before_filter :login_required
+
+def new
+end
+
+def create
+if using_open_id?
+open_id_authentication(params[:openid_url])
+else
+password_authentication(params[:login], params[:password])
+end
+end
+
+def destroy
+self.current_usuario.forget_me if logged_in?
+cookies.delete :auth_token
+reset_session
+flash[:notice] = "Ha salido del sistema."
+redirect_back_or_default('/')
+end
+
+
+protected
+
+def password_authentication(name, password)
+if self.current_usuario = Usuario.authenticate(params[:login], params[:password])
+successful_login
+else
+failed_login "Lo sentimos, usuario o contraseña incorrectas"
+end
+end
+
+def open_id_authentication(identity_url)
+authenticate_with_open_id(identity_url,
+:required => [:nickname, :email],
+:optional => :fullname) do |result, identity_url, registration|
+if result.successful?
+if self.current_usuario = Usuario.find_or_create_by_identity_url(identity_url)
+assign_registration_attributes!(registration)
+
+if current_usuario.save
+successful_login
+else
+failed_login "Su registro de su cuenta con OpenID falló: " +
+self.current_usuario.errors.full_messages.to_sentence
+end
+else
+failed_login "Lo sentimos, no existe usuario con esa URL de identidad (#{identity_url})"
+end
+else
+failed_login "Lo sentimos, la verificación usando OpenID falló"
+end
+end
+end
+
+private
+
+def successful_login
+if params[:remember_me] == "1"
+self.current_usuario.remember_me
+cookies[:auth_token] = { :value => self.current_usuario.remember_token ,
+:expires => self.current_usuario.remember_token_expires_at }
+end
+session[:usuario_id] = self.current_usuario.id
+flash[:notice] = "Ingreso exitoso"
+redirect_back_or_default(home_url)
+end
+
+def failed_login(message)
+flash[:warning] = message
+redirect_to(new_sesion_url)
+end
+
+# registration is a hash containing the valid sreg keys given above
+# use this to map them to fields of your user model
+def assign_registration_attributes!(registration)
+model_to_registration_mapping.each do |model_attribute, registration_attribute|
+unless registration[registration_attribute].blank?
+self.current_usuario.send("#{model_attribute}=", registration[registration_attribute])
+end
+end
+end
+
+def model_to_registration_mapping
+{ :login => 'nickname', :email => 'email', :nombre => 'fullname' }
+end
+end
+</code>
+</pre>
+
+app/models/usuario.rb
+<pre>
+<code>
+require 'digest/sha1'
+class Usuario < ActiveRecord::Base
+# Virtual attribute for the unencrypted password
+attr_accessor :password
+
+validates_presence_of     :login, :email,              :if => :not_openid?
+validates_presence_of     :password,                   :if => :password_required?
+validates_presence_of     :password_confirmation,      :if => :password_required?
+validates_length_of       :password, :within => 4..40, :if => :password_required?
+validates_confirmation_of :password,                   :if => :password_required?
+validates_length_of       :login,    :within => 3..40, :if => :not_openid?
+validates_length_of       :email,    :within => 3..100, :if => :not_openid?
+validates_uniqueness_of   :login, :email, :salt, :case_sensitive => false, :allow_nil => true
+before_save :encrypt_password
+before_create :make_activation_code
+
+# Activates the user in the database.
+def activate
+@activated = true
+self.attributes = {:activated_at => Time.now.utc, :activation_code => nil}
+save(false)
+end
+
+def activated?
+!! activation_code.nil?
+end
+
+# Returns true if the user has just been activated.
+def recently_activated?
+@activated
+end
+
+def not_openid?
+identity_url.blank?
+end
+
+# Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
+def self.authenticate(login, password)
+u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login] # need to get the salt
+u && u.authenticated?(password) ? u : nil
+end
+
+# Encrypts some data with the salt.
+def self.encrypt(password, salt)
+Digest::SHA1.hexdigest("--#{salt}--#{password}--")
+end
+
+# Encrypts the password with the user salt
+def encrypt(password)
+self.class.encrypt(password, salt)
+end
+
+def authenticated?(password)
+crypted_password == encrypt(password)
+end
+
+def remember_token?
+remember_token_expires_at && Time.now.utc < remember_token_expires_at
+end
+
+# These create and unset the fields required for remembering users between browser closes
+def remember_me
+remember_me_for 2.weeks
+end
+
+def remember_me_for(time)
+remember_me_until time.from_now.utc
+end
+
+def remember_me_until(time)
+self.remember_token_expires_at = time
+self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
+save(false)
+end
+
+def forget_me
+self.remember_token_expires_at = nil
+self.remember_token            = nil
+save(false)
+end
+
+protected
+# before filter
+def encrypt_password
+return if password.blank?
+self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
+self.crypted_password = encrypt(password)
+end
+
+def password_required?
+not_openid? && (crypted_password.blank? || !password.blank?)
+end
+
+def make_activation_code
+self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
+end
+end
+</code>
+</pre>
+
+app/views/usuarios/new.rhtml
+<pre>
+<code>
+<%= error_messages_for :usuario %>
+Puedes crear una cuenta usando el formulario que esta debajo.
+Si tienes una URL <a href="http://openid.net">OpenID</a> puedes
+<a href="<%= new_sesion_url %>">ingresar con OpenID</a> en lugar de crear una cuenta.
+<% form_for :usuario, :url => usuarios_path do |f| -%>
+<p><label for="login">Usuario</label><br/>
+<%= f.text_field :login %></p>
+
+<p><label for="email">Email</label><br/>
+<%= f.text_field :email %></p>
+
+<p><label for="password">Contraseña</label><br/>
+<%= f.password_field :password %></p>
+
+<p><label for="password_confirmation">Confirme contraseña</label><br/>
+<%= f.password_field :password_confirmation %></p>
+
+<p><%= submit_tag 'Registrarse' %></p>
+<% end -%>
+</code>
+</pre>
+
+app/views/sesion/new.rhtml
+<pre>
+<code>
+<% form_tag sesion_path do -%>
+<p><label for="login">Usuario</label><br/>
+<%= text_field_tag 'login' %></p>
+
+<p><label for="password">Contraseña</label><br/>
+<%= password_field_tag 'password' %></p>
+
+<p>
+...o use:
+</p>
+
+<p><label for="openid_url">OpenID</label><br/>
+<%= text_field_tag "openid_url" %></p>
+
+<p><label for="remember_me">Recordarme en este equipo:</label>
+<%= check_box_tag 'remember_me' %></p>
+
+<p><%= submit_tag 'Ingresar', :disable_with => 'Ingresando&#x2026;' %></p>
+<% end -%>
+</code>
+</pre>
+
+Uno de los requisitos de este plugin es usar Rails Edge rev 6317 o posterior. Convertimos nuestra aplicación a Rails Edge:
+
+<code>
+rake rails:freeze:edge REVISION=6317
+</code>
+
+Eliminamos la siguiente línea de app/controllers/application.rb
+
+<pre>
+<code>
+# Pick a unique cookie name to distinguish our session data from others'
+session :session_key => "_rails_app_session_id"
+</code>
+</pre>
+
+y agregamos la siguiente línea a config/environment.rb, después de:
+
+<pre>
+<code>
+config.action_controller.session = { :session_key => "_rails_app_sesion", :secret => "secreto" }
+</code>
+</pre>
+
+donde <em>secreto</em> es una palabra o frase secreta que será usada por el plugin de openid durante el intercambio con el server de OpenID encargado de autenticar a los usuarios que ingresen a nuestra aplicación.
+
+Ahora solamente tienes que crear una cuenta en <a href="http://openid.net">OpenID</a> y usarla para probar que la aplicación te permita autenticarte usando tu OpenID URL.
+
+Suerte!
+

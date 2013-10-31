@@ -1,0 +1,37 @@
+---
+layout: post
+title: latex2html and UTF8 encoding
+categories: []
+tags:
+- books
+- free software
+- libros
+status: publish
+type: post
+published: true
+meta: {}
+---
+The last two days I have been fighting with latex2html. I am writing my books in LaTeX, in a Debian GNU/Linux machine. The .tex source file has UTF8 encoding, as has any new text file I create under Debian. One of the books it is written in Spanish, so there are a lot of accented characters:
+
+<strong>á, é, í, ó, ú.</strong>
+
+When I used pdflatex to generate a PDF document, all was ok, but when I tried to generate HTML with latex2html, the accented characters were generated as:
+
+<strong>Ã¡, Ã©, Ã, Ã³, Ãº</strong>
+
+By the way the preamble of my .tex file was like this:
+<pre><code>
+documentclass[10pt,letterpaper]{book}
+usepackage[spanish]{babel}
+usepackage[utf8x]{inputenc}
+usepackage{makeidx}
+author{Miguel Cobá}
+title{Historias de Tristania}
+begin{document}
+maketitle
+include{ch1}
+end{document}
+</code></pre>
+After a lot of research I finally could find the right invocation of latex2html to generate HTML correctly with accents:
+<pre><code>latex2html -html_version 4.0,latin1,unicode book.tex</code></pre>
+So, when using LaTeX to write something with accents, the encoding of the .tex files is UTF8 and want to generate HTML from the very same source .tex files, use the command above.

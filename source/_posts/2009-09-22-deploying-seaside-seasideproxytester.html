@@ -1,0 +1,138 @@
+---
+layout: post
+title: ! 'Deploying Seaside: SeasideProxyTester'
+categories: []
+tags:
+- deploy
+- magma
+- seaside
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+We have a working deployment setup. It runs a Magma image and several Seaside images. The Seaside images are all of them running copies of a single Seaside image. This Seaside image has a copy of the application we want to deploy. In this tutorial the application is the SeasideProxyTester from the SeasideExamples of squeaksource.com.
+
+The SeasideProxyTester is very simple because it doesn't want to show any particular Seaside feature. It is a tool to test a setup of proxied Seaside images behind a proxy webserver. It consists of three classes:
+<ul>
+	<li>SPTApplication. It is a Seaside application registered as seasideProxyTester.</li>
+	<li>SPTApplicationMagma. It is a Seaside application registered as magmaProxyTester</li>
+	<li>SPTDatabase. It is used as the root of the domain objects in the Magma repository. It is used by SPTApplicationMagma to store the number of requests made to the application</li>
+</ul>
+SPTApplication and SPTApplicationMagma are very simple. When each application is accessed a simple page is rendered, showing the number of requests made so far to the application. The request can be counted in three ways:
+<ol>
+	<li>By Seaside session. Number of requests made as part of the same Seaside session (that is, _s is the same for all of them).</li>
+	<li>By Seaside image. Number of requests made to the same image, no matter if they are from different Seaside sessions (that is, the requests have the same value for the server cookie: app9001, app9002, etc)</li>
+	<li>By application. Number of requests made to the application, no matter if they are from different Seaside sessions or Seaside images (that is is a global counter of the requests made to any of the images in any of the created Seaside sessions).</li>
+</ol>
+The magmaProxyTester works exactly as the previous points explain. The Magma database is used to store the global request number and a request number for each image.
+
+The seasideProxyTester can't, by their nature, keep track of the third counter, that is the global request counter or application request counter. This is because each image is an autonomous entity that has no way to communicate between them to share and update the global request counter. So, although each SPTApplication in each image has a class instance variable to track the number of requests, this is scoped to the image and only can track the number of request that reached the image is part of. So each image has it very own global counter that tracks the requests that has processed. If you sum the global counter of each Seaside image for the SPTApplication, you can get the real global request counter for the seasideProxyTester application. In the SPTApplicationMagma app, the magma database is the external (to the image) holder of those counters, and is also responsible of mediating between them when updating the counters.
+
+So with this warning out of the way. What can you get from this SeasideProxyTester. Lets begin with the magma.example.com application. The first time I access it it shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 1</li>
+	<li>serverPort: 9001 requests: 1</li>
+</ul>
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=56aLkKUoelRTArpu&amp;_k=bJrhDNou&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+This shows that the request was served by the first Seaside image listening on port 9001.  This request has been correctly counted. If I reload the page I create a new Seaside session but i remain in the same Server (as my browser has accepted the cookie with value app9001). Now the page shows:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: Total requests: 2</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;1">Reset database.</a></td>
+<td>Listening on port: 9001
+
+Total sessions: 3
+
+Total requests: 2</td>
+<td>Current request served on port: 9001
+
+Previous request served on port: 9001
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=gCwlW-fwzFzv7w5U&amp;_k=iuNU7dj_&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+As you can see you are on the same server (the one listening on port 9001) and the global counters have been updated accordingly.
+
+Now, I delete the cookies of my browser so that the next reload it doesn't include the server cookie. lighttpd will use round-robin to proxy to the next available server, that is, the one on port 9002. Now I see:
+<table border="0">
+<tbody>
+<tr>
+<th>Global</th>
+<th>Server</th>
+<th>Session</th>
+</tr>
+<tr>
+<td>
+<ul>
+	<li>serverPort: 9002 requests: 1</li>
+	<li>serverPort: Total requests: 3</li>
+	<li>serverPort: 9001 requests: 2</li>
+</ul>
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;1">Reset database.</a></td>
+<td>Listening on port: 9002
+
+Total sessions: 2
+
+Total requests: 1</td>
+<td>Current request served on port: 9002
+
+Previous request served on port: 9002
+
+Total requests on this session: 1
+<p style="color: green;">You are on the SAME server than the previous request</p>
+
+<a href="http://magma.example.com/?_s=wP9fNa9LCw2npBME&amp;_k=jZcuMuB6&amp;2">Make a new request inside this session</a></td>
+</tr>
+</tbody></table>
+You are now on a different server, the one listening on port 9002. Well, you get the idea.
+
+Now, there are two links on the page. The first one, "Reset database", as you can guess, will reset the global counters. But, as this is also a request, the counters won't be 0 but 1 the next time the page is rendered.
+
+The second one "Make a new request inside this session" will make a new request (by means of a Seaside callback) that is part of the same session (same _s parameter). This, as always, changes the global counters, but also increments the session request counter.
+
+So far so good.
+
+The seasideProxyTester works very similar, the only problem, as I have said is that there is no way for all the Seaside images to update a group of shared global counters (this, in the end, will need a external database, the role Magma is playing in the magmaProxyTester), so each image has a class instance variable that tries to keep track of the global counters but this is only valid inside the image scope. Repeat the same requests made with the magma.example.com using the seaside.example.com and you'll note that each time you change of Seaside server you get a different global counter. Only if you sum all the global counters you will have the real global request counter.
+
+Now you can put your stress loading tools to work by pointing them to your new setup and measure the results.
+
+Or, wait for the next post and I will show you one way to do load testing on Seaside applications

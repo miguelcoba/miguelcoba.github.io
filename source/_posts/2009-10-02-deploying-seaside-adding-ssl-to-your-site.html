@@ -1,0 +1,141 @@
+---
+layout: post
+title: ! 'Deploying Seaside: Adding SSL to your site'
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _oembed_b7a712217ce8e220eb6d4577a309f84e: ! '{{unknown}}'
+  _oembed_791c3360bdd81041df0b99768fa2b921: ! '{{unknown}}'
+  _oembed_d3b865afe97f2cdd02c063056e5b9a83: ! '{{unknown}}'
+  _oembed_118cb7c2cde4496cc08010508e435a64: ! '{{unknown}}'
+---
+Well, lets add SSL to your site. This step is tricky as you must have a domain registered to your name and a public IP in order to get a SSL certificate. Here we'll generate a self-signed certificate and will configure lighttpd to use it to encrypt all the traffic between the webserver and the web browser clients.
+
+As you will see you don't have to configure SSL on the Pharo image. In fact Seaside doesn't even know anything about SSL or encryption. It is the webserver the responsible of isolate the Seaside images (that in fact aren't even know by the web browser clients, as they only interact with the webserver. This last one is proxying each request to the Seaside images). The only thing that Seaside must do is to guarantee that every link generated specifies the https protocol. But this is only HTML generation. Isn't encryption. The encryption is made by the webserver by using of the SSL certificate.
+
+We are going to show the process with the seaside.example.com. The procedure is the same for the magma.example.com but remember, each certificate must use its own IP. So you can't test both on 127.0.0.1 for example. In a production site with several hosted sites, each one will have its own public IP.
+
+First the prerequisites. Be sure to have a lighttpd with SSL support. As root execute:
+
+laptop:~# lighttpd -v
+lighttpd/1.4.23 (ssl) - a light and fast webserver
+Build-Date: Aug 17 2009 21:46:24
+
+the (ssl) indicates that lighttpd has ssl support compiled in.
+
+Then install, as root, OpenSSL, if you don't already have it:
+
+# aptitude install openssl
+
+Now as root, create and install the self-signed certificate:
+
+# openssl req -new -x509 -keyout /etc/lighttpd/seaside.example.com.pem -out /etc/lighttpd/seaside.example.com.pem -days 365 -node
+
+Answer the questions:
+
+Generating a 1024 bit RSA private key
+.........................++++++
+...............++++++
+writing new private key to '/etc/lighttpd/seaside.example.com.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:MX
+State or Province Name (full name) [Some-State]:Mexico City
+Locality Name (eg, city) []:Mexico City
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Example Corp
+Organizational Unit Name (eg, section) []:TI
+Common Name (eg, YOUR name) []:seaside.example.com
+Email Address []:you@example.com
+
+Change the permissions to something more secure like 440
+
+# chown 440 /etc/lighttpd/seaside.example.com.pem
+
+Now to configure Seaside to emit correct URLs. Be sure that the images are shutdown. Open the seaside image:
+
+/opt/pharo/squeak /srv/example/pharo/seaside.image
+
+Open the initialize method on the class side of SPTApplication and change:
+
+"Server protocol"
+application preferenceAt: #serverProtocol put: #http.
+
+to:
+
+"Server protocol"
+application preferenceAt: #serverProtocol put: #https.
+
+Change:
+
+"Server port"
+application preferenceAt: #serverPort put: 80.
+
+to:
+
+"Server port"
+application preferenceAt: #serverPort put: 443.
+
+and change:
+
+"Base URL for resources: images, styles, etc"
+application preferenceAt: #resourceBaseUrl put: 'http://seaside.example.com/resources/'.
+
+to:
+
+"Base URL for resources: images, styles, etc"
+application preferenceAt: #resourceBaseUrl put: 'https://seaside.example.com/resources/'.
+
+Now open a workspace and reinitialize the application by executing:
+
+SPTApplication initialize.
+
+That is all on the Seaside side. Save the image and quit.
+
+Now to configure the webserver. Change the host line for seaside on lighttpd.conf from:
+
+$HTTP["host"] == "seaside.example.com" {
+server.document-root = "/srv/example/website/"
+
+to:
+
+$HTTP["host"] == "seaside.example.com" {
+$HTTP["scheme"] == "http" {
+url.redirect = ( "^/(.*)" =&gt; "https://seaside.example.com/$1" )
+}
+}
+$SERVER["socket"] == "127.0.1.1:443" {
+ssl.engine = "enable"
+ssl.pemfile = "/etc/lighttpd/seaside.example.com.pem"
+
+server.name = "seaside.example.com"
+server.document-root = "/srv/example/website/"
+
+Be sure to use your own IP (unless you're testing on localhost like me) and the correct path to the pem file. Also note that this setup will redirect every request arriving on http to the https port. So ALL the application will be on https. This can be or not what you want. If you only want a part of your site under https, you must configure lighttpd accordingly and make sure that the application emits https URLs only when you need it. That is up to you.
+
+Restart lighttpd:
+
+# /etc/init.d/lighttpd restart
+
+and point your browser to:
+
+http://seaside.example.com
+
+it should redirect to:
+
+https://seaside.example.com
+
+Of course, as you are using a self-signed certificate, the web browser will shout a warning about the certificate verification. Accept it unless you don't trust yourself :).
+
+After that you should see the summary page of the seaside.example.com and everything should work as before, just encrypted.
+
+Really easy, don't you think.

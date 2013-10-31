@@ -1,0 +1,85 @@
+---
+layout: post
+title: Install Squeak/Seaside on a KVM virtual machine
+categories: []
+tags:
+- Uncategorized
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+<strong>Host Machine</strong>
+Architecture: x86_64
+Name: laptop
+OS: Debian GNU/Linux 5.0 amd64 (Lenny)
+<strong>Virtual Machine</strong>
+Architecture: i386
+Name: vm1
+OS: Debian GNU/Linux 4.0 i386 (Etch)
+<strong>Virtual Machine Software</strong>
+GemTools 2.3
+Seaside One Click Experience 2.8.3
+
+Install the virtual machine following <a href="http://miguel.leugim.com.mx/index.php/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager/" target="_self">this</a>
+instructions. Be sure to select CPU Architecture: x86_64, but install a 32 bit OS.
+After installation add the IP address assigned to the virtual machine to
+/etc/hosts on the host machine.
+
+I have only installed the Starndard System. That is, no X or desktop environment. Why, because I want to forward X and use my host machine as the X server.
+
+In the virtual machine, install the package xbase-client. This package and its dependencies are the minimal packages necessary to forward X apps to another server. As root:
+
+vm1:~# aptitude install xbase-clients
+
+Now, log out and login again but with a different syntax. Instead of
+
+miguel@laptop:~$ ssh vm1
+
+Log in with the -X option enabled (you can make this option enabled always in .ssh/config. See the man page from ssh)
+
+miguel@laptop:~$ ssh -X vm1
+
+And proceed to download <a href="http://seaside.st/">Seaside</a> and the <a href="http://seaside.gemstone.com/downloads.html">GemTools</a>:
+
+miguel@vm1:~$ wget http://www.seaside.st/distributions/Seaside-2.8.3.app.zip
+
+miguel@vm1:~$ wget http://seaside.gemstone.com/squeak/GemTools-2.3.zip
+
+Unzip them and try them.
+
+Seaside:
+
+miguel@vm1:~$ unzip Seaside-2.8.3.app.zip
+miguel@vm1:~$ cd Seaside-2.8-578.app/
+miguel@vm1:~/Seaside-2.8-578.app$ ./Seaside.sh
+
+You should see the Seaside Squeak image open as a window on your host machine X server.
+
+The same applies to the GemTools Squeak image. But before trying to connect to the remote Gemstone/S server, you must do some tasks:
+
+1. Add the remote server IP to the virtual machine /etc/hosts. In my case I'm going to connect from vm1 to vm0 (the Gemstone/S server) so I added this line to vm1's /etc/hosts:
+
+192.168.122.137 vm0
+
+2. You need to add
+
+# Local services
+gs64ldi         50377/tcp        # Gemstone netldi
+
+to your virtual machine's /etc/services file. This is because GemTools use this name instead of the port number to connect to Gemstone/S. If you don't add this line, you must use the port number in the Login window of the GemTools image.
+After doing this changes, unzip the GemTools and start the image:
+
+miguel@vm1:~$ unzip GemTools-2.3.zip
+miguel@vm1:~$ /home/miguel/GemTools-2.3.app/GemTools.sh
+
+You must start the image using the full path to the script or the connection won't work because of a softlink pointing to a nonexistant directory. In the Gemstone/S Login window from the GemTools image, write vm0 in the Stone section's "!tcp@" parameter and in the Gem section's "!tcp@" parameter. Make sure the Gemstone/S is running on your server and press the Login button. You shouldn't have any problem.
+
+These instructions are an adaptation from <a href="http://gemstonesoup.wordpress.com/2008/01/26/terse-guide-to-the-glass-tools/">Dale Henrichs</a> and <a href="http://programminggems.wordpress.com/2008/09/25/slice-5/">James Foster</a> ones.
+
+There is something very important to have in mind. You are working ON THE REMOTE (virtual machine in this case) machine. You are ONLY viewing the graphics on the local X server. If you modify something, you're modifying it in the remote machine. Also, the network address, this will be resolved from the perspective of the remote machine. Don't forget it.
+
+As you can see, by using a 64 bit KVM virtual machine on your x86_64 hardware with a 32 bit OS, you can run a squeak image on a 32bit squeak virtual machine without any problem. What is more, in the case of Debian, you don't have to create a 32 bit chroot inside your amd64 installation. Very clean.
+
+Enjoy.

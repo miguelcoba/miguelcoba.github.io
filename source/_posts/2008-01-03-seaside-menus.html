@@ -1,0 +1,140 @@
+---
+layout: post
+title: Seaside menus
+categories: []
+tags:
+- curso
+- seaside
+- smalltalk
+status: publish
+type: post
+published: true
+meta: {}
+---
+Finally, after long hours (days and more exactly months) searching the archives, the Smalltalk/Seaside blogosphere and the web, I had my <a href="http://www.mindhacks.com/blog/2005/07/understanding_aha.html" title="Aha moment">Aha! moment</a> with Seaside.
+
+I was trying to grasp the Seaside way to do menus. First I was using call:/answer to make the links in the menu work. So in my menu I had something like:
+<pre>
+<code>
+renderContentOn: html
+html anchor on: #newContact of: self.
+html space.
+html anchor on: #contactList of: self.
+
+newContact
+| contact |
+contact :=  self call: (ContactEditor contact: Contact new)
+contact ifNotNil: [ContactDatabase contacts add: contact].
+
+contactList
+self call: (ContactList contacts: ContactDatabase contacts)
+</code></pre>
+This would show a pair of links: 'New Contact' for adding a new Contact to the database and 'Contact List' for listing the current contents of your database.
+
+What is the problem with this code? It worked, sort of. See: you want to add a contact, so you press the 'New contact' link and a ContactEditor call: is invoked. A contact form is presented for you to fill it. A pair of buttons (Save, Cancel) are shown too. The Save button submits the form and adds the Contact to the Contacts database. The cancel button, well, just cancels the process. But, as the menu is always visible, you could as well click the 'New contact' link instead of pressing the Cancel button in order to get a new blank Contact form.
+What it is wrong with this? You are doing a new call: to a new ContactEditor and this call: is stacked in Seaside. The same happens if you click 5 or 4000 times the 'New Contact' link.
+If, after clicking the 'New contact' many times, you fill the form and press the Save button, the last ContactEditor invoked answers back the Contact and it's saved to the database. But Seaside, noting that a call: was just answered, returns the application to the point where the call: was made. That is, to the 4th or 3999th call: stored in the stack. That is not the way you want the application to behave.
+In a classical menu, for example in Wordpress when I click the 'Write a new post' link many times, it is the same as clicking it only once. You don't have a stack growing and growing endless.
+
+How to solve it?
+
+
+
+<!--more-->
+
+
+As I said before, I searched the lists and blogs and I found the answer. You don't use call: with menus, because you don't always expect them to return. Most times, a menu triggers an event or a process and when you are done with it (or indeed, in the middle of it) you can jump to another unrelated one. And you don't want colateral effects.
+
+This <a href="http://www.justplayitgrand.com/?p=12" title="Beginnings of a PIM Example">post</a> from Eric Hochmeister was the first hint that my problem had a more Seaside-ish solution. After a few days, in my feed reader appeared a <a href="http://methodsandmessages.vox.com/library/post/a-few-bits-about-children-in-seaside.html" title="A few bits about children in Seaside">post</a> from Randal Schwartz (of Perl fame) confirming Eric post. Finally, the last piece of code needed to reach my Aha! moment was the new MenuExample (at least for me, as the last time I checked SeasideExamples it wasn't there yet) in <a href="http://www.squeaksource.com/SeasideExamples/" title="SeasideExamples">SeasideExamples</a> that, besides showing how to do a menu, is a simple example of using the Announcements framework for loose coupling of components.
+
+So I did a small demo webapp with 4 parts: header, footer, menu and content to show this new technique I just learned.
+
+I use a main component to render this 4 parts:
+<pre>
+<code>
+WAComponent subclass: #MDMain
+instanceVariableNames: 'header footer menu content'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'MenuDemo'
+</code></pre>
+Initialize the main component. Here I assign the components that will be rendered in each part of the page. Header and footer are no problems. Initially the content will show a blank page (a WAComponent doesn't render anything by default)
+The interesting part is the setup of the menu. There I assign callbacks to the links in the menu that will swap the current content to the desired content
+<pre>
+<code>
+initialize
+super initialize.
+header := MDHeader new.
+footer := MDFooter new.
+content := WAComponent new. "Initially a blank page is rendered"
+"We setup the menu"
+menu := MDMenu new
+add: [self newContact] named: 'New Contact';
+add: [self listContacts] named: 'Contact list';
+yourself.
+</code></pre>
+This is how I swap the default content for the Contact list component:
+<pre>
+<code>
+listContacts
+content := MDContactList new.
+</code></pre>
+Very important, as this main component renders 4 other components, I have to override children:
+<pre>
+<code>
+children
+^ Array with: header with: footer with: menu with: content.
+</code></pre>
+Furthermore, as the MDMain component changes over time, it needs to be backtracked so, we override the states message (thanks to Philippe Marschall for the tip):
+<pre>
+<code>
+states
+^ Array with: self
+</code></pre>
+Finally the main component renders the parts of our page:
+<pre>
+<code>
+renderContentOn: html
+html render: header.
+html render: menu.
+html render: content.
+html render: footer.
+</code></pre>
+The menu Component is interesting too:
+<pre>
+<code>
+WAComponent subclass: #MDMenu
+instanceVariableNames: 'entries'
+classVariableNames: ''
+poolDictionaries: ''
+category: 'MenuDemo'
+</code></pre>
+The entries is just an OrderedCollection:
+<pre>
+<code>
+initialize
+super initialize.
+entries := OrderedCollection new.
+</code></pre>
+Each entry is an association of 'Link Title' -&gt; [code to execute when clicked]:
+<pre>
+<code>
+add: aCallback named: aTitle
+entries add: aTitle -&gt; aCallback
+</code></pre>
+The rendering of the menu:
+<pre>
+<code>
+renderContentOn: html
+html unorderedList: [
+entries do: [ :each |
+html listItem: [
+html anchor
+callback: each value;
+with: each key]]]
+</code></pre>
+That is all. So simple that it is amazing.
+You can find the complete application in the <a href="http://www.squeaksource.com/SeasideExamples.html" title="SeasideExamples">SeasideExamples</a> page on SqueakSource as MenuDemo.
+Enjoy.
+
+<strong>UPDATE 2008-01-04:</strong> Philippe Marschall noted a bug in the code. I wasn't taking care of backtracking for the MDMain component. This is necessary because the MDMain component changes over time. I have uploaded a new version with the fix to SqueakSource<strong>.</strong>

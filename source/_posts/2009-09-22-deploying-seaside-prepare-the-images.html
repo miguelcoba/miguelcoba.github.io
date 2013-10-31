@@ -1,0 +1,247 @@
+---
+layout: post
+title: ! 'Deploying Seaside: Prepare the images'
+categories: []
+tags:
+- deploy
+- magma
+- pharo
+- seaside
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+You have a working squeak vm install. Now we will create the directories we'll use.
+
+<strong>Create directories
+</strong>
+
+export WORK=/home/miguel/work
+mkdir -p $WORK
+
+export DEPLOY=/home/miguel/example
+mkdir -p $DEPLOY/{pharo,magma,backup,logs,scripts,website}
+
+We will use two directories, put them where you want. I chose to put them on my home directory but you can use any other if you wish. The important thing is to have the environment variables correctly assigned. This will ease the following steps.
+
+The work directory is to hold temporary files as we setup the deploy directory. At the end will be discarded.
+
+The deploy directory is what we will populate with the images and other useful scripts to host our Seaside application and data. As you can see has directories for the images (pharo), for the database (magma), for the magma backups (backups), for the logs (currently only has the output of the nohups used to start the images), for the scripts (guess, scripts!) and for the static content of your application, that you wisely have the webserver to serve and not the Seaside server (website). More on this later.
+
+<strong>Download PharoCore</strong>
+
+Now go to the Pharo <a title="Pharo download page" href="http://pharo-project.org/pharo-download">download page</a> look for the section "Sources files" and download the Sources zip file. At the moment is:
+
+SqueakV39.sources.zip
+
+Now go to the bottom of the page and follow the link that says "Pharo-core images and other files". Find the most recent PharoCore zip file. Currently is:
+
+PharoCore-1.0-10451-BETA.zip
+
+but any newer will do.
+
+Unzip this two zip files. The PharoCore will create a directory and inside it will be the image and changes files. The Sources zip contains one file. Now, copy this three files to the $WORK directory:
+
+cp PharoCore-1.0-10451-BETA.image $WORK
+cp PharoCore-1.0-10451-BETA.changes $WORK
+cp SqueakV39.sources $WORK
+
+So far so good. You have a PharoCore image with its changes file and a sources file. This, together with the virtual machine gives you a complete Pharo environment to work. You can try it:
+
+cd $WORK
+$VM PharoCore-1.0-10451-BETA.image
+
+You should see the PharoCore image running. Quit the image WITHOUT saving.
+
+<strong>Save scripts</strong>
+
+Save the following scripts to the $WORK directory.
+
+<strong><em>magma-image.st:</em></strong>
+
+"Install Magma Server on a PharoCore image"
+
+"Set some preferences"
+Preferences enable: #fastDragWindowForMorphic.
+Preferences disable: #windowAnimation.
+Preferences enable: #updateSavesFile.
+Preferences disable: #windowAnimation.
+
+"Update from pharo update stream (only works/recomended for PharoCore)"
+Utilities updateFromServer.
+
+"Your name, like MiguelCoba or VincentVanGogh, dont  use spaces or accents, just ASCII"
+Author fullName: 'FirstnameLastname'.
+
+"Install Installer"
+ScriptLoader
+loadLatestPackage: 'Installer-Core' fromSqueaksource: 'Installer'.
+
+"RFB"
+Installer lukas project: 'unsorted';
+install: 'RFB'.
+
+"Magma server"
+Installer ss project: 'Magma';
+install: '1.0r42 (server)'.
+
+"Configure the packages"
+RFBServer current
+initializePreferences;
+allowEmptyPasswords: false;
+allowLocalConnections: true;
+allowRemoteConnections: false;
+allowInteractiveConnections: true;
+connectionTypeDisconnect;
+configureForMemoryConservation;
+setFullPassword: 'useyourownpasswordhere'.
+
+"Save with a new name"
+SmalltalkImage current saveAs: 'magma'.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script when executed on a PharoCore image, will set some preferences, apply updates from the Pharo project if available and then install some packages directly from their repositories. The packages installed are RFBServer (a VNC server for Squeak and Pharo) and the Magma server. Finally it configures the packages and saves the image with a new name: magma. Be sure to change your full name and the RFBServer before saving the file.
+
+<em><strong>magma-run.st:</strong></em>
+
+"When a file named magma.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving"
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: 'magma.shutdown')
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ].
+(FileDirectory default fileOrDirectoryExists: 'magma.startvnc')
+ifTrue: [ Project uiProcess resume.  RFBServer start:0 ].
+(FileDirectory default fileOrDirectoryExists: 'magma.stopvnc')
+ifTrue: [ RFBServer stop. Project uiProcess suspend ].
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+"To save CPU cycles"
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<em><strong>seaside-image.st:</strong></em>
+
+"Install Seaside on a PharoCore image"
+
+"Install packages"
+
+"Comanche"
+Installer ss project: 'KomHttpServer';
+install: 'DynamicBindings';
+install: 'KomServices';
+install: 'KomHttpServer'.
+
+"Seaside"
+Installer ss project: 'Seaside';
+answer: '.*username.*' with: 'admin';
+answer: '.*password.*' with: 'seaside';
+install: 'Seaside2.8a1';
+install: 'Scriptaculous'.
+
+"Seaside Jetsam"
+Installer ss project: 'Jetsam';
+install: 'Seaside28Jetsam-kph.67'.
+
+"Seaside helper"
+Installer ss project: 'MagmaTester';
+answer:'username' with:'admin';
+answer:'password' with:'seaside';
+install: 'Magma seasideHelper'.
+
+"SeasideProxyTester"
+Installer ss project: 'SeasideExamples';
+install: 'SeasideProxyTester'.
+
+"Configure the packages"
+"Start Seaside"
+WAKom startOn: 9001.
+
+"Unregister example apps"
+WADispatcher default trimForDeployment.
+
+"Unregister deployed apps"
+WADispatcher default
+unregister: (WADispatcher default entryPointAt: '/browse');
+unregister: (WADispatcher default entryPointAt: '/config').
+
+"Save with a new name"
+SmalltalkImage current saveAs: 'seaside'.
+SmalltalkImage current snapshot: true andQuit: true.
+
+This script install Seaside 2.8, Magma seasideHelper and the SeasideProxyTester app that we will use to test the setup. Besides, start Seaside on port 9001, unregister unnecessary apps from the Seaside dispatcher and save the image as seaside.
+
+<strong><em>seaside-run.st:</em></strong>
+
+"When a file named seaside.shutdown is found on the same directory as the image
+this process is triggered and the image is shutdown without saving"
+[
+[
+[ 60 seconds asDelay wait.
+(FileDirectory default fileOrDirectoryExists: 'seaside.shutdown')
+ifTrue: [ SmalltalkImage current snapshot: false andQuit: true ]
+] on: Error do: [ :error | error asDebugEmail ]
+] repeat
+] forkAt: Processor systemBackgroundPriority.
+"To save CPU cycles"
+Project uiProcess suspend.
+
+I will explain this script later.
+
+<strong><em>start_app.sh:</em></strong>
+
+#!/bin/sh
+
+HOME="/srv/example"
+NOHUP="/usr/bin/nohup"
+VM="/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null"
+IMAGES="$HOME/pharo"
+SCRIPTS="$HOME/scripts"
+LOGS="$HOME/logs"
+START_PORT=9001
+END_PORT=9004
+
+# Delete command files
+
+[ -f $IMAGES/magma.shutdown ] &amp;&amp; rm $IMAGES/magma.shutdown
+[ -f $IMAGES/magma.startvnc ] &amp;&amp; rm $IMAGES/magma.startvnc
+[ -f $IMAGES/magma.stopvnc ] &amp;&amp; rm $IMAGES/magma.stopvnc
+[ -f $IMAGES/seaside.shutdown ] &amp;&amp; rm $IMAGES/seaside.shutdown
+
+# Start the Magma image
+echo "Starting Magma image"
+$NOHUP $VM $IMAGES/magma.image $SCRIPTS/magma-run.st &gt;&gt; $LOGS/magma.nohup &amp;
+
+# To give Magma time to open the repository
+sleep 5
+
+# Start the Seaside images
+for PORT in `seq $START_PORT $END_PORT`; do
+echo "Starting Seaside image on port: $PORT"
+$NOHUP $VM $IMAGES/seaside.image $SCRIPTS/seaside-run.st port $PORT &gt;&gt; $LOGS/seaside$PORT.nohup &amp;
+done
+
+I will explain this script later.
+
+<strong>Prepare images</strong>
+
+Make sure that the previous scripts are saved to the $WORK directory. Then build the images:
+
+cd $WORK
+
+# Build magma image from PharoCore image
+$VM PharoCore-1.0-10451-BETA.image $WORK/magma-image.st
+
+# Build seaside image from the magma image
+$VM magma.image $WORK/seaside-image.st
+
+This will take the PharoCore image and, by using the scripts given, will build the magma image. Then, using the magma image, will build the seaside image.
+
+The build scripts are based on the scripts included in the pharo-dev and pharo-web images created by <a title="Damien Cassou" href="http://damiencassou.seasidehosting.st/seaside/pier">Damien Cassou</a>.
+
+The magma-run.st and seaside-run.st scripts are based on the ones Ramon Leon posted on his <a title="Ramon Leon" href="http://onsmalltalk.com">blog</a>.

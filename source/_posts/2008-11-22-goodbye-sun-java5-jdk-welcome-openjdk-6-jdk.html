@@ -1,0 +1,13 @@
+---
+layout: post
+title: Goodbye sun-java5-jdk, welcome openjdk-6-jdk
+categories: []
+tags:
+- java
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+With Debian Lenny, I finally can install openjdk instead of the official java from sun.com.<br /><br />As root:<br /><br /># aptitude install openjdk-6-jdk<br /><br />This uninstalled (I think, because I don't remember if I first uninstalled the sun-java5-jdk :)) the sun-java5-jdk version and installed the new openjdk-6-jdk.<br /><br />I updated the alternatives from debian:<br /><br /># update-java-alternatives -s java-6-openjdk<br /><br />And finally, to test:<br /><br /># java -version<br />java version "1.6.0_0"<br />OpenJDK&nbsp; Runtime Environment (build 1.6.0_0-b11)<br />OpenJDK 64-Bit Server VM (build 1.6.0_0-b11, mixed mode)<br /><br />Great.<br />

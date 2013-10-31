@@ -1,0 +1,38 @@
+---
+layout: post
+title: Development environment for Seaside
+categories: []
+tags:
+- Uncategorized
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This is my development environment for Seaside.
+
+One virtual machine (vm1) is for Seaside over Squeak development. I work here most time, forwarding X to my host machine and testing the application by pointing to http://vm1:8080/seaside/myapp. Details <a href="http://miguel.leugim.com.mx/index.php/2008/11/27/install-squeakseaside-on-a-kvm-virtual-machine/" target="_self">here</a>.
+
+The second machine (vm0) is for testing integration of my Seaside application on Gemstone/S 64. After loading my app to Gemstone I test the app by pointing to http://vm0:8080/seaside/myapp. Details <a href="http://miguel.leugim.com.mx/index.php/2008/11/27/install-gemstones-64-on-a-kvm-virtual-machine/" target="_self">here</a>.
+
+Finally, in my host machine I have Debian GNU/Linux 5.0 amd64 (Lenny) for my every day work (writing docs, hearing music, watching videos, browsing internet, writing blog posts, IM, etc). Also, from my host machine I can fire the stress tools to test either the load capacity or the load balancing of the application.
+
+<strong>Advantages</strong>:
+<ul>
+	<li>I start the virtual machines only when I need them.</li>
+	<li>My host laptop boot time it is minimal.</li>
+	<li>I don't have to create a 32 bit <a href="https://alioth.debian.org/docman/view.php/30192/21/debian-amd64-howto.html">chroot</a> inside my laptop</li>
+	<li>I have a clean 32 bit Debian and a clean 64 bit Debian for other uses</li>
+	<li>I can test having the static content in a virtual machine and the application in other and use a proxy to redirect to the correct machine.</li>
+	<li>I can test having my application behind a proxy</li>
+	<li>I can test load balancing of my servers</li>
+</ul>
+<strong>Disadvantages</strong>:
+<ul>
+	<li>More machines to administer</li>
+	<li>More configuration and setup involved</li>
+	<li>You need a 64 bit machine and a decent amount of RAM and a capable CPU (I have 4GB RAM and a AMD Turion 64 X2 CPU)</li>
+	<li>You need to be comfortable administering several machines</li>
+</ul>
+But, for me, it works. Maybe it can work for you too.

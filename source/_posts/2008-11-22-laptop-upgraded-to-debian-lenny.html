@@ -1,0 +1,41 @@
+---
+layout: post
+title: Laptop upgraded to Debian Lenny
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I couldn't wait for the official Debian Lenny release because there were several packages from Lenny that I wanted right now:
+
+- Kernel 2.8.26 that includes support for my Broadcom <a href="http://miguel.leugim.com.mx/index.php/2008/04/20/linux-kernel-powered-wireless-card/" target="_self">wireless card</a>.
+- KVM, so I could use it instead of <a href="http://miguel.leugim.com.mx/index.php/2008/02/22/virtualbox-ose-on-debian-gnulinux-amd64/" target="_self">VirtualBox</a>.
+- Pidgin, instead of Gaim
+- OpenJDK, so I could replace the <a href="http://miguel.leugim.com.mx/index.php/2007/03/01/sun-java-5-en-debian-etch/" target="_self">sun-java5-jdk</a> that I have been using
+- Improved NetworkManager capabilities
+- Iceweasel (Firefox) 3.0.3
+- Native Adobe Flash Player (swfdec-gnome)
+- The brand new Adoble Flash Player 64 bits
+
+So, I updated my <a href="http://miguel.leugim.com.mx/index.php/2007/08/08/instalando-debian-gnulinux-40-en-hp-dv6420la/" target="_self">laptop</a> this way:
+
+1. With the current setup, update the system
+
+# aptitude update &amp;&amp; aptitude upgrade
+
+2. After having an Etch distro fully updated, I changed all the references to etch or stable in /etc/apt/sources.list to lenny. My sources.list is now:
+
+# Debian lenny
+deb http://mirrors.kernel.org/debian/ lenny main contrib non-free
+
+deb http://security.debian.org/ lenny/updates main contrib
+deb-src http://security.debian.org/ lenny/updates main contrib
+
+3. I did the dist-upgrade to lenny
+
+# aptitude update &amp;&amp; aptitude dist-upgrade
+
+This downloaded 1.5GB of packages from debian repositories and after a couple of hours the upgrade was over. Now I am writing this from my shinny new Debian GNU/Linux 5.0 (Lenny). BTW, the new look &amp; feel it is pretty cool.

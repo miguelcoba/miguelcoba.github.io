@@ -1,0 +1,117 @@
+---
+layout: post
+title: Create a Virtual Machine with Debian Etch amd64 on KVM with virt-manager
+categories: []
+tags:
+- virtualización
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+This is the way I create virtual machines using KVM and virt-manager on my Debian Lenny 64 bit laptop:
+<ul>
+	<li>I will create a 64 bit virtual machine</li>
+	<li>I will install Debian Etch 64 bit</li>
+	<li>I will install a Standard system. After installation I will install the required software as needed.</li>
+	<li>The machine will have a dynamic growing image file.</li>
+	<li>I will use the default network provided by virt-manager (see this). This means that:
+<ul>
+	<li>the laptop (the host machine) will get a second IP address (192.168.122.1) that will be the default router for the virtual machines</li>
+	<li>the virtual machines will get addresses in the range 192.168.122.2 - 192.168.122.254</li>
+</ul>
+</li>
+	<li>I will create a pair of ssh keys to log in to the machine without password</li>
+</ul>
+Here we go:
+
+<strong>1. Make sure you have hardware virtualization enabled on your BIOS.</strong>
+Search google for the instructions
+
+<strong>2. Install KVM and virt-manager</strong>
+Follow <a href="http://miguel.leugim.com.mx/index.php/2008/11/22/goodbye-virtualbox-welcome-kvmvirt-manager/" target="_self">this</a> instructions
+
+<strong>3. Open virt-manager and connect to <em>localhost</em></strong>
+
+<strong>4. Start the network if you don't have it configured for autostart</strong>
+On the <em>localhost</em> host machine, select "Details" and then the "Virtual networks" tab. Select the "default" network and press the "Start" button.
+
+<strong>5. Create a new virtual machine</strong>
+On the <em>localhost</em> host machine, select "New"
+
+<strong>6. "Naming your virtual system" window</strong>
+Name your virtual machine, for example kvm
+
+<strong>7. "Choosing a virtualization method"</strong>
+I don't have Xen, so the "Paravirtualized" options is disabled.
+With "Fully virtualized" you can emulate a wider range of CPU architectures. In this time we are only interested in the x86_64 architecture. So we choose CPU Architecture: x86_64 and Hypervisor: kvm.
+
+<strong>8. "Choosing installation method"</strong>
+Here we choose the source installation media. I have an ISO image file from Debian Etch amd64, but you can also use networks install trees over HTTP, FTP or NFS or directly boot with PXE from a network server. When you chose OS Type and OS Variant, virt-manager preselects sensible defaults for the virtual machine, like ACPI support. We choose OS Type: Linux and OS Variant: Debian Etch.
+
+<strong>9. "Locating installation media"</strong>
+If you selected local install media in the previous step, you must choose either the ISO image location or the CD-ROM/DVD device where the install media resides. If you chose another option in the previous step, this window will differ. Enter the correct parameters here.
+
+<strong>10. "Assigning storage space"</strong>
+We choose "Simple File" unless you want to use a spare disk partition for your virtual machine. Select the File Location where you want your virtual machine image to reside and select an appropriate File Size. I left the defaults untouched. Uncheck the option "Allocate entire virtual disk now?". This way the disk will grow as needed, unless you run out of disk space in your host machine.
+
+<strong>11. "Connect to host network"</strong>
+Unless you know what you are doing, do like me and choose "Virtual Network". Select the "default" network from the list.
+
+<strong>12. "Allocate memory and CPU"</strong>
+Select the amount of RAM that you want to assign to the virtual machine. I wrote 256M both for VM Max Memory and VM Startup Memory. For VCPU choose the number of CPUs for the virtual machine. I chose 1 VCPU.
+
+The image will be created and the virtual machine will boot up. By default virt-manager doesn't open a VNC connection to the newly created machine. Double click the machine from the list below <em>localhost</em> to open it.
+Follow the installation as always. Create a normal user (I created a user named miguel) and in the window titled "Software Selection" select the packages you want to install (I only left "Standard system" selected; after install you can install more software with aptitude). When the installation is over, it will reboot and you should log in without problems. As root check the IP assigned by the KVM DHCP. Mine has 192.168.122.137.
+Now, in your host machine, add a new line for the virtual machine to your /etc/hosts. This is mine:
+
+127.0.0.1    localhost
+127.0.1.1    laptop.localdomain    laptop
+192.168.122.137    kvm
+
+Save it and check that you can reach the virtual machine.
+
+# ping kvm
+
+should respond the pings.
+
+Now, as the normal user from the host machine, create a pair of keys. Accept the default path for the keys and leave the passphrase empty.
+
+miguel@laptop:~$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/miguel/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/miguel/.ssh/id_rsa.
+Your public key has been saved in /home/miguel/.ssh/id_rsa.pub.
+The key fingerprint is:
+70:b5:bf:39:e4:4d:14:1d:ad:c6:f0:1f:c7:8f:26:15 miguel@laptop
+
+This should have created 2 files inside .ssh/ in your home directory: id_rsa and id_rsa.pub
+Now copy your identity to the virtual machine:
+
+miguel@laptop:~$ ssh-copy-id kvm
+miguel@kvm's password:
+
+Write your password and the key will be copied to the virtual machine. Test that you can log in without password:
+
+miguel@laptop:~$ ssh kvm
+Linux kvm 2.6.18-6-amd64 #1 SMP Wed Oct 15 10:07:11 UTC 2008 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Nov 25 16:08:19 2008 from laptop
+miguel@kvm:~$
+
+There you have it. A virtual machine running from KVM, with hardware virtualization, a minimal install and that you can log in without password.
+
+You can also create a virtual machine and host a 32 bit OS. Just follow the previous steps but instead of installing from a Debian Etch amd64 ISO image, install from a Debian Etch i386 ISO image. That is, select a 64 bit virtual machine but install a 32 bit OS. This works for any operating system.
+
+Of course you can choose CPU Architecture: i686, but the only hypervisor available will be qemu that will emulate by software (instead of doing hardware virtualization) the i386 (or sparc or ppc) architecture. This can be potentially slower than hardware virtualization.
+
+Enjoy!

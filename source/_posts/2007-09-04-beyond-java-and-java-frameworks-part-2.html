@@ -1,0 +1,55 @@
+---
+layout: post
+title: Beyond Java (and Java Frameworks). Part 2
+categories: []
+tags:
+- java
+status: publish
+type: post
+published: true
+meta: {}
+---
+En el post <a href="http://blog.leugim.com.mx/index.php/2007/09/03/beyond-java-and-java-frameworks-part-1/">anterior</a> detalle mi búsqueda de nuevas opciones en frameworks para desarrollo web en Java. Los finalistas fueron Wicket y RIFE. Mencionaba también que estos frameworks son distintos de los "tradicionales" en que son basados en componentes y en que manejan todo el estado de la sesión con el usuario del lado del servidor.
+
+¿Pero que significa que sean basados en componentes? De entrada es una nueva manera de pensar las aplicaciones web. En lugar de modelar una aplicación web como un conjunto de páginas relacionadas que la conforman, comenzamos a pensar en elementos más pequeños pero a la vez más poderosos.
+
+
+
+<!--more-->
+
+
+Por ejemplo, en casi todos los blogs hay una sección de la pantalla donde se muestran los últimos posts escritos. Esta sección de la pantalla es completamente independiente del contenido del blog. Hay otros que contienen un componente que muestra un conjunto de imágenes aleatorias. O como otro ejemplo, una aplicación web para nómina puede tener una sección donde se muestre el listado de empleados ordenados de acuerdo a un parámetro como salario, departamento, etc.  Todos estos son ejemplos de elementos en una aplicación web que pueden pensarse como componentes.
+
+En la manera tradicional de hacer aplicaciones web, cada uno de estos elementos tendría su propio controlador y su propio JSP, el cual se encargaría de la presentación de ese elemento en pantalla. Entonces, para integrar todo, habría una pantalla principal desde la cual se haría referencia a ella (por ejemplo con un tag &lt;jsp:include&gt;) o, si son buenos muchachos y están usando templates, habría un template principal el cual definiría la disposición de los elementos en la pantalla, con cada uno de estos elementos determinado al momento de acceder la página. Esta solución tuvo sus ventajas, sobre todo cuando se usaron templates en lugar de &lt;jsp:include&gt;. Es una solución que funciona en la mayoría de los casos. Pero el problema es que no permite la reusabilidad. De hecho promueve la práctica del copy &amp; paste.
+
+Me explico. Supongan que tiene que hacer una aplicación de reportes donde todos los reporte tienen un aspecto similar. Es decir, imaginen que un reporte de usuarios debe mostrar las siguientes columnas:
+
+Departamento, Clave de empleado, Nombre de Empleado, Salario.
+
+Otro reporte debe mostrar las ventas mensuales de cada empleado y debe tener las siguientes columnas:
+
+Departamento, Clave de Empleado, Nombre de Empleado, Total de ventas Enero, Total de ventas Febrero, ..., Total de ventas Diciembre, Total de ventas Año.
+
+Y aún otro reporte más, mostrando el porcentaje de entradas puntuales en el mes, mostrando las siguiente columnas:
+
+Departamento, Clave de empleado, Nombre de Empleado, % de entradas puntuales
+
+Aunque el contenido del reporte representa información completamente distinta en cada uno de los reportes, la presentación de los resultados implica repetición de código HTML para el armado de las columnas de las tablas en que se muestran los reportes. En los modelos tradicionales no basados en componentes, esto casi siempre implica que se creará el primer reporte y después solamente se tomará ese código y se copiará, modificándolo de acuerdo a las necesidades, para crear los reportes posteriores.
+
+Si solamente son tres reportes, el mantenimiento de esta aplicación no es mayor problema, pero si los reportes son 50 o 100, entonces comienza a volverse una pesadilla. ¿Por qué? Imaginen que llega un nuevo jefe y decide, en uno de esos memorables destellos de genialidad, que la presentación de los reportes debe cambiar, de manera que, como primera columna de todos los reportes, se muestre la clave del departamento, seguida del nombre del departamento, seguida de las demás columnas específicas de cada reporte.
+
+¡Oh no, es la pesadilla de todo desarrollador! Por supuesto el jefe dirá, con algo de razón, que el cambio no es difícil. Que es solamente agregar una columna y ya. Qué ese campo viene en la base de datos y que solamente hay que agregarlo y punto. Nada del otro mundo, nada de pensarle. Debe quedar en un par de horas.
+
+Pues sí, así debería ser. Si no hubiéramos hecho un copy &amp; paste en 100 reportes. Si no hubiéramos elegido la tecnología que elegimos. La elección de la tecnología incorrecta se vuelve un obstáculo debido a la manera de trabajo que induce. Y en realidad es sencillo, nada mas hay que corregir el primer reporte y una vez que esté como lo queremos, tomar solamente las modificaciones realizadas y aplicarlas de manera similar en cada uno de los 100 reportes. Quizá es tedioso y hasta aburrido, pero no es difícil.
+
+Pero cuando estás modificando el reporte número 45, con dolor en tus dedos, harto de hacer 45 veces la misma modificación y desesperado porque aún faltan otras 55 modificaciones idénticas comienzas a maldecir al framework que no te facilita la reutilización de código, que no te facilita hacer cambios de este tipo, cambios que, desde la perspectiva del usuario, son mínimos pero que hacerlos son una verdadera lata.
+
+Entran los frameworks basados en componentes. En ellos el mismo framework favorece la creación de elementos reutilizables, evita la repetición de código. Si hubiéramos usado un framework basado en componentes, lo más seguro es que cuando llegáramos al tercer reporte solicitado y notáramos que tienen una estructura similar, <a href="http://en.wikipedia.org/wiki/Refactoring">refactorizaríamos</a> nuestros componentes abstrayendo el comportamiento y estructura común a una clase padre, de la cual derivaríamos cada uno de los 100 reportes solicitados. En el momento en el que nos solicitaran agregar la columna de la clave del departamento a todos los reportes, habría un y sólo un lugar que tendríamos que modificar para agregar la columna a todos los reportes: la clase padre de la que derivan todos los reportes.
+
+Lo que es mejor, supongan que inicialmente los reportes eran visibles para todo mundo, pero que después de una reunión (de esas donde siempre sale trabajo para los de sistemas) se decide que los reportes solamente deberían ser visibles para los directivos, los cuales tendrían una clave de usuario y contraseña que debería ser verificada antes de permitirles el acceso al reporte.  Bueno, ya deben estar imaginando la magnitud del cambio. Minúsculo según el jefe: "pero si sólo debe revisar que tenga permiso. "Qué puede tener eso de difícil".
+
+El cambio es idéntico. En el modelo tradicional hay que abrir los 100 archivos de los reportes y agregar el código que verifica si el usuario tiene un clave y contraseña válidos. Más copy &amp; paste. Con el framework basado en componentes ya lo saben. Agregamos la verificación a la clase padre y por tanto todos los reportes que derivados de ella, tendrán automáticamente la misma funcionalidad.
+
+Esto es solo un ejemplo de las ventajas que proporcionan los frameworks basados en componentes. Son, por una parte, más sólidos estructuralmente, y por otra, permiten desarrollar aplicaciones de mayor complejidad y a la larga con mucha mayor flexibilidad para aceptar cambios al mismo.
+
+En un post posterior hablaré de las ventajas de que el framework maneje todo el estado de la sesión del lado del servidor.

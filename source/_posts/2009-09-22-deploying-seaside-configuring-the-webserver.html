@@ -1,0 +1,245 @@
+---
+layout: post
+title: ! 'Deploying Seaside: Configuring the webserver'
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _oembed_b7a712217ce8e220eb6d4577a309f84e: ! '{{unknown}}'
+  _oembed_54fb04b7705831bcdd9eb62918a6bfcc: ! '{{unknown}}'
+  _oembed_d3b865afe97f2cdd02c063056e5b9a83: ! '{{unknown}}'
+  _oembed_b8a7550447994e88f7e14fb01c631344: ! '{{unknown}}'
+---
+We have already populated the $DEPLOY directory with the images and scripts that will go to the production server, but before, we need to configure the webserver.
+
+<strong>Copy deploy directory to final location</strong>
+
+As root, copy the $DEPLOY directory to the /srv directory. From there it will be served to the world. Note that the $DEPLOY environment variable was defined for your normal user, not for root so you must use the full path to the $DEPLOY directory (/home/miguel/example/ in this example):
+
+mv /home/miguel/example /srv/
+
+Now, configure the start script:
+
+vi /srv/example/script/start_app.sh
+
+Now the explanation of this script. The script defines some variables. The important ones are:
+
+HOME="/srv/example"
+
+Defines the "final" location of the $DEPLOY directory (/srv/example in this example).
+
+VM="/opt/pharo/squeak -mmap 100m -vm-sound-null -vm-display-null"
+
+Defines the VM location and the options passed to the virtual machine. If you read the text on the squeak vm help you'll know that this options limits the memory that an image can use (if not specified, will grow without limits and in a production server with several images running it is better to limit them). The vm-sound-null and vm-display-null will start the images headless. In a server you don't need the graphics or the sound. Also, we have the VNC server to connect to the Magma server on demand.
+
+START_PORT=9001
+END_PORT=9004
+
+This variables defines how many Seaside images will be launched. Only one magma image will be launched. The webserver configuration depends on the values you set here. Also, you can launch as many Seaside images as you want as long as you don't use ALL the RAM of the production server. Otherwise it will begin swapping and the performance will drop. The number of images that you can launch depends on RAM and on the value of mmap you use on the VM variable.
+
+For example if you are deploying to a dedicated server with 4 GB of RAM and you don't plan to have other services you can safely reserve 500MB to OS processes and use 3500 MB of RAM for your images. If you choose a mmap of 200MB you can put 15 Seaside images + 1 Magma image, 16 images * 200 MB/image = 3400 MB and use almost all the RAM. If you use mmap=100M then you can put 30 Seaside images and 1 Magma image for a total of 3100MB that is more reasonable.
+
+Anyway, you must adapt it to your server and *do* load testing while monitoring not only request/second but also OS performance, RAM usage, disk usage and a lot of things. That's your homework.
+
+Remember the value of mmap limits how much the image can grow and in consequence, the number of Seaside sessions you can create in a single Seaside image. Same goes for the magma image. If the image needs to grow for some operation, the mmap will limit it. Again, test your setup and adapt it as needed.
+
+Well enough advise.
+
+Each image launched will write its output to a file that is stored on the logs/ directory. Also the processes are launched by means of nohup so that they remain running even in when you disconnect from the production server.
+
+So we are now ready to launch the images.
+
+<strong>Start the images</strong>
+
+As your normal user execute:
+
+sh /srv/example/scripts/start_app.sh
+
+This will start on the ports you especified in the start_app.sh script. If you try to point your web browser to one of the port you may or may not get a fully functional application. This depends on the way you emit URLs in your app. When we reach to the SeasideProxyTester explanation I will detail the settings that you need to configure in your app in order to prepare it for a proxy setup. More on this later.
+
+So before you can test the images, lets configure the webserver.
+
+<strong><em>lighttpd.conf:</em></strong>
+
+##
+# Core
+##
+server.pid-file = "/var/run/lighttpd.pid"
+server.errorlog = "/var/log/lighttpd/error.log"
+server.username = "www-data"
+server.groupname = "www-data"
+server.document-root = "/var/www/"
+server.dir-listing = "disable"
+index-file.names = ( "index.html", "index.php" )
+static-file.exclude-extensions = ( ".fcgi", ".php", ".rb", "~", ".inc" )
+server.modules = ( "mod_access", "mod_accesslog", "mod_compress", "mod_redirect", "mod_proxy", "mod_rewrite", "mod_alias" )
+
+##
+# debug options
+##
+#debug.log-request-header = "enable"
+#debug.log-request-handling = "enable"
+proxy.debug = 1
+
+##
+# dirlisting module (loaded by default)
+##
+dir-listing.encoding = "utf-8"
+
+##
+# access module
+##
+url.access-deny = ( "~", ".inc" )
+
+$HTTP["url"] =~ "/.svn/" {
+url.access-deny = ("")
+}
+
+##
+# accesslog module
+##
+accesslog.filename = "/var/log/lighttpd/access.log"
+
+##
+# compress module
+##
+compress.cache-dir = "/var/cache/lighttpd/compress/"
+compress.filetype = ( "text/plain", "text/html", "application/x-javascript", "text/css" )
+
+##
+# Global settings
+##
+$HTTP["host"] =~ "^www\.(.*)" {
+# no www for domains
+url.redirect = ( "^/(.*)" =&gt; "http://%1/$1" )
+}
+
+##
+# othersite.com
+##
+$HTTP["host"] == "othersite.com" {
+server.document-root = "/srv/www/othersite.com/"
+}
+
+$HTTP["host"] == "seaside.example.com" {
+server.document-root = "/srv/example/website/"
+
+# We'll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+"^/resources/(.*)" =&gt; "$0",             # Unaltered
+"^/(.*)" =&gt; "/seaside/seasideProxyTester$1"   # Rewritten
+)
+
+# Anything with seaside/seasideProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP["cookie"] !~ "server=app" {
+proxy.balance = "round-robin"
+proxy.server = (
+"/seaside/seasideProxyTester" =&gt; (
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9001),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9002),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9003),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9004)
+)
+)
+} else $HTTP["cookie"] =~ "app9001" { # Has a cookie, proxy to the corresponding port
+proxy.server = ( "/seaside/seasideProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9001)))
+} else $HTTP["cookie"] =~ "app9002" {
+proxy.server = ( "/seaside/seasideProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9002)))
+} else $HTTP["cookie"] =~ "app9003" {
+proxy.server = ( "/seaside/seasideProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9003)))
+} else $HTTP["cookie"] =~ "app9004" {
+proxy.server = ( "/seaside/seasideProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9004)))
+}
+}
+
+$HTTP["host"] == "magma.example.com" {
+server.document-root = "/srv/example/website/"
+
+# We'll use the resources directory to host static files: images, styles, etc
+
+# Rewrite the URL
+url.rewrite-once = (
+"^/resources/(.*)" =&gt; "$0",             # Unaltered
+"^/(.*)" =&gt; "/seaside/magmaProxyTester$1"   # Rewritten
+)
+
+# Anything with seaside/magmaProxyTester proxied to Seaside
+
+# No cookie, then proxy to a random port
+$HTTP["cookie"] !~ "server=app" {
+proxy.balance = "round-robin"
+proxy.server = (
+"/seaside/magmaProxyTester" =&gt; (
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9001),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9002),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9003),
+( "host" =&gt; "127.0.0.1", "port" =&gt; 9004)
+)
+)
+} else $HTTP["cookie"] =~ "app9001" { # Has a cookie, proxy to the corresponding port
+proxy.server = ( "/seaside/magmaProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9001)))
+} else $HTTP["cookie"] =~ "app9002" {
+proxy.server = ( "/seaside/magmaProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9002)))
+} else $HTTP["cookie"] =~ "app9003" {
+proxy.server = ( "/seaside/magmaProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9003)))
+} else $HTTP["cookie"] =~ "app9004" {
+proxy.server = ( "/seaside/magmaProxyTester" =&gt; (( "host" =&gt; "127.0.0.1", "port" =&gt; 9004)))
+}
+}
+
+#### external configuration files
+## mimetype mapping
+include_shell "/usr/share/lighttpd/create-mime.assign.pl"
+
+## load enabled configuration files,
+## read /etc/lighttpd/conf-available/README first
+include_shell "/usr/share/lighttpd/include-conf-enabled.pl"
+
+Some things must be explained though. First, it declares a section for a host named othersite.com with its document root in /srv/www/othersite.com. This permits you serve other sites from the same webserver. Then declares two sections for the example.com subdomains. They are identical in its structure. The differences are in the entry points proxied to by lighttpd. In the case of seaside.example.com it proxies to a Seaside image using the entry point seasideProxyTester, conserving all the parameters (_s and _k). In the case of magma.example.com it rewrites the request and proxies to the magmaProxyTester. Additionally it verifies for paths beginning with '/resources'. Those requests are left unchanged. The rewrite rules trigger before the lighttpd engine processes the url so is after the rewrite that the cookies check is done. lighttpd checks for a cookie named appXXXX where XXXX is some of the ports we are using for the Seaside images. If it founds one, proxy to the corresponding Seaside image listening on that port. If it hasn't a cookie like this, it uses a round-robin algorithm to choose a Seaside image to proxy the request to.
+
+This is how it works. A new user beginning the session in your app will not have the cookie as part of the request. So lighttpd will proxy the request to a random Seaside image. When the selected Seaside image receive this request will add the cookie (using its own port name as the value) to the response so that the next request will include it. This way the next request will arrive to lighttpd with the cookie established and the webserver will correctly proxy to the same image that received the first request of the session.
+
+The net result is that lighttpd is doing a kind of sticky session (meaning that the request of a session always goes to the same server being proxied) for Seaside.
+
+If none of the rules is triggered, the webserver tries to match the requested path to some file in the document root. This is what happens to the requests having '/resources' at the beginning of the path. They don't match any rule and are served from the document root.
+
+That is what lighttpd is doing in order to proxy to the Seaside images. The same explanation applies for the two subdomains.
+
+Also note that you can serve several applications from the same Seaside images. You just proxy to a different entry point in order to Seaside correctly route the incoming request to the right application. This could or couldn't be wise. The performance will degrade for all the apps if they are intensive. But again, test your setup and make a decision.
+
+So, finally, as root, put the lighttpd.conf file on /etc/lighttpd/ and restart the server
+
+/etc/init.d/lighttpd restart
+
+We're almost done. Last thing you must do is to add the example.com domain to your
+
+/etc/hosts
+
+file so that you can test it on localhost. Add a line like the following or edit the existing pointing to localhost (or 127.0.0.1)
+
+127.0.0.1    laptop.localdomain    laptop <strong>seaside.example.com magma.example.com</strong>
+
+the part in bold is what you must add in order to resolve seaside.example.com and magma.example.com to the address 127.0.0.1. As I have lighttpd installed in localhost (my development image) the request will be redirected to it and then will proxy to the Seaside images.
+
+Now finally we can test the setup.
+
+Launch your web browser and write:
+
+http://seaside.example.com
+
+or
+
+http://magma.example.com
+
+The browser should resolve those domains to 127.0.0.1 and you should be greeted with the initial page of the SeasideProxyTester. Each reload of the page will increment the counters and you should see what Seaside image is serving your session requests.
+
+Try to delete your cookies and try again. You should see that a different Seaside server is serving your requests.
+
+So, you have a Seaside application running in a group of images, being proxied and load balanced by a webserver in sticky session way. Cool, isn't?

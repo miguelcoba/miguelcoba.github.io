@@ -1,0 +1,26 @@
+---
+layout: post
+title: Fotos
+categories: []
+tags:
+- free software
+status: publish
+type: post
+published: true
+meta: {}
+---
+Después de algunos días de tener abajo la sección de fotos ha regresado corregida y mejorada.
+
+Inicialmente tuve la intención de usar alguno de los sitios de fotos de internet como <a href="http://www.flickr.com/">Flickr</a> o <a href="http://picasaweb.google.com/">Picasa Web</a>. Picasa Web era el candidato ideal porque ya tengo cuenta en Google y por tanto ya no tenía que registrarme en otro sitio como es el caso de Flickr. Finalmente me decidí a hostear yo mismo mis imágenes. De esta manera yo tengo el control completo de todo. Después de buscar un rato y comparar las opciones me decidí por <a href="http://gallery.menalto.com/" title="Gallery 2">Gallery2</a>.
+
+Entre todas las ventajas que tiene gallery, la más importante es que puedo subir directamente las fotos desde <a href="http://f-spot.org" title="f-spot">f-spot</a> o <a href="http://digikam.org">digikam.</a>
+
+Por tanto cree un nuevo subdominio para poner ahí la galería. La dirección es <a href="http://fotos.leugim.com.mx" title="Fotos">http://fotos.leugim.com.mx</a>.
+
+Inicialmente, manejaba mis fotografías usando f-spot. La interfaz es muy amigable y en cuanto a manejo de fotografías no le pide nada a Picasa o a iPhoto. Pero desgraciadamente no hace lo mismo con los videos. Algo muy importante para mi era la capacidad de almacenar tags y comentarios directamente en las imágenes (usando EXIF e IPTC) y no en una base de datos externa  (como XML o sqlite). De esta manera, si en algún momento decido cambiar de aplicación para el manejo de mis fotos, no tengo que volver a clasificarlas y comentarlas.
+
+Desafortunadamente, f-spot no lo hace en la versión que viene con Debian Etch (0.2.1) y para instalar la versión de Debian Testing me marcaba demasiados conflictos. Por tanto intenté instalarlo a partir del código fuente. ¡Ja!, toda una aventura. Finalmente desistí y busque una mejor solución.
+
+Encontré que digikam puede almacenar los tags y comentarios directamente en el archivo, y que además, aunque la versión que viene con Debian Etch no es la que trae esta funcionalidad, es mucho más sencillo instalar la <a href="http://www.digikam.org/?q=download/svn">versión</a> más reciente directamente desde el repositorio svn de <a href="http://www.kde.org/">kde</a>. Así que por el momento estoy usando digikam 0.9.3, compilado a partir del svn y no tengo ningún problema. Todos mis tags y comentarios son guardados en el archivo de la foto. Además, como cereza del pastel, al exportar las imágenes a gallery, éste obtiene los tags y comentarios que asigné a las imágenes y las utiliza para poner los títulos y comentarios que aparecen en la galería.  :D <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY</a> en acción.
+
+Así que ahora a subir fotos por montones.

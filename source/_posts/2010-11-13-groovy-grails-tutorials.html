@@ -1,0 +1,50 @@
+---
+layout: post
+title: Groovy & Grails tutorials
+categories: []
+tags:
+- git
+- github
+- grails
+- groovy
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+A few weeks ago I gave a 3 day intro course on Groovy and Grails. I had little time to prepare but in the end all went ok and the participants were very surprised of the dynamic nature of the Groovy language and of the easy of development that Grails brings to the Java world.
+
+In the middle of the course preparation I ended searching for a way to store the data of the presentation in a non-binary way, that is, in a textual format, so that I could version it and diff it correctly. I found <a title="Scott Chacon" href="http://scottchacon.com/">schacon</a>'s <a title="ShowOff Presentation Software" href="http://github.com/schacon/showoff">ShowOff</a> and tried it. I liked it a lot so I use it for my presentation. This is how you install showoff in Debian Squeeze:
+
+Install rubygems:
+
+<code>aptitude install ruby ruby-dev rubygems</code>
+
+Update rubygems:
+
+<code>gem update</code>
+
+Install ShowOff
+
+<code>gem install showoff</code>
+
+Then I moved to the ShowOff's directory for my presentation and ran:
+
+<code>showoff serve</code>
+
+This make my presentation show up in port 9090 of my local machine. So I browsed to http://localhost:9090 and there it was.
+
+Of course ShowOff isn't MS PowerPoint, and doesn't try to be either. Instead, it offers a few basic styles, transitions and font styles and sizes. Nothing else. And this is what puts ShowOff apart of any presentation software. It is so easy to setup and have a web-enabled presentation in minutes.
+
+One thing that is missing and it is needed a lot is a way to convert the presentation to PDF format, so it is easy to share to other people or to upload to sites like slideshare. Other than that, I didn't need some particular feature of PowerPoint. Less is more sometimes.
+
+Anyway I am releasing the Groovy &amp; Grails presentation as a Creative Commons Attribution-NonCommercial-ShareAlike license so, feel free to use it and improve it.
+
+They are hosted on GitHub:
+
+<a title="Groovy Tutorial" href="https://github.com/miguelcoba/groovy-tutorial">Groovy Tutorial</a>
+
+<a title="Grails Tutorial" href="https://github.com/miguelcoba/grails-tutorial">Grails Tutorial</a>
+
+So fork them and use them.

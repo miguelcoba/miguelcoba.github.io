@@ -1,0 +1,71 @@
+---
+layout: post
+title: Install Gemstone/S 64 on a KVM virtual machine
+categories: []
+tags:
+- Uncategorized
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _oembed_aa9f0c15a1df43b4cb820ea5fd4e9366: ! '{{unknown}}'
+  _oembed_78a8807a667b58e1e7bfe5be5d1b1a60: ! '{{unknown}}'
+---
+This instructions are very similar to the slicehost setup from James Foster's <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">post</a>, but this time on a KVM virtual machine.
+
+<strong>Host Machine</strong>
+Architecture: x86_64
+Name: laptop
+OS: Debian GNU/Linux 5.0 amd64 (Lenny)
+<strong>Virtual Machine</strong>
+Architecture: x86_64
+Name: vm0
+OS: Debian GNU/Linux 4.0 amd64 (Etch)
+<strong>Virtual Machine Software</strong>
+Gemstone/S 64 Web Edition 2.3
+
+Install the virtual machine following <a href="http://miguel.leugim.com.mx/index.php/2008/11/25/create-a-virtual-machine-with-debian-etch-amd64-on-kvm-with-virt-manager/" target="_self">those</a> instructions. Add the IP address assigned to the virtual machine to /etc/hosts on the host machine. Log in to the virtual machine and, as root, add your normal user to the sudoers file
+
+vm0:~# visudo
+
+The last lines of the file should be like this:
+
+# User privilege specification
+root    ALL=(ALL) ALL
+miguel  ALL=(ALL) ALL
+
+Save changes and as normal user on the virtual machine, download Gemstone/S (Note: this instructions are identical to the ones from James Foster's <a href="http://programminggems.wordpress.com/2008/09/05/setting-up-glass-on-slicehost/">post</a>);
+
+miguel@vm0:~$ wget http://seaside.gemstone.com/scripts/installGemstone2.3-Linux.sh
+miguel@vm0:~$ sh installGemstone2.3-Linux.sh
+
+This will ask for your user password and then will download and install Gemstone/S 64 Web Edition to the virtual machine's /opt/gemstone.
+
+Reload your sysctl changes. Either running:
+
+miguel@vm0:~$ sudo sysctl -p
+
+or rebooting the virtual machine:
+
+miguel@vm0:~$ sudo reboot
+
+Log in again to the virtual machine if needed and execute:
+
+miguel@vm0:~$ echo "SHR_PAGE_CACHE_SIZE_KB = 100000;" &gt;&gt; /opt/gemstone/product/seaside/data/system.conf
+
+Start the start the Gemstone/S 64 Web Edition:
+
+miguel@vm0:~$ source /opt/gemstone/product/seaside/defSeaside
+miguel@vm0:~$ startGemstone
+miguel@vm0:~$ startSeaside_Hyper 8080
+
+And, from your host machine, test Seaside by pointing your web browser to:
+
+http://vm0:8080/seaside
+
+To stop Hyper press Ctrl+C and then stop Gemstone:
+
+miguel@vm0:~$ stopGemstone
+
+That's all.

@@ -1,0 +1,80 @@
+---
+layout: post
+title: Beyond Java (and Java Frameworks). Part 1
+categories: []
+tags:
+- free software
+- java
+status: publish
+type: post
+published: true
+meta: {}
+---
+Al fin llegué a mi límite. Demasiado esfuerzo para hacer cosas simples. Demasiados archivos que modificar para realizar un cambio. Y lo peor de todo, ¡demasiado XML para programar!
+
+Java no es un lenguaje que se distinga por ser conciso para expresar algoritmos y soluciones a problemas. Es tolerado tomando en cuenta sus otras ventajas (garbage collector, una buena biblioteca de clases, entre otras). Pero si además de eso agregamos toneladas de XML para realizar la mitad de la programación y configuración de tu aplicación llegamos a un punto extremo.
+
+
+
+<!--more-->
+
+
+No hay duda de que el combo Struts/Tiles/JSP/JSTL llegó para quedarse. Pero también es evidente que no es una solución óptima. Por ejemplo, en las aplicaciones que mantengo actualmente para crear una nueva pantalla debo modificar varios archivos: struts-config.xml, tiles-config.xml, MessageResources.properties, un archivo para el Action y otro para el JSP. Todo para crear <strong>una</strong> sola pantalla de la aplicación. El esfuerzo se multiplica si deseamos hacer cosas más complejas, pero que son comunes y hasta requeridas en cualquier aplicación actual, tales como hacer una lista paginada de elementos, generar reportes en formatos como PDF o Excel o para hacer flujos de trabajo como cuando haces el registro de un usuario y tienes que capturar grandes cantidades de información como datos personales, datos laborales, información de contacto, etc y necesitas guardar toda la información al mismo tiempo. En un caso como este tienes varias opciones, ninguna de ellas ideal:
+<ol>
+<li>Pasar de pantalla en pantalla toda la información que ya has recolectado, de manera que al llegar a la pantalla final la guardes en la base de datos.</li>
+<li>Almacenar la información en un objeto dentro de la sesión del lado del servidor, de manera que no tengas que andar transportando la información de pantalla en pantalla.</li>
+<li>Almacenas la información obtenida en cada pantalla en la base de datos, marcándola con un estado de pendiente, de manera que cuando llegues a la pantalla final modifiques el estado a activo o finalizado, de forma que la información sea considerada correcta.</li>
+</ol>
+Aunque al final obtienes el resultado deseado, es frágil y muy difícil de mantener o de crecer.
+
+En fin, demasiados problemas con el modelo actual de hacer las cosas. Así que regresando al punto inicial. Estoy harto de esto. No es  posible. Es demasiado tiempo invertido para hacer cosas sencillas y además no te facilita las cosas complejas.
+
+Por tanto entré en una etapa de investigación para analizar como estaba el panorama actual en lo que respecta a frameworks de desarrollo en Java. Inicialmente buscaba algo en la misma línea de <a href="http://rubyonrails.org/">Ruby on Rails</a>, es decir, desarrollo rápido, convención sobre configuración, nada de XML, acceso fácil a las bases de datos (nada de JDBC), excelente soporte para Testing, entre otras cosas.
+
+Los resultados de la búsqueda fueron abrumadores: <strong>hay un desencanto generalizado respecto al desarrollo de aplicaciones web con Java. </strong>Y de este desencanto surge un número ridículamente grande de frameworks que intentan corregir los fallos observables en los modelos actuales de desarrollo.
+
+Es al mismo tiempo reconfortante y entristecedor saber que hay muchísimas personas en el planeta que tienen que trabajar con herramientas que no son las óptimas pero lo peor es que no hay manera de cambiarlas, ya sea porque son la herramienta probada (aunque sea sólo por que llevan años trabajando con ella o a pesar de ella) o porque no hay flexibilidad u oportunidad de probar alguna de las nuevas herramientas. Todos los que estamos metidos en esto sabemos que no es sencillo introducir herramientas nuevas. Es difícil convencer a los poderes que reinan de las ventajas de la nueva tecnología por muchas razones:
+<ul>
+<li>Comodidad de la herramienta actual</li>
+<li>Miedo al cambio</li>
+<li>Miedo al impulso de la nueva sangre y el temor de perder el control</li>
+<li>Contratos que obligan al uso de ciertas tecnologías</li>
+<li>En el caso del software libre la confusión existente al asociarlo con el freeware o peor aún, con software de mala calidad hecha por personas no profesionales.</li>
+<li>Falta de visión y de análisis en las tendencias actuales del desarrollo de software.</li>
+</ul>
+Indudablemente habrá otras razones que no están listadas aquí. El caso es, hay una resistencia al cambio, a lo nuevo. Se descarta <em>a priori </em>lo desconocido, sin importar sus posibles ventajas o sin darle al menos el beneficio de la duda.
+
+Pero divago. A donde quiero llegar es: hay una plétora de opciones de frameworks para desarrollo web en Internet y es muy difícil elegir alguna. Es técnicamente imposible probar todos los frameworks y hacer comparaciones más detalladas. Aquí está una lista incompleta de los frameworks más conocidos:
+<ul>
+<li> <a href="http://rifers.org/">RIFE</a></li>
+<li><a href="http://wicket.apache.org/">Apache Wicket</a></li>
+<li><a href="http://grails.codehaus.org/">Grails</a></li>
+<li><a href="http://www.trailsframework.org/">Trails</a></li>
+<li><a href="http://mc4j.org/confluence/display/stripes/Home">Stripes</a></li>
+<li><a href="http://www.springframework.org/">Spring</a></li>
+<li><a href="http://tapestry.apache.org/">Apache Tapestry</a></li>
+<li><a href="http://www.jboss.com/products/seam">Seam</a></li>
+</ul>
+Una versión más completa está <a href="http://wicket.apache.org/introduction.html">aquí.</a> Sorprendente no?
+
+Esta lista muestra solamente los que analicé. ¿Cómo? Leyendo sus páginas, leyendo sus FAQ's, leyendo artículos a favor y en contra del framework, leyendo comparaciones entre ellos escritas por usuarios que las habían usado y estaban a favor o en contra. Y en el caso de Wicket, Grails y RIFE, haciendo aplicaciones de prueba pequeñas o siguiendo las instrucciones de sus manuales de usuario. En determinado momento me decidí a eliminar XML de la ecuación, o al menos reducirla al máximo. Esto es, el framework finalista no debería hacerme pasar la mitad del tiempo escribiendo XML en lugar de código Java. Un monto razonable de XML para configurar cosas básicas era aceptable, pero de ningún modo iba a escribir XML. No soy programador XML, es más, XML ni siquiera es un lenguaje de programación, así que programar en XML algo que debería programarse en Java es anatema.
+
+Finalment reduje la lista a dos candidatos y una mención honorífica: RIFE, Wicket y como mención honorífica Tapestry.
+
+Estos tres frameworks tiene algo en común. Son basados en componentes y separan completamente la presentación del modelo (no usan JSP's).  Cada uno de ellos implementa estas ideas de distintas maneras.
+
+Tapestry es el más maduro de todos, pero usa demasiado XML para mis gusto. Por tanto lo usaré solamente si no es posible usar los otros dos.
+
+RIFE y Wicket no usan JSP, es más usan HTML puro con algunas decoraciones mínimas que le indican al código donde sustituir el contenido. Como decía, cada uno tiene su propia manera de hacer esto, aunque personalmente me gusta más la manera de Wicket.
+
+Lo que es verdaderamente nuevo en la manera de desarrollar es que no tratan de hacer que el desarrollo web sea una manera fácil de trabajar con el modelo request/reponse dictado tanto por HTTP como por la implementación de servlets hecha por Sun en el JDK. Por el contrario toman un enfoque diametralmente opuesto. La premisa básica es que todo el estado de una sesión entre el usuario y el servidor es mantenida y controlada por el servidor. Esto es pecado mortal en el mundo de Struts. En Struts se evita a toda costa manterner información en el estado con el fin de no saturar los recursos del servidor, transfiriendo la complejidad al desarrollador de la aplicación, que tiene que encontrar una manera de mantener una sesión con el usuario. RIFE y Wicket por el contrario le quitan esa carga al desarrollador y toman el control total del estado de la sesión. El desarrollador, por tanto, se concentra solamente en crear la aplicación de una manera tan sencilla que es decepcionante cuando regresamos a Struts. Las aplicaciones escritas usando este modelo de desarrollo son tan parecidas a las aplicaciones de escritorio en cuanto a su linealidad que implica desaprender lo aprendido durante años y años de constante adoctrinamiento (¿amaestramiento?) en Struts y compañía.
+
+A cambio de esta facilidad en el desarrollo, este tipo de frameworks utilizan más recursos en el servidor. Pero en todos los casos, y así es promocionado, el costo por hora de un desarrollador es órdenes de magnitud más alto que el costo por hora de un servidor con más memoria RAM o que un conjunto de servidores trabajando en cluster para hostear la aplicación. Este argumento es cada día más atractivo, dado que en estos días hasta las laptops vienen con 2 o 4 GB de RAM. Con eso es más que suficiente para atender a varios cientos de usuarios de manera concurrente.
+
+En resumen, en el mundo Java, la nueva sensación para mí son los frameworks basados en componentes, que no usan XML para programar, que permiten usar HTML como lenguaje de presentación (como Dios quizo que fuera :)) y que mantienen todo el estado de la sesión en el servidor.
+
+Así que comenzará ahora la labor de convencimiento en mi trabajo para dar el paso adelante. Para intentar un nuevo enfoque. Para convencer a los pares y a los superiores de que hay mérito en estos nuevos frameworks. Será difícil pero a la larga no habrá elección. Struts y los frameworks del mismo espiritú tienen los días contados.
+
+Así que RIFE o Wicket, cada uno con su propia visión, serán los frameworks que usaré en las aplicaciones que desarrolle de ahora en adelante.
+
+Y de paso, durante esta investigación me encontré con frameworks aún más sorprendentes, pero eso será tema de otro post.

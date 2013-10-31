@@ -1,0 +1,367 @@
+---
+layout: post
+title: ! 'Deploying Seaside: load testing results'
+categories: []
+tags:
+- lighttpd
+- magma
+- scaling
+- seaside
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+---
+I made a series of test with different values of the parameters. All of them are for reference purpose only. As with any benchmark, a lot of factors affect the results. The advice is, try to isolate your environment so that the results are meaningful
+
+My machine is
+<ul>
+	<li>Intel(R) Core(TM)2 Duo CPU     T6400  @ 2.00GHz</li>
+	<li>Cache: 2048 KB</li>
+	<li>RAM: 4GB</li>
+</ul>
+with a lot of processes running and the same machine hosting lighttpd, JMeter and the images.
+
+There are two series of tests. The first one test the seaside.example.com. That is the application that stores everything on memory in each image. So this will be very fast.
+The second one test the magma.example.com. So each request is accessing the Magma database. As we increase the number of images, the database will be the bottleneck. Keep that in mind when comparing results. Also, don't bash Magma as magma is very fast. It is just that the SeasideMagmaTester isn't optimized yet. It is just a simple application for measuring a *simple* Magma-Seaside integration. In a real production environment you'll put the database in the most powerful server (at least for writing performance), and for read performance, you can add several servers to the magma <a title="Magma High-Availability" href="http://wiki.squeak.org/squeak/6101">node</a> and get a lot of reads/sec. But that is another problem. We just want to test the SeasideProxyTester as is. Optimize your application as you see fit.
+
+First the seaside.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>113</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>49971</th>
+<th>114</th>
+<th>1.85</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>117</th>
+<th>60.03</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>140</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>137</th>
+<th>0.97</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>158</th>
+<th>39.56</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>154</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>170</th>
+<th>0.43</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>129</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>118</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>4000</th>
+<th>100</th>
+<th>100</th>
+<th>600600</th>
+<th>187</th>
+<th>47.49</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>600</th>
+<th>30</th>
+<th>1000</th>
+<th>600600</th>
+<th>205</th>
+<th>76.12</th>
+</tr>
+</tbody></table>
+Now the magma.example.com results:
+<table border="0">
+<tbody>
+<tr>
+<th>Magma Images</th>
+<th>Seaside Images</th>
+<th>mmap (MB)</th>
+<th>JMeter Users</th>
+<th>JMeter Ramp-Up (seconds)</th>
+<th>JMeter Loop counter</th>
+<th>Samples (Requests)</th>
+<th>Throughput (Req/sec)</th>
+<th>Error % (requests that failed)</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>50</th>
+<th>0</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>75</th>
+<th>1.11</th>
+</tr>
+<tr>
+<th>1</th>
+<th>1</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>102.9</th>
+<th>78.32</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>57</th>
+<th>50</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>120</th>
+<th>73.21</th>
+</tr>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>197935</th>
+<th>160</th>
+<th>91.64</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>44</th>
+<th>89.28</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>167</th>
+<th>97.24</th>
+</tr>
+<tr>
+<th>1</th>
+<th>10</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>200400</th>
+<th>206</th>
+<th>95.59</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>10</th>
+<th>10</th>
+<th>500</th>
+<th>5010</th>
+<th>45</th>
+<th>89.38</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>500</th>
+<th>50100</th>
+<th>150</th>
+<th>98.72</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>400</th>
+<th>100</th>
+<th>500</th>
+<th>179686</th>
+<th>255</th>
+<th>99.99</th>
+</tr>
+<tr>
+<th>1</th>
+<th>30</th>
+<th>100</th>
+<th>100</th>
+<th>100</th>
+<th>2</th>
+<th>300</th>
+<th>3</th>
+<th>0</th>
+</tr>
+</tbody></table>
+Those results as I said, are just a reference. YMMV.
+
+<strong>Comments:</strong>
+
+The seaside.example.com results are very varying. With one seaside image, you get 113 requests/second. Thats a lot of requests. Really. I hope someday I have a site that receive that number of requests. But have in mind that the seaside.example.com application it is just storing the counters in memory. Also, the server (that is, my laptop) is just handling 1 process for the magma image (not used), 1 process for the seaside image (heavily used), 1 process for the lighttpd server (heavily used) and 1 process for JMeter. Not a lot of work for the cpu and the Linux process scheduler.
+But if you see the results for 2 seaside images, the best you get is 140 requests/second without getting errors. That is unexpected, because if 1 image can handle 113, 2 images should handle at least 200 request. That is even more notorious when you use 10 or 30 Seaside images. The best you get is 154 requests/second. As I said before a lot of things affect this results. First my CPU isn't as powerful as the ones from real servers. My laptop is doing a lot of other processes (webbrowser, gaim, JMeter on GUI mode, the GNOME desktop, the wireless, the music). In a dedicated server more resources are reserved for the Seaside images. In the worst case, with 30 Seaside images (each of them doing a lot of work by itself) the laptop CPU is doing a lot of process context switching giving each image a slice of processor time. Each image, in turn, is doing its own process scheduling between Komanche, Seaside and the others processes that run in a Pharo image. If you consider this you can explain why there isn't a linear scaling in the requests/second as you increment the number of images. The best, appears to be, is to use different servers for the webserver and for the images. Also, distributing the images on two or more small servers (as my laptop is), can get the best of the images and from the balancer.
+
+Now for the Magma results. They are ugly and disappointing. But, remember, isn't optimized yet. It is just the simplest way of getting Magma and Seaside working. For example, if your app reads a lot more than writes to the database (as most application are, unless you are storing the results of subatomic collisions ;)) you can add more read only server to a magma node to improve the read performance. Besides, you can use different read strategies and use Magma Collections to store your data. The PROBLEM WITH THIS PARTICULAR APPLICATION is that all the images are trying to write to the same slots on the dictionary that holds the counters. This, when you have a lot of processes trying to write, necessarily results in a lot of commit errors. Suppose session 1 reads the current counter value in order to increase it. Before it can commit the new value (current value + 1) the Pharo scheduler switches to other session on the same image or the OS scheduler switches to other Pharo image. The new scheduled session  (session 2) reads the current value (not yet updated by the first session) and if not uncheduled like the session 1, successfully commits the new value. Some time later the session 1 get scheduled again and tries to resume from the exact same place where it left. So update the value and send the commit to magma. Magma notes that the value has changed since it was read and marks a dirty object (that is, the client must do an abort to get the new value) and a magma conmit conflict. The error is arrives to the final user and is counted by JMeter as an error because of the status 503 from the headers.
+In a real application, the common scenario is that each user writes to its own section of the database or to different parts of a common collection, this is handled very well by Magma, even better if you use Magma Collections. So in a more realistic scenario, you won't have that many commit conflicts, if any. But that is Magma optimization and you know better than anybody your own application. Maybe Chris Muller (Magma creator) or Keith Hodges (Magma seasideHelper creator) can replicate this results and suggest better ways to test Magma and use Magma seasideHelper. I repeat: the apparent errors are a consequence of the application tested and not from Magma. How do you know? Because in every case we get a response from the Magma server, that is, a commit conflict error response. So the server is alive and healthy, responding appropriately every request made by a Seaside image. Keep that in mind before bashing Magma.
+One better way to test this application is to give each session its own counter on the database (as if each user were getting its own private data) and all of those private counters being held on a Magma Collection (that is, a collection of user data). This way each session will update its own data and that by its own nature, won't produce commit errors. But that is left as an exercise to the reader.
+
+So, to test your apps.

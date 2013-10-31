@@ -1,0 +1,19 @@
+---
+layout: post
+title: Goodbye Apache, welcome lighttpd
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta: {}
+---
+Finally, after several weeks of thinking about it, I removed Apache 2 from my server machine and replaced it with lighttpd.
+
+I don't have anything against Apache. In fact has never gave me any problem. But, in a VPS environment, RAM memory is the main resource to save. And Apache is so RAM hungry (besides MySQL), that the server was almost Apache dedicated.
+
+After searching for a viable alternative I came to lighttpd. Small, low memory footprint, super fast, support for virtual hosts, php, fastcgi. Well, this blog is already running over lighttpd/fastcgi.
+
+Then only drawback was, lighttpd has no support (complete as today) for Web DAV, so Subversion couldn't work with https, but as I am the only user for my repo, I now use svn+ssh to access it.
+
+So, the migration was OK.

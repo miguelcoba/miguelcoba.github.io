@@ -1,0 +1,71 @@
+---
+layout: post
+title: Sun Java 5 en Debian Etch
+categories: []
+tags:
+- java
+status: publish
+type: post
+published: true
+meta: {}
+---
+Inicialmente instalaba Java en mi máquina descargándola del sitio de <a href="http://java.sun.com">Sun</a>. Sun provee dos versiones del JDK, un rpm para distribuciones derivadas de Redhat y un self-extracting binary. Como yo usaba Debian GNU/LInux me veía forzado (a menos que usara alien para convertir el rpm a un paquete .deb, pero eso es otra historia), a usar el archivo binario. Aunque esta solución en sí no tenía nada de malo, porque que el script se encargaba de configurar todas las variables de ambiente, no dejaba de sentir que mi máquina estaba "sucia", ya que no quedaba registro en la base de datos de dpkg de esta instalación. Esto por supuesto dejando a un lado el hecho obvio de que Java no es Free Software. A pesar de todo, durante mucho tiempo mantuve esta manera de trabajar.
+
+
+<!--more-->
+
+Cada nuevo servidor que instalaba y que necesitaba Java, era manejado de esta manera. Pero el verdadero problema surgió cuando hubo necesidad de actualizar la versión de Java en estos servidores. Uff!  Nada más de recordar me da flojera. En resumen, no es una manera ordenada de mantener un servidor de producción
+
+Esto nos lleva a la segunda manera de instalar Java. Esta la supe después de mucho tiempo, más o menos en la época de Debian Sarge.
+Resulta que Sarge contaba con algunas herramientas que facilitaban un poco la instalación de Java. Digo un poco porque todavía era necesario descargar el archivo binario del sitio de Sun.
+El proceso tenía cuatro pasos:
+<ol>
+<li>Descargar el JDK de Sun.
+Mismo paso que antes</li>
+<li>Como root, instalar java-package y fakeroot,
+<code>aptitude install java-package fakeroot</code></li>
+<li>Como usuario normal generar un paquete .deb a partir del JDK binario.
+<code>fakeroot make-jpkg <em>jdk_descargado_de_sun.bin</em></code>
+Esto generaba un archivo .deb para el JDK de Sun</li>
+<li>Finalmente, como root, instalar el paquete
+<code>dpkg -i <em>archivo_generado_por_make-jpkg.deb</em></code>
+</li>
+</ol>
+
+Quizá más pasos que con el método anterior, pero al menos ya tenía registrado el paquete dentro de dpkg. Ya podía estar tranquilo pensando que mi sistema tenía registro completo de todas las aplicaciones
+Durante algunos meses lo tuve así y, aunque la actualización era un poco molesta, no lo era tanto como en el caso anterior. Todo se reducía a descargar la nueva versión del JDK existente, generar un nuevo paquete .deb y proceder a instalarlo.
+dpkg se encargaba de todo.
+
+Aunque mejor que el primer método, no dejaba de ser molesto el tener que descargar el archivo binario del sitio de Sun y generar el paquete .deb.
+Debía haber una mejor manera.
+
+Finalmente, y es el punto donde estoy ahora, encontré que Debian Etch contiene, en la sección non-free, el JDK versión 5. Y no sólo eso. En Debian Sid existe la versión 6, por lo que en algún momento llegará a la versión testing.
+Ventajas:
+<ol>
+<li>Es un paquete existente directamente en los mirrors de Debian, por lo que está a un aptitude install de distancia.</li>
+<li>Si hay alguna actualización en los paquetes, el siguiente aptitude upgrade que le haga a mi máquina automáticamente actualizará mi JDK. Woa!</li>
+<li>Es un paquete que, al ser parte de los mirrors de Debian, recibe más pruebas de compatibilidad con otros paquetes del sistema. Por tanto, si algún usuario encuentra algún bug como resultado de la instalación de este paquete, es muy probable que el fix resultante sea incorporado a la nueva versión del JDK y por tanto todos los usuarios la recibirán en el siguiente aptitude upgrade de sus sistemas.</li>
+<li>Al ser un paquete de Debian, cumpe con los estándares del FHS (Filesystem Hierarchy Standard). Esto se traduce en que los archivos instalados por el JDK, estarán en los directorios apropiados y no en lugares como /usr/local o /opt.</li>
+<li>Como un plus, este nuevo paquete agrega la versión de java instalada a las alternatives, de manera que es posible configurar cual será el jdk usado por el sistema con un simple comando: <code>update-alternatives --config java</code></li>
+</ol>
+
+Bueno, bueno, muy bien, ¿pero cuál es el comando para obtener todo esto? Sencillo.
+<ol>
+<li>Asegurate de que tu /etc/apt/sources.list incluye las secciones non-free de los mirrors de debian. Debes tener algo similar a:
+<code>deb http://mirrors.kernel.org/debian/ etch main contrib non-free</code>
+</li>
+<li>Instala el paquete sun-java5-jdk:
+<code>aptitude update && aptitude install sun-java5-jdk</code>
+Debian se encargará de todo.
+</li>
+<li>Si deseas el plugin de java para firefox o iceweasel ejecuta:
+<code>aptitude install sun-java5-plugin</code>
+Tendrás que reiniciar tu navegador para que el plugin sea reconocido.</li>
+</ol>
+
+Listo. ¡Sun Java JDK 5 en tus manos con un solo comando!
+
+Como ves, esta última manera facilita enormemente el manejo de versiones de java en tu máquina.
+Por el momento tenemos que conformarnos con usar software propietario de esta manera, pero con la <a href="http://www.sun.com/software/opensource/java/">transición</a> a free software de la suite de Java, pronto (quizá en Debian Lenny) java estará en la parte main de los mirrors de Debian.
+
+Cuando eso pase, las instrucciones para instalar Java serán más sencillas todavía. Y entonces agregaré a mi lista el cuarto y, con un poco de suerte, último, método de tener Java en Debian GNU/Linux.

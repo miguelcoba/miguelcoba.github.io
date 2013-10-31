@@ -1,0 +1,75 @@
+---
+layout: post
+title: ! 'Deploying Seaside: Populate directories'
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+  _oembed_340eb3a87f54dc3d3430dd5eff4d7a25: ! '{{unknown}}'
+  _oembed_220f2b12d6017b9d373b72a771c54eb3: ! '{{unknown}}'
+---
+Well the images are ready now to populate the directories that will be uploaded to the production server.
+
+<strong>Populate directories</strong>
+
+There is a directory named website inside the $DEPLOY directory. This directory is to be used to host your static content: images, CSS files, javascripts, etc. But as we are going to proxy requeste from the webserver to the Seaside images, there must be a way for the webserver to know what to proxy and what not to. Requests for static content must not be proxied to the Seaside server and the easiest way for the webserver to recognize those requests is by means of the URL path of the request. So we will have a rule in the webserver configuration so that everything that has a path that begins with '/resources/' will not be proxied but served directly by the webserver. The Seaside images never get those requests. The only generates the html that asks the webserver for that static content. So if a request arrives to the webserver with the '/resources/' path in it, the webserver will try to find it on its document root. As the webserver will have its document root pointing to the website directory, a path of '/resources/' will search for a directory resources in the website/ directory. So if a request arrives asking for:
+
+http://seaside.example.com/resources/somefile.jpg
+
+the webserver will try to serve the file located on:
+
+website/resources/somefile.jpg
+
+So create a directory named resources/ on the $DEPLOY/website directory:
+
+mkdir $DEPLOY/website/resources/
+cp website_files/* $DEPLOY/website/
+
+and copy to it the files you want to be served directly by the webserver (website_files/ is the directory that currently has your content).
+
+The SeasideProxyTester doesn't have a lot of static content but it will show the Pharo logo, so lets download the Pharo logo from:
+
+<a title="Pharo logo" href="http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg">http://gforge.inria.fr/frs/download.php/22781/pharocard.jpg</a>
+
+and save it to $DEPLOY/website/resources/ as pharocard.jpg. This will be the static content for the SeasideProxyTester.
+
+Now copy the scripts and images from the $WORK directory to the correct location on $DEPLOY:
+
+cp $WORK/magma-run.st $DEPLOY/scripts
+cp $WORK/seaside-run.st $DEPLOY/scripts
+cp $WORK/start_app.sh $DEPLOY/scripts
+cp $WORK/SqueakV39.sources $DEPLOY/pharo
+cp $WORK/magma.image $DEPLOY/pharo
+cp $WORK/magma.changes $DEPLOY/pharo
+cp $WORK/seaside.image $DEPLOY/pharo
+cp $WORK/seaside.changes $DEPLOY/pharo
+
+<strong>Create the magma repository</strong>
+
+Next step, create the magma repository. First load the magma image:
+
+cd $DEPLOY/pharo
+/opt/pharo/squeak magma.image
+
+open a workspace and "DoIt" the following Smalltalk code:
+
+"Create the repository"
+MagmaRepositoryController
+create: '../magma/'
+root: Dictionary new.
+
+"Start the server"
+MagmaServerConsole new
+open: '../magma/';
+processOn: 51969;
+inspect.
+
+"Save and quit the image"
+SmalltalkImage current snapshot: true andQuit: true.
+
+This do several things. First it creates the magma database in the $DEPLOY/magma directory, by using relative paths. It uses a Dictionary as the root of the repository. Inside this root we will put our application root object (our domain root). Next, it starts the server console listening on the port 51969 for incoming connections. This port will be used by the Magma seasideHelper code to connect the Seaside application to the Magma server. Finally it saves the image and quits. Next time that you start this image, the Magma server will automatically start and bound to the port, ready to accept connections. If you open the image, quit WITHOUT saving.
+
+We are almost ready to test the application. We have already finished the directory setup. This $DEPLOY directory can be uploaded to the production server but before that we must configure the webserver to do load balancing and proxy to our Seaside images.

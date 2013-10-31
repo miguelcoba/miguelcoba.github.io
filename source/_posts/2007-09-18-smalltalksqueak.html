@@ -1,0 +1,36 @@
+---
+layout: post
+title: Smalltalk/Squeak
+categories: []
+tags:
+- seaside
+- smalltalk
+- squeak
+status: publish
+type: post
+published: true
+meta: {}
+---
+El 14 de septiembre se publicó el libro <a href="http://www.squeakbyexample.org/" title="Squeak by example">Squeak by Example</a>. Hoy lo terminé. Es fantástico. El lenguaje es impresionante. El modelo teórico en el que está basado es absolutamente asombroso Todo es un objeto. ¡Todo! Y si creías que sabías programación orientada a objetos porque programabas en Java, C++ o C#, déjame romper tu burbuja. No es así. Lo digo por experiencia propia. Me he dado cuenta de que he vivido engañado.
+
+
+
+<!--more-->
+
+
+Hace un par de años, cuando aprendí Ruby, entendí lo que era un lenguaje donde todos los elementos eran objetos. No había palabras reservadas para true o false o para nil. No, eran objetos hechos y derechos. El objeto True, el objeto False, el objeto Nil, cada uno de los cuales tenía cierta funcionalidad (comportamiento) asociado. En ese entonces fue una revelación  el saber que era posible tener un lenguaje donde no había una división entre un tipo primitivo int y un objeto de la clase Integer (como en Java). No, ahí manejabas objetos de tipo Integer y nada más. Objetos reales, con identidad, estado y comportamiento. Nada que ver con Java y su modelo de objetos.
+
+Ahora me doy cuenta de que solamente era una preparación para Smalltalk. Smalltalk es el rey, el amo, el punto de referencia con el cual deben medirse todos los lenguajes orientados a objetos.
+
+Squeak es una implementación de Smalltalk. Y Squeak by Example es una excelente introducción tanto al lenguaje como al ambiente de desarrollo pero sobre todo a la ideología detrás de Smalltalk.
+
+Algunas de las cosas que me dejaron sin palabras:
+<ol>
+<li> Todo es un objeto. Aun las clases son objetos. ¿Qué?. Es correcto. Las clases no son solamente planos arquitectónicos de cómo crear objetos. Son objetos a los que puede enviarse mensajes para solicitar alguna acción. Lo que es más, las clases son instancias de su propia clase, o mejor dicho, su metaclase. Puedes manipularlas, modificarlas, navegarlas, en fin, hacer con ellas lo mismo que puedes hacer con los objetos, como por ejemplo, hacer un Array de clases o un método que te regrese una clase.</li>
+<li>Todo el sistema esta programado en Smalltalk. A diferencia de Ruby o Python donde el lenguaje esta programado en C, en Smalltalk todo está hecho en Smalltalk. Si quieres hacer una extensión al lenguaje, la programas en Smalltalk y listo.</li>
+<li>El sistema esta "vivo". Todos los objetos están vivos. Si modificas un objeto los cambios se aplican de inmediato, sin necesidad de compilar y recargar el objeto. Esto tiene un potencial enorme. En uno de los ejemplos asigné nil a la variable que hace referencia al objeto Object, que es el padre de todos los demás objetos en la jerarquía de clases de Squeak. ¿Saben que pasó? Mi Squeak murió :D. Poder total, control total, hasta la última tuerca. Por supuesto, al igual que ser root en Unix, con el poder viene la responsabilidad.</li>
+<li>La jerarquía de clases es absolutamente impresionante. Todos los objetos, incluyendo las clases, las metaclases, aun la metaclase de Object, heredan de la clase Object. Woa! No hay más que ver la figura 12.10 del libro. Es como una obra de arte abstracta que al mirarla te hace sentir tu propia mortalidad, jaja. Al lado de los que idearon esa jerarquía de clases todos somos simples mortales.</li>
+</ol>
+Bueno, no más rollo. Les recomiendo absolutamente este libro si desean aprender Smalltalk, descárguenlo, léanlo, distribúyanlo. Es claro, te lleva de la mano en el aprendizaje del ambiente de desarrollo, muestra como usar SUnit para crear pruebas unitarias, como depurar tus programas y hasta a usar las clases adecuadas para crear aplicaciones gráficas.
+
+Siguiente parada, Seaside.

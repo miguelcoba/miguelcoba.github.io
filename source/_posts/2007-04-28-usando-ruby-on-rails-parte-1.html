@@ -1,0 +1,63 @@
+---
+layout: post
+title: Usando Ruby on Rails - Parte 1
+categories: []
+tags:
+- curso
+- ruby on rails
+- sqlite
+status: publish
+type: post
+published: true
+meta: {}
+---
+Esta es la primera entrega de una serie de posts que pretenden crear un sistema básico sobre el cual construir una aplicación completa.
+Este código surgió después de investigar las mejores prácticas de programación en Ruby on Rails para el proyecto que estoy desarrollando actualmente.
+Como ya había comentado en otro post, el proyecto que estoy haciendo será el típico sistema web que permite a usuarios registrarse, obtener una cuenta de acceso al sistema y comenzar a usar la funcionalidad propia de la aplicación.
+Como todo lo relacionado con RoR, hay muchísimas referencias y tips para hacer determinada funcionalidad. Estos posts reflejan lo que a mi consideración es la mejor manera, al momento, de crear una aplicación en RoR.
+
+
+<!--more-->
+
+Necesitaremos:
+<ul>
+<li><a href="http://www.sqlite.org">sqlite3</a> - Base de datos para desarrollo. Cuando la aplicación sea puesta a producción, configuraremos <a href="http://www.postgresql.org">PostgreSQL</a></li>
+<li><a href="http://agilewebdevelopment.com/plugins/restful_authentication">restful_authentication</a> - Para hacer la autenticación de los usuarios en el sistema</li>
+<li><a href="http://openid.net/">openid</a> - Para poder hacer autenticación de usuarios que ya cuenten con un identity URL de OpenID</li>
+</ul>
+
+Además, la aplicación tratará de ser, en la medida de lo posible, lo más RESTful que se pueda.
+El ambiente en el que desarrollo es una máquina Debian GNU/Linux etch, con los repositorios oficiales y donde ya tengo instalado ruby y rubygems.
+
+Aquí vamos!
+
+<strong>Instalar sqlite3</strong>
+
+Primero instalamos las bibliotecas de sqlite3 para poder usarla como base de datos de desarrollo.
+Como root, instalamos la biblioteca directamente de los repositorios de Debian usando aptitude:
+
+<code>
+debian:~# aptitude install sqlite3 libsqlite3-dev
+</code>
+
+Después instalamos la gem de para usar sqlite3 con ruby, también como root:
+
+<code>
+debian:~# gem install sqlite3-ruby
+</code>
+
+Generamos el proyecto indicando que queremos usar sqlite3 como nuestra base de datos:
+
+<pre>
+<code>
+miguel@debian:~$ rails -d sqlite3 rails_app
+miguel@debian:~$ cd rails_app/
+miguel@debian:~/rails_app$ rake db:migrate
+(in /home/miguel/rails_app)
+miguel@debian:~/rails_app$
+</code>
+</pre>
+
+Si todo está bien instalado, no debería obtener ningún error durante el rake db:migrate.
+
+En el siguiente post crearemos un sistema de autenticación usando restful_authentication.
